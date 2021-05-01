@@ -28,6 +28,7 @@ namespace FinancialPortfolio.APIGateway.Web
             services.AddControllers();
             services.AddSwagger();
             services.AddMessaging(Configuration);
+            services.AddSettings(Configuration);
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)

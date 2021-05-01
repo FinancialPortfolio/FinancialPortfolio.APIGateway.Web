@@ -25,6 +25,13 @@ namespace FinancialPortfolio.APIGateway.Web.Extensions
             };
             
             services.AddKafkaMessaging(messagingOptions);
+            
+            return services;
+        }
+        
+        public static IServiceCollection AddSettings(this IServiceCollection services, IConfiguration configuration)
+        {
+            services.Configure<ServicesSettings>(configuration.GetSection(nameof(ServicesSettings)));
 
             return services;
         }
@@ -60,7 +67,7 @@ namespace FinancialPortfolio.APIGateway.Web.Extensions
             {
                 c.SwaggerEndpoint("/swagger/v1/swagger.json", "API Gateway");
                 c.DocExpansion(Swashbuckle.AspNetCore.SwaggerUI.DocExpansion.None);
-                c.RoutePrefix = string.Empty;
+                c.RoutePrefix = "swagger";
             });
 
             return app;

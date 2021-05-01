@@ -5,6 +5,8 @@ VisualStudioVersion = 16.0.30907.101
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FinancialPortfolio.APIGateway.Web", "FinancialPortfolio.APIGateway.Web\FinancialPortfolio.APIGateway.Web.csproj", "{E2EA62C6-41ED-4CF7-85DD-11B2135EA9B0}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FinancialPortfolio.APIGateway.Contracts", "FinancialPortfolio.APIGateway.Contracts\FinancialPortfolio.APIGateway.Contracts.csproj", "{E159FFD1-D640-484B-BDD6-EB8A65091E67}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +17,10 @@ Global
 		{E2EA62C6-41ED-4CF7-85DD-11B2135EA9B0}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E2EA62C6-41ED-4CF7-85DD-11B2135EA9B0}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E2EA62C6-41ED-4CF7-85DD-11B2135EA9B0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E159FFD1-D640-484B-BDD6-EB8A65091E67}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E159FFD1-D640-484B-BDD6-EB8A65091E67}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E159FFD1-D640-484B-BDD6-EB8A65091E67}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E159FFD1-D640-484B-BDD6-EB8A65091E67}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

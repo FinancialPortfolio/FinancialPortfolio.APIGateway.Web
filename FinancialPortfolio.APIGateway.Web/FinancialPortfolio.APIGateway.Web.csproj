@@ -12,5 +12,9 @@
     <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.10.9" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.1.2" />
   </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\FinancialPortfolio.APIGateway.Contracts\FinancialPortfolio.APIGateway.Contracts.csproj" />
+  </ItemGroup>
   
 </Project>

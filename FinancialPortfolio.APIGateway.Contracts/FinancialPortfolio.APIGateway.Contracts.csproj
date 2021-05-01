@@ -1,0 +1,30 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>netstandard2.1</TargetFramework>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <PackageReference Include="FinancialPortfolio.Messaging" Version="2.0.1" />
+      <PackageReference Include="Google.Protobuf" Version="3.16.0-rc1" />
+      <PackageReference Include="Grpc.Net.Client" Version="2.37.0" />
+      <PackageReference Include="Grpc.Tools" Version="2.37.1">
+        <PrivateAssets>all</PrivateAssets>
+        <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+      </PackageReference>
+    </ItemGroup>
+
+    <ItemGroup>
+      <None Remove="Equity\protos\transfer.proto" />
+      <Protobuf Include="Equity\protos\transfer.proto">
+        <GrpcServices>Both</GrpcServices>
+        <Access>Public</Access>
+        <ProtoCompile>True</ProtoCompile>
+        <ProtoRoot></ProtoRoot>
+        <CompileOutputs>True</CompileOutputs>
+        <OutputDir>obj\Debug\netstandard2.1\</OutputDir>
+        <Generator>MSBuild:Compile</Generator>
+      </Protobuf>
+    </ItemGroup>
+
+</Project>

@@ -1,0 +1,25 @@
+syntax = "proto3";
+
+package TransferApi;
+
+service Transfer {
+  rpc GetAll (GetTransfersRequest) returns (TransfersResponse) {}
+}
+
+message GetTransfersRequest {
+}
+
+message TransfersResponse {
+  repeated TransferResponse transfers = 1;
+}
+
+message TransferResponse {
+  double amount = 1;
+  TransferType type = 2;
+  string dateTime = 3;
+}
+
+enum TransferType {
+  Deposit = 0;
+  Withdrawal = 1;
+}
