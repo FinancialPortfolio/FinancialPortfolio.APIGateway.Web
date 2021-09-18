@@ -7,8 +7,8 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="FinancialPortfolio.Messaging" Version="2.0.1" />
-    <PackageReference Include="FinancialPortfolio.Messaging.Kafka" Version="2.0.1" />
+    <PackageReference Include="FinancialPortfolio.Messaging" Version="1.0.1" />
+    <PackageReference Include="FinancialPortfolio.Messaging.Kafka" Version="1.0.1" />
     <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.10.9" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.1.2" />
   </ItemGroup>

@@ -32,10 +32,10 @@ namespace FinancialPortfolio.APIGateway.Web.Controllers
         public async Task<ActionResult> GetAllAsync()
         {
             var channel = GrpcChannel.ForAddress(_equityService.GrpcUrl);
-            
             var client = new Transfer.TransferClient(channel);
-            
-            var transfers = await client.GetAllAsync(new GetTransfersRequest());
+
+            var request = new GetTransfersRequest();
+            var transfers = await client.GetAllAsync(request);
             return Ok(transfers);
         }
         
