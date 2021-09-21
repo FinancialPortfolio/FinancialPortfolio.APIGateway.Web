@@ -1,8 +1,6 @@
 using System;
 using System.IO;
 using FinancialPortfolio.APIGateway.Web.Settings;
-using FinancialPortfolio.Messaging.Kafka;
-using FinancialPortfolio.Messaging.Kafka.Extensions;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -12,23 +10,6 @@ namespace FinancialPortfolio.APIGateway.Web.Extensions
 {
     public static class InfrastructureExtensions
     {
-        public static IServiceCollection AddMessaging(this IServiceCollection services, IConfiguration configuration)
-        {
-            var kafkaSettings = configuration.GetSection(nameof(MessagingSettings)).Get<MessagingSettings>();
-
-            var messagingOptions = new KafkaMessagingOptions()
-            {
-                Prefix = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT"),
-                BootstrapServers = kafkaSettings.BootstrapServers,
-                GroupId = kafkaSettings.GroupId,
-                TimeoutTime = TimeSpan.FromSeconds(10)
-            };
-            
-            services.AddKafkaMessaging(messagingOptions);
-            
-            return services;
-        }
-        
         public static IServiceCollection AddSettings(this IServiceCollection services, IConfiguration configuration)
         {
             services.Configure<ServicesSettings>(configuration.GetSection(nameof(ServicesSettings)));

@@ -1,8 +1,9 @@
 using System;
+using FinancialPortfolio.APIGateway.Contracts.Equity.Enums;
 
 namespace FinancialPortfolio.APIGateway.Contracts.Equity.Requests
 {
-    public class CreateTransferRequest
+    public record CreateTransferRequest
     {
         public decimal Amount { get; set; }
         

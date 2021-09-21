@@ -1,4 +1,4 @@
-namespace FinancialPortfolio.APIGateway.Contracts.Equity
+namespace FinancialPortfolio.APIGateway.Contracts.Equity.Enums
 {
     public enum TransferType
     {

@@ -1,9 +1,8 @@
-using System;
 using System.Threading.Tasks;
 using FinancialPortfolio.APIGateway.Contracts.Equity.Commands;
 using FinancialPortfolio.APIGateway.Contracts.Equity.Requests;
 using FinancialPortfolio.APIGateway.Web.Settings;
-using FinancialPortfolio.Messaging;
+using FinancialPortfolio.CQRS.Publishers;
 using Grpc.Net.Client;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -17,12 +16,12 @@ namespace FinancialPortfolio.APIGateway.Web.Controllers
     [Produces("application/json")]
     public class TransfersController : ControllerBase
     {
-        private readonly IMessagePublisher _messagePublisher;
+        private readonly ICommandPublisher _commandPublisher;
         private readonly ServiceSettings _equityService;
 
-        public TransfersController(IMessagePublisher messagePublisher, IOptions<ServicesSettings> servicesSettingsOptions)
+        public TransfersController(ICommandPublisher commandPublisher, IOptions<ServicesSettings> servicesSettingsOptions)
         {
-            _messagePublisher = messagePublisher;
+            _commandPublisher = commandPublisher;
             _equityService = servicesSettingsOptions.Value.EquityService;
         }
         
@@ -44,8 +43,8 @@ namespace FinancialPortfolio.APIGateway.Web.Controllers
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<ActionResult> Create([FromBody] CreateTransferRequest request)
         {
-            var createTransfer = new CreateTransfer(request.Amount, request.Type, request.DateTime);
-            await _messagePublisher.PublishAsync(createTransfer);
+            var createTransferCommand = new CreateTransferCommand(request.Amount, request.Type, request.DateTime);
+            await _commandPublisher.SendAsync(createTransferCommand);
             
             return Accepted();
         }

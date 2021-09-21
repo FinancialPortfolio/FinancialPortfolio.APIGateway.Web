@@ -1,11 +1,12 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
-        <TargetFramework>netstandard2.1</TargetFramework>
+        <TargetFramework>net5.0</TargetFramework>
     </PropertyGroup>
 
     <ItemGroup>
-      <PackageReference Include="FinancialPortfolio.Messaging" Version="1.0.1" />
+      <PackageReference Include="FinancialPortfolio.CQRS" Version="1.2.0" />
+      <PackageReference Include="FinancialPortfolio.Messaging" Version="1.2.0" />
       <PackageReference Include="Google.Protobuf" Version="3.16.0-rc1" />
       <PackageReference Include="Grpc.Net.Client" Version="2.37.0" />
       <PackageReference Include="Grpc.Tools" Version="2.37.1">

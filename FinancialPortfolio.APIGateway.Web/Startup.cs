@@ -1,16 +1,11 @@
+using System;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using FinancialPortfolio.APIGateway.Web.Extensions;
+using FinancialPortfolio.Infrastructure.Extensions;
 
 namespace FinancialPortfolio.APIGateway.Web
 {
@@ -22,13 +17,17 @@ namespace FinancialPortfolio.APIGateway.Web
         }
 
         public IConfiguration Configuration { get; }
+        
+        private readonly string EnvironmentName = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT");
 
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllers();
-            services.AddSwagger();
-            services.AddMessaging(Configuration);
-            services.AddSettings(Configuration);
+            
+            services
+                .AddSwagger()
+                .AddKafkaCQRSMessaging(Configuration, EnvironmentName)
+                .AddSettings(Configuration);
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
