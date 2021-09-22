@@ -6,6 +6,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using FinancialPortfolio.APIGateway.Web.Extensions;
 using FinancialPortfolio.Infrastructure.Extensions;
+using FinancialPortfolio.Infrastructure.WebApi.Extensions;
 
 namespace FinancialPortfolio.APIGateway.Web
 {
@@ -16,7 +17,7 @@ namespace FinancialPortfolio.APIGateway.Web
             Configuration = configuration;
         }
 
-        public IConfiguration Configuration { get; }
+        private IConfiguration Configuration { get; }
         
         private readonly string EnvironmentName = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT");
 
@@ -25,7 +26,7 @@ namespace FinancialPortfolio.APIGateway.Web
             services.AddControllers();
             
             services
-                .AddSwagger()
+                .AddCustomSwagger(Configuration)
                 .AddKafkaCQRSMessaging(Configuration, EnvironmentName)
                 .AddSettings(Configuration);
         }
