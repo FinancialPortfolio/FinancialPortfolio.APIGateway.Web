@@ -4,6 +4,7 @@ using FinancialPortfolio.APIGateway.Contracts.Equity.Requests;
 using FinancialPortfolio.APIGateway.Web.Settings;
 using FinancialPortfolio.CQRS.Publishers;
 using Grpc.Net.Client;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
@@ -11,8 +12,9 @@ using TransferApi;
 
 namespace FinancialPortfolio.APIGateway.Web.Controllers
 {
-    [Route("api/transfers")]
+    [Authorize]
     [ApiController]
+    [Route("api/transfers")]
     [Produces("application/json")]
     public class TransfersController : ControllerBase
     {

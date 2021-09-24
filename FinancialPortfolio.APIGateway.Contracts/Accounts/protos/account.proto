@@ -1,0 +1,25 @@
+syntax = "proto3";
+
+package AccountApi;
+
+service Account {
+	rpc GetAll (GetAccountsRequest) returns (AccountsResponse) {}
+}
+
+message GetAccountsRequest {
+}
+
+message AccountsResponse {
+	repeated AccountResponse Accounts = 1;
+}
+
+message AccountResponse {
+	double amount = 1;
+	AccountType type = 2;
+	string dateTime = 3;
+}
+
+enum AccountType {
+	Deposit = 0;
+	Withdrawal = 1;
+}
