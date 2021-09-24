@@ -1,4 +1,4 @@
-namespace FinancialPortfolio.APIGateway.Web.Settings
+namespace FinancialPortfolio.APIGateway.Web.Models.Settings
 {
     public class ServicesSettings
     {

@@ -1,7 +1,7 @@
 using System.Threading.Tasks;
 using FinancialPortfolio.APIGateway.Contracts.Equity.Commands;
 using FinancialPortfolio.APIGateway.Contracts.Equity.Requests;
-using FinancialPortfolio.APIGateway.Web.Settings;
+using FinancialPortfolio.APIGateway.Web.Models.Settings;
 using FinancialPortfolio.CQRS.Publishers;
 using Grpc.Net.Client;
 using Microsoft.AspNetCore.Authorization;

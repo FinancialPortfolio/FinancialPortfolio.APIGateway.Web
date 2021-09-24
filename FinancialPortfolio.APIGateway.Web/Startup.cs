@@ -28,7 +28,9 @@ namespace FinancialPortfolio.APIGateway.Web
             services
                 .AddCustomSwagger(Configuration)
                 .AddKafkaCQRSMessaging(Configuration, EnvironmentName)
-                .AddSettings(Configuration);
+                .AddSettings(Configuration)
+                .AddCustomAuthentication(Configuration)
+                .AddCustomAuthorization();
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
@@ -43,6 +45,8 @@ namespace FinancialPortfolio.APIGateway.Web
             app.UseCustomSwagger();
 
             app.UseRouting();
+
+            app.UseAuthentication();
 
             app.UseAuthorization();
 
