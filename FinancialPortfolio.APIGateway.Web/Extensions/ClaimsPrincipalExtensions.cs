@@ -7,7 +7,7 @@ namespace FinancialPortfolio.APIGateway.Web.Extensions
 {
     internal static class ClaimsPrincipalExtensions
     {
-        public static T GetClaim<T>(this ClaimsPrincipal user, string type) where T : class
+        internal static T GetClaim<T>(this ClaimsPrincipal user, string type) where T : class
         {
             var claim = user.Claims.SingleOrDefault(c => c.Type.Equals(type, StringComparison.InvariantCulture));
             if (claim == null)

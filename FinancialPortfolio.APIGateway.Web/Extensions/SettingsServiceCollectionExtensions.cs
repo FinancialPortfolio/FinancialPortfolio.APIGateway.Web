@@ -6,7 +6,7 @@ namespace FinancialPortfolio.APIGateway.Web.Extensions
 {
     public static class SettingsServiceCollectionExtensions
     {
-        internal static IServiceCollection AddSettings(this IServiceCollection services, IConfiguration configuration)
+        public static IServiceCollection AddSettings(this IServiceCollection services, IConfiguration configuration)
         {
             services.Configure<ServicesSettings>(configuration.GetSection(nameof(ServicesSettings)));
 

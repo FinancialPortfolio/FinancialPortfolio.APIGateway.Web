@@ -7,7 +7,7 @@ namespace FinancialPortfolio.APIGateway.Web.Extensions
 {
     public static class AuthenticationServiceCollectionExtensions
     {
-        internal static IServiceCollection AddCustomAuthentication(this IServiceCollection services, IConfiguration configuration)
+        public static IServiceCollection AddCustomAuthentication(this IServiceCollection services, IConfiguration configuration)
         {
             var authenticationSettings = configuration.GetSection(nameof(AuthenticationSettings)).Get<AuthenticationSettings>();
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
