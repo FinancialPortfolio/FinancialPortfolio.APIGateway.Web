@@ -18,10 +18,10 @@ namespace FinancialPortfolio.APIGateway.Web.Controllers
         
         protected async Task<Guid> GetUserIdAsync()
         {
-            var claim = await _userInfoService.GetClaimAsync<string>(ClaimConstants.UserId);
+            var claim = await _userInfoService.GetClaimAsync<string>(ClaimConstants.Id);
             if (claim == null)
             {
-                throw new ForbiddenException($"You do not have {ClaimConstants.UserId} claim.");
+                throw new ForbiddenException($"You do not have {ClaimConstants.Id} claim.");
             }
 
             if (Guid.TryParse(claim, out var result))
@@ -29,7 +29,7 @@ namespace FinancialPortfolio.APIGateway.Web.Controllers
                 return result;
             }
             
-            throw new ForbiddenException($"{ClaimConstants.UserId} claim '{claim}' is incorrect Guid value.");
+            throw new ForbiddenException($"{ClaimConstants.Id} claim '{claim}' is incorrect Guid value.");
         }
     }
 }

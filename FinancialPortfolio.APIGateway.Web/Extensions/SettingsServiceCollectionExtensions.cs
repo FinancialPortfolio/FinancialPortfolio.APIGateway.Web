@@ -4,7 +4,7 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace FinancialPortfolio.APIGateway.Web.Extensions
 {
-    public static class InfrastructureExtensions
+    public static class SettingsServiceCollectionExtensions
     {
         internal static IServiceCollection AddSettings(this IServiceCollection services, IConfiguration configuration)
         {
