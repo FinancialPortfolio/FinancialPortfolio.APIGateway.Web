@@ -26,10 +26,10 @@ namespace FinancialPortfolio.APIGateway.Web
             services.AddControllers();
             
             services
+                .AddDefaultImplementations("Service")
                 .AddCustomSwagger(Configuration)
                 .AddKafkaCQRSMessaging(Configuration, EnvironmentName)
                 .AddSettings(Configuration)
-                .AddCustomServices()
                 .AddCustomAuthentication(Configuration)
                 .AddCustomAuthorization()
                 .AddHttpContextAccessor();
