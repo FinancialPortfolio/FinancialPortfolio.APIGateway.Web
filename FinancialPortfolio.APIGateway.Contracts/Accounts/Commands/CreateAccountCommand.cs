@@ -1,5 +1,5 @@
 ﻿using System;
-using FinancialPortfolio.CQRS.Models;
+using FinancialPortfolio.CQRS.Commands;
 using FinancialPortfolio.Messaging;
 
 namespace FinancialPortfolio.APIGateway.Contracts.Accounts.Commands

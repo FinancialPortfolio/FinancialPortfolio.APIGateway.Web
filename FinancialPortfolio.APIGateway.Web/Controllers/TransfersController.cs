@@ -2,7 +2,7 @@ using System.Threading.Tasks;
 using FinancialPortfolio.APIGateway.Contracts.Equity.Commands;
 using FinancialPortfolio.APIGateway.Contracts.Equity.Requests;
 using FinancialPortfolio.APIGateway.Web.Models.Settings;
-using FinancialPortfolio.CQRS.Publishers;
+using FinancialPortfolio.CQRS.Commands;
 using Grpc.Net.Client;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
@@ -21,10 +21,10 @@ namespace FinancialPortfolio.APIGateway.Web.Controllers
         private readonly ICommandPublisher _commandPublisher;
         private readonly ServiceSettings _equityService;
 
-        public TransfersController(ICommandPublisher commandPublisher, IOptions<ServicesSettings> servicesSettingsOptions)
+        public TransfersController(ICommandPublisher commandPublisher, ServicesSettings servicesSettings)
         {
             _commandPublisher = commandPublisher;
-            _equityService = servicesSettingsOptions.Value.EquityService;
+            _equityService = servicesSettings.EquityService;
         }
         
         [HttpGet]

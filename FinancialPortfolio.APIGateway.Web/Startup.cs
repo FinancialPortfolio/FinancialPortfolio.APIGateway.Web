@@ -6,6 +6,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using FinancialPortfolio.APIGateway.Web.Extensions;
+using FinancialPortfolio.APIGateway.Web.Services;
 using FinancialPortfolio.Infrastructure.Extensions;
 using FinancialPortfolio.Infrastructure.WebApi.Extensions;
 
@@ -27,10 +28,10 @@ namespace FinancialPortfolio.APIGateway.Web
             services.AddControllers();
             
             services
-                .AddDefaultServiceImplementations()
+                .AddDefaultServiceImplementations(typeof(UserInfoService).Assembly)
                 .AddCustomSwagger(Configuration)
                 .AddKafkaCQRSMessaging(Configuration, EnvironmentName)
-                .AddDefaultSettings(Configuration, new [] { Assembly.GetEntryAssembly() })
+                .AddDefaultSettings(Configuration, Assembly.GetEntryAssembly())
                 .AddCustomAuthentication(Configuration)
                 .AddCustomAuthorization()
                 .AddHttpContextAccessor();

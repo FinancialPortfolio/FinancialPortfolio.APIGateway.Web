@@ -4,7 +4,7 @@ using FinancialPortfolio.APIGateway.Contracts.Accounts.Commands;
 using FinancialPortfolio.APIGateway.Contracts.Accounts.Requests;
 using FinancialPortfolio.APIGateway.Web.Models.Settings;
 using FinancialPortfolio.APIGateway.Web.Services.Abstraction;
-using FinancialPortfolio.CQRS.Publishers;
+using FinancialPortfolio.CQRS.Commands;
 using Grpc.Net.Client;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
@@ -23,11 +23,11 @@ namespace FinancialPortfolio.APIGateway.Web.Controllers
         private readonly ServiceSettings _accountsService;
 
         public AccountsController(
-            ICommandPublisher commandPublisher, IOptions<ServicesSettings> servicesSettingsOptions, 
+            ICommandPublisher commandPublisher, ServicesSettings servicesSettings, 
             IUserInfoService userInfoService) : base(userInfoService)
         {
             _commandPublisher = commandPublisher;
-            _accountsService = servicesSettingsOptions.Value.AccountsService;
+            _accountsService = servicesSettings.AccountsService;
         }
         
         [HttpGet]
