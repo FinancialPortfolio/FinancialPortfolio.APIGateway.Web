@@ -1,4 +1,5 @@
 using System;
+using System.Reflection;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -26,10 +27,10 @@ namespace FinancialPortfolio.APIGateway.Web
             services.AddControllers();
             
             services
-                .AddDefaultImplementations("Service")
+                .AddDefaultServiceImplementations()
                 .AddCustomSwagger(Configuration)
                 .AddKafkaCQRSMessaging(Configuration, EnvironmentName)
-                .AddSettings(Configuration)
+                .AddDefaultSettings(Configuration, new [] { Assembly.GetEntryAssembly() })
                 .AddCustomAuthentication(Configuration)
                 .AddCustomAuthorization()
                 .AddHttpContextAccessor();
