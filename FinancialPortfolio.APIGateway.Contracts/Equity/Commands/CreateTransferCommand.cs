@@ -13,12 +13,15 @@ namespace FinancialPortfolio.APIGateway.Contracts.Equity.Commands
         public TransferType Type { get; }
         
         public DateTime? DateTime { get; }
+        
+        public Guid AccountId { get; }
 
-        public CreateTransferCommand(decimal amount, TransferType type, DateTime? dateTime)
+        public CreateTransferCommand(decimal amount, TransferType type, DateTime? dateTime, Guid accountId)
         {
             Amount = amount;
             Type = type;
             DateTime = dateTime;
+            AccountId = accountId;
         }
     }
 }

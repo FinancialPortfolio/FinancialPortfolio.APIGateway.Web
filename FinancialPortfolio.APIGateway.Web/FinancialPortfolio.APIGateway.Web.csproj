@@ -8,7 +8,7 @@
 
   <ItemGroup>
     <PackageReference Include="FinancialPortfolio.Infrastructure" Version="1.3.5" />
-    <PackageReference Include="FinancialPortfolio.Infrastructure.WebApi" Version="1.3.0" />
+    <PackageReference Include="FinancialPortfolio.Infrastructure.WebApi" Version="1.3.2" />
     <PackageReference Include="FinancialPortfolio.WebHosting" Version="1.3.0" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="5.0.10" />
     <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.10.9" />

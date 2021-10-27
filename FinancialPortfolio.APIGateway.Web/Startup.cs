@@ -1,11 +1,11 @@
 using System;
-using System.Reflection;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using FinancialPortfolio.APIGateway.Web.Extensions;
+using FinancialPortfolio.APIGateway.Web.Models.Settings;
 using FinancialPortfolio.APIGateway.Web.Services;
 using FinancialPortfolio.Infrastructure.Extensions;
 using FinancialPortfolio.Infrastructure.WebApi.Extensions;
@@ -25,13 +25,13 @@ namespace FinancialPortfolio.APIGateway.Web
 
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddControllers();
-            
             services
+                .AddCustomControllers()
+                .AddCustomCors()
                 .AddDefaultServiceImplementations(typeof(UserInfoService).Assembly)
                 .AddCustomSwagger(Configuration)
                 .AddKafkaCQRSMessaging(Configuration, EnvironmentName)
-                .AddDefaultSettings(Configuration, Assembly.GetEntryAssembly())
+                .AddDefaultSettings(Configuration, typeof(ServicesSettings).Assembly)
                 .AddCustomAuthentication(Configuration)
                 .AddCustomAuthorization()
                 .AddHttpContextAccessor();
@@ -46,6 +46,8 @@ namespace FinancialPortfolio.APIGateway.Web
 
             app.UseHttpsRedirection();
 
+            app.UseCustomCors();
+            
             app.UseCustomSwagger();
 
             app.UseRouting();

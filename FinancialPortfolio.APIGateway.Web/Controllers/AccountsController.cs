@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System.Collections.Generic;
+using System.Threading.Tasks;
 using AccountApi;
 using FinancialPortfolio.APIGateway.Contracts.Accounts.Commands;
 using FinancialPortfolio.APIGateway.Contracts.Accounts.Requests;
@@ -33,14 +34,14 @@ namespace FinancialPortfolio.APIGateway.Web.Controllers
         [HttpGet]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public async Task<ActionResult> GetAllAsync()
+        public async Task<ActionResult<IEnumerable<AccountResponse>>> GetAllAsync()
         {
             var channel = GrpcChannel.ForAddress(_accountsService.GrpcUrl);
             var client = new Account.AccountClient(channel);
 
             var request = new GetAccountsRequest();
-            var accounts = await client.GetAllAsync(request);
-            return Ok(accounts);
+            var accountsResponse = await client.GetAllAsync(request);
+            return Ok(accountsResponse.Accounts);
         }
         
         [HttpPost]

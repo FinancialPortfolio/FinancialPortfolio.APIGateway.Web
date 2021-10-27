@@ -14,8 +14,9 @@ message AccountsResponse {
 }
 
 message AccountResponse {
-	string name = 1;
-	string description = 2;
-	string CreatedDateTime = 3;
-	string userId = 4;
+	string id = 1;
+	string name = 2;
+	string description = 3;
+	string CreatedDateTime = 4;
+	string userId = 5;
 }

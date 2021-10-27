@@ -1,9 +1,7 @@
-﻿using System.Runtime.Serialization;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using FinancialPortfolio.APIGateway.Web.Extensions;
 using FinancialPortfolio.APIGateway.Web.Services.Abstraction;
 using Microsoft.AspNetCore.Http;
-using Microsoft.Extensions.Caching.Distributed;
 
 namespace FinancialPortfolio.APIGateway.Web.Services
 {

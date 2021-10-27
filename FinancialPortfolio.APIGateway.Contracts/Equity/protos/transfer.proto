@@ -14,9 +14,11 @@ message TransfersResponse {
 }
 
 message TransferResponse {
-  double amount = 1;
-  TransferType type = 2;
-  string dateTime = 3;
+  string id = 1;
+  double amount = 2;
+  TransferType type = 3;
+  string dateTime = 4;
+  string accountId =5;
 }
 
 enum TransferType {

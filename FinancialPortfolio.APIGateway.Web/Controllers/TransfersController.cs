@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using FinancialPortfolio.APIGateway.Contracts.Equity.Commands;
 using FinancialPortfolio.APIGateway.Contracts.Equity.Requests;
@@ -30,14 +31,14 @@ namespace FinancialPortfolio.APIGateway.Web.Controllers
         [HttpGet]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public async Task<ActionResult> GetAllAsync()
+        public async Task<ActionResult<IEnumerable<TransferResponse>>> GetAllAsync()
         {
             var channel = GrpcChannel.ForAddress(_equityService.GrpcUrl);
             var client = new Transfer.TransferClient(channel);
 
             var request = new GetTransfersRequest();
-            var transfers = await client.GetAllAsync(request);
-            return Ok(transfers);
+            var transfersResponse = await client.GetAllAsync(request);
+            return Ok(transfersResponse.Transfers);
         }
         
         [HttpPost]
@@ -45,7 +46,7 @@ namespace FinancialPortfolio.APIGateway.Web.Controllers
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<ActionResult> Create([FromBody] CreateTransferRequest request)
         {
-            var createTransferCommand = new CreateTransferCommand(request.Amount, request.Type, request.DateTime);
+            var createTransferCommand = new CreateTransferCommand(request.Amount, request.Type, request.DateTime, request.AccountId);
             await _commandPublisher.SendAsync(createTransferCommand);
             
             return Accepted();
