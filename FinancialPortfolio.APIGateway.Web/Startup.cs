@@ -1,4 +1,3 @@
-using System;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -14,15 +13,16 @@ namespace FinancialPortfolio.APIGateway.Web
 {
     public class Startup
     {
-        public Startup(IConfiguration configuration)
+        public Startup(IConfiguration configuration, IWebHostEnvironment webHostEnvironment)
         {
             Configuration = configuration;
+            WebHostEnvironment = webHostEnvironment;
         }
 
         private IConfiguration Configuration { get; }
         
-        private readonly string EnvironmentName = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT");
-
+        private IWebHostEnvironment WebHostEnvironment { get; } 
+        
         public void ConfigureServices(IServiceCollection services)
         {
             services
@@ -30,16 +30,16 @@ namespace FinancialPortfolio.APIGateway.Web
                 .AddCustomCors()
                 .AddDefaultServiceImplementations(typeof(UserInfoService).Assembly)
                 .AddCustomSwagger(Configuration)
-                .AddKafkaCQRSMessaging(Configuration, EnvironmentName)
+                .AddKafkaCQRSMessaging(Configuration, WebHostEnvironment.EnvironmentName)
                 .AddDefaultSettings(Configuration, typeof(ServicesSettings).Assembly)
-                .AddCustomAuthentication(Configuration)
+                .AddCustomAuthentication(Configuration, WebHostEnvironment)
                 .AddCustomAuthorization()
                 .AddHttpContextAccessor();
         }
 
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        public void Configure(IApplicationBuilder app)
         {
-            if (env.IsDevelopment())
+            if (WebHostEnvironment.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
             }
