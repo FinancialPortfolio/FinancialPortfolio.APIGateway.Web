@@ -1,12 +1,4 @@
 {
-    "iisSettings": {
-        "windowsAuthentication": false,
-        "anonymousAuthentication": true,
-        "iisExpress": {
-            "applicationUrl": "http://localhost:6001",
-            "sslPort": 5001
-        }
-    },
     "profiles": {
         "FinancialPortfolio.APIGateway.Web": {
             "commandName": "Project",
