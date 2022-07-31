@@ -26,6 +26,7 @@ namespace FinancialPortfolio.APIGateway.Web
         public void ConfigureServices(IServiceCollection services)
         {
             services
+                .AddLogging(Configuration)
                 .AddCustomControllers()
                 .AddCustomCors()
                 .AddDefaultServiceImplementations(typeof(UserInfoService).Assembly)
@@ -51,6 +52,8 @@ namespace FinancialPortfolio.APIGateway.Web
             app.UseCustomSwagger();
 
             app.UseRouting();
+
+            app.UseLogging();
 
             app.UseAuthentication();
 

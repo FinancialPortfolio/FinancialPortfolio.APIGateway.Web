@@ -1,5 +1,5 @@
 using System.Threading.Tasks;
-using FinancialPortfolio.WebHosting;
+using FinancialPortfolio.Infrastructure.WebApi;
 
 namespace FinancialPortfolio.APIGateway.Web
 {
