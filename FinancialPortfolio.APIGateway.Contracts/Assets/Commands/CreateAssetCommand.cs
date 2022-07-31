@@ -1,6 +1,6 @@
 ﻿using FinancialPortfolio.APIGateway.Contracts.Assets.Enums;
 using FinancialPortfolio.CQRS.Commands;
-using FinancialPortfolio.Messaging;
+using FinancialPortfolio.Messaging.Attributes;
 
 namespace FinancialPortfolio.APIGateway.Contracts.Assets.Commands
 {

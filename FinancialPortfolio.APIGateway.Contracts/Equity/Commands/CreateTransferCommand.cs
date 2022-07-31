@@ -1,7 +1,7 @@
 using System;
 using FinancialPortfolio.APIGateway.Contracts.Equity.Enums;
 using FinancialPortfolio.CQRS.Commands;
-using FinancialPortfolio.Messaging;
+using FinancialPortfolio.Messaging.Attributes;
 
 namespace FinancialPortfolio.APIGateway.Contracts.Equity.Commands
 {
