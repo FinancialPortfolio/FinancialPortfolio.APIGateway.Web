@@ -7,7 +7,7 @@ namespace FinancialPortfolio.APIGateway.Web
     {
         public static async Task Main(string[] args)
         {
-            await Application.RunAsync(args, typeof(Startup));
+            await WebApplication.RunAsync(args, typeof(Startup));
         }
     }
 }
