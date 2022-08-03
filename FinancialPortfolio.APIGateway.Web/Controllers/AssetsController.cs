@@ -3,9 +3,7 @@ using System.Threading.Tasks;
 using AssetApi;
 using FinancialPortfolio.APIGateway.Contracts.Assets.Commands;
 using FinancialPortfolio.APIGateway.Contracts.Assets.Requests;
-using FinancialPortfolio.APIGateway.Web.Models.Settings;
 using FinancialPortfolio.CQRS.Commands;
-using Grpc.Net.Client;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -19,12 +17,12 @@ namespace FinancialPortfolio.APIGateway.Web.Controllers
     public class AssetsController : ControllerBase
     {
         private readonly ICommandPublisher _commandPublisher;
-        private readonly ServiceSettings _assetsService;
+        private readonly Asset.AssetClient _assetClient;
 
-        public AssetsController(ICommandPublisher commandPublisher, ServicesSettings servicesSettings)
+        public AssetsController(ICommandPublisher commandPublisher, Asset.AssetClient assetClient)
         {
             _commandPublisher = commandPublisher;
-            _assetsService = servicesSettings.AssetsService;
+            _assetClient = assetClient;
         }
         
         [HttpGet]
@@ -32,11 +30,8 @@ namespace FinancialPortfolio.APIGateway.Web.Controllers
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<ActionResult<IEnumerable<AssetResponse>>> GetAllAsync()
         {
-            var channel = GrpcChannel.ForAddress(_assetsService.GrpcUrl);
-            var client = new Asset.AssetClient(channel);
-
             var request = new GetAssetsRequest();
-            var assetsResponse = await client.GetAllAsync(request);
+            var assetsResponse = await _assetClient.GetAllAsync(request);
             return Ok(assetsResponse.Assets);
         }
         

@@ -1,13 +1,15 @@
+using FinancialPortfolio.APIGateway.Web.Extensions;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using FinancialPortfolio.APIGateway.Web.Extensions;
 using FinancialPortfolio.APIGateway.Web.Models.Settings;
 using FinancialPortfolio.APIGateway.Web.Services;
 using FinancialPortfolio.Infrastructure.Extensions;
 using FinancialPortfolio.Infrastructure.WebApi.Extensions;
+using FinancialPortfolio.Logging.Grpc.Extensions;
+using FinancialPortfolio.Logging.Messaging.Extensions;
 
 namespace FinancialPortfolio.APIGateway.Web
 {
@@ -26,16 +28,18 @@ namespace FinancialPortfolio.APIGateway.Web
         public void ConfigureServices(IServiceCollection services)
         {
             services
-                .AddLogging(Configuration)
                 .AddCustomControllers()
                 .AddCustomCors()
                 .AddDefaultServiceImplementations(typeof(UserInfoService).Assembly)
                 .AddCustomSwagger(Configuration)
                 .AddKafkaCQRSMessaging(Configuration, WebHostEnvironment.EnvironmentName)
+                .AddMessagingLogging(Configuration)
+                .AddGrpcLogging()
                 .AddDefaultSettings(Configuration, typeof(ServicesSettings).Assembly)
                 .AddCustomAuthentication(Configuration, WebHostEnvironment)
                 .AddCustomAuthorization()
-                .AddHttpContextAccessor();
+                .AddHttpContextAccessor()
+                .AddGrpcClients(Configuration);
         }
 
         public void Configure(IApplicationBuilder app)

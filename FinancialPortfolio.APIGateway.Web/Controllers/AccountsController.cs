@@ -1,17 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using AccountApi;
 using FinancialPortfolio.APIGateway.Contracts.Accounts.Commands;
 using FinancialPortfolio.APIGateway.Contracts.Accounts.Requests;
-using FinancialPortfolio.APIGateway.Web.Models.Settings;
 using FinancialPortfolio.APIGateway.Web.Services.Abstraction;
 using FinancialPortfolio.CQRS.Commands;
-using Grpc.Net.Client;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Options;
 
 namespace FinancialPortfolio.APIGateway.Web.Controllers
 {
@@ -22,14 +18,14 @@ namespace FinancialPortfolio.APIGateway.Web.Controllers
     public class AccountsController : ApiControllerBase
     {
         private readonly ICommandPublisher _commandPublisher;
-        private readonly ServiceSettings _accountsService;
+        private readonly Account.AccountClient _accountClient;
 
         public AccountsController(
-            ICommandPublisher commandPublisher, ServicesSettings servicesSettings, 
-            IUserInfoService userInfoService) : base(userInfoService)
+            ICommandPublisher commandPublisher, IUserInfoService userInfoService, 
+            Account.AccountClient accountClient) : base(userInfoService)
         {
             _commandPublisher = commandPublisher;
-            _accountsService = servicesSettings.AccountsService;
+            _accountClient = accountClient;
         }
         
         [HttpGet]
@@ -37,11 +33,8 @@ namespace FinancialPortfolio.APIGateway.Web.Controllers
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<ActionResult<IEnumerable<AccountResponse>>> GetAllAsync()
         {
-            var channel = GrpcChannel.ForAddress(_accountsService.GrpcUrl);
-            var client = new Account.AccountClient(channel);
-
             var request = new GetAccountsRequest();
-            var accountsResponse = await client.GetAllAsync(request);
+            var accountsResponse = await _accountClient.GetAllAsync(request);
             return Ok(accountsResponse.Accounts);
         }
         

@@ -2,9 +2,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using FinancialPortfolio.APIGateway.Contracts.Equity.Commands;
 using FinancialPortfolio.APIGateway.Contracts.Equity.Requests;
-using FinancialPortfolio.APIGateway.Web.Models.Settings;
 using FinancialPortfolio.CQRS.Commands;
-using Grpc.Net.Client;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -19,12 +17,12 @@ namespace FinancialPortfolio.APIGateway.Web.Controllers
     public class TransfersController : ControllerBase
     {
         private readonly ICommandPublisher _commandPublisher;
-        private readonly ServiceSettings _equityService;
+        private readonly Transfer.TransferClient _transferClient;
 
-        public TransfersController(ICommandPublisher commandPublisher, ServicesSettings servicesSettings)
+        public TransfersController(ICommandPublisher commandPublisher, Transfer.TransferClient transferClient)
         {
             _commandPublisher = commandPublisher;
-            _equityService = servicesSettings.EquityService;
+            _transferClient = transferClient;
         }
         
         [HttpGet]
@@ -32,11 +30,8 @@ namespace FinancialPortfolio.APIGateway.Web.Controllers
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<ActionResult<IEnumerable<TransferResponse>>> GetAllAsync()
         {
-            var channel = GrpcChannel.ForAddress(_equityService.GrpcUrl);
-            var client = new Transfer.TransferClient(channel);
-
             var request = new GetTransfersRequest();
-            var transfersResponse = await client.GetAllAsync(request);
+            var transfersResponse = await _transferClient.GetAllAsync(request);
             return Ok(transfersResponse.Transfers);
         }
         
