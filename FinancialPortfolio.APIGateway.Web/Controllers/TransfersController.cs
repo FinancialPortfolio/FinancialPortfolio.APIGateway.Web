@@ -14,6 +14,10 @@ namespace FinancialPortfolio.APIGateway.Web.Controllers
     [ApiController]
     [Route("api/transfers")]
     [Produces("application/json")]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+    [ProducesResponseType(StatusCodes.Status403Forbidden)]
+    [ProducesResponseType(StatusCodes.Status500InternalServerError)]
     public class TransfersController : ControllerBase
     {
         private readonly ICommandPublisher _commandPublisher;
@@ -27,7 +31,6 @@ namespace FinancialPortfolio.APIGateway.Web.Controllers
         
         [HttpGet]
         [ProducesResponseType(StatusCodes.Status200OK)]
-        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<ActionResult<IEnumerable<TransferResponse>>> GetAllAsync()
         {
             var request = new GetTransfersRequest();
@@ -36,9 +39,8 @@ namespace FinancialPortfolio.APIGateway.Web.Controllers
         }
         
         [HttpPost]
-        [ProducesResponseType(StatusCodes.Status201Created)]
-        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public async Task<ActionResult> Create([FromBody] CreateTransferRequest request)
+        [ProducesResponseType(StatusCodes.Status202Accepted)]
+        public async Task<ActionResult> CreateAsync([FromBody] CreateTransferRequest request)
         {
             var createTransferCommand = new CreateTransferCommand(request.Amount, request.Type, request.DateTime, request.AccountId);
             await _commandPublisher.SendAsync(createTransferCommand);

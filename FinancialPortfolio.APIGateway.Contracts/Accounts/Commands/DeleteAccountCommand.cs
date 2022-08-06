@@ -1,0 +1,20 @@
+using System;
+using FinancialPortfolio.CQRS.Commands;
+using FinancialPortfolio.Messaging.Attributes;
+
+namespace FinancialPortfolio.APIGateway.Contracts.Accounts.Commands
+{
+    [Message("Accounts", "Account")]
+    public record DeleteAccountCommand : ICommand
+    {
+        public Guid Id { get; }
+
+        public Guid UserId { get; }
+        
+        public DeleteAccountCommand(Guid id, Guid userId)
+        {
+            Id = id;
+            UserId = userId;
+        }
+    }
+}

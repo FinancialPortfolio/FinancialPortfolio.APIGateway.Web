@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using AccountApi;
 using FinancialPortfolio.APIGateway.Contracts.Accounts.Commands;
@@ -15,6 +16,10 @@ namespace FinancialPortfolio.APIGateway.Web.Controllers
     [ApiController]
     [Route("api/accounts")]
     [Produces("application/json")]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+    [ProducesResponseType(StatusCodes.Status403Forbidden)]
+    [ProducesResponseType(StatusCodes.Status500InternalServerError)]
     public class AccountsController : ApiControllerBase
     {
         private readonly ICommandPublisher _commandPublisher;
@@ -30,7 +35,6 @@ namespace FinancialPortfolio.APIGateway.Web.Controllers
         
         [HttpGet]
         [ProducesResponseType(StatusCodes.Status200OK)]
-        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<ActionResult<IEnumerable<AccountResponse>>> GetAllAsync()
         {
             var request = new GetAccountsRequest();
@@ -39,14 +43,37 @@ namespace FinancialPortfolio.APIGateway.Web.Controllers
         }
         
         [HttpPost]
-        [ProducesResponseType(StatusCodes.Status201Created)]
-        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public async Task<ActionResult> Create([FromBody] CreateAccountRequest request)
+        [ProducesResponseType(StatusCodes.Status202Accepted)]
+        public async Task<ActionResult> CreateAsync([FromBody] CreateAccountRequest request)
         {
             var userId = await GetUserIdAsync();
             
             var createAccountCommand = new CreateAccountCommand(request.Name, request.Description, userId);
             await _commandPublisher.SendAsync(createAccountCommand);
+            
+            return Accepted();
+        }
+        
+        [HttpPut("{id:guid}")]
+        [ProducesResponseType(StatusCodes.Status202Accepted)]
+        public async Task<ActionResult> UpdateAsync([FromRoute] Guid id, [FromBody] UpdateAccountRequest request)
+        {
+            var userId = await GetUserIdAsync();
+            
+            var updateAccountCommand = new UpdateAccountCommand(id, request.Name, request.Description, userId);
+            await _commandPublisher.SendAsync(updateAccountCommand);
+            
+            return Accepted();
+        }
+        
+        [HttpDelete("{id:guid}")]
+        [ProducesResponseType(StatusCodes.Status202Accepted)]
+        public async Task<ActionResult> DeleteAsync([FromRoute] Guid id)
+        {
+            var userId = await GetUserIdAsync();
+            
+            var deleteAccountCommand = new DeleteAccountCommand(id, userId);
+            await _commandPublisher.SendAsync(deleteAccountCommand);
             
             return Accepted();
         }
