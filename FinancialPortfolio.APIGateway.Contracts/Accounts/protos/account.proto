@@ -1,5 +1,7 @@
 syntax = "proto3";
 
+import "Shared/Protos/search.proto";
+
 package AccountApi;
 
 service Account {
@@ -7,6 +9,7 @@ service Account {
 }
 
 message GetAccountsRequest {
+	SearchLibrary.SearchOptions search = 1;
 }
 
 message AccountsResponse {

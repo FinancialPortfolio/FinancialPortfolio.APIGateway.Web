@@ -5,15 +5,11 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <PackageReference Include="FinancialPortfolio.CQRS.Commands" Version="1.5.14" />
-      <PackageReference Include="FinancialPortfolio.CQRS.Events" Version="1.5.14" />
-      <PackageReference Include="FinancialPortfolio.Messaging" Version="1.5.14" />
-      <PackageReference Include="Google.Protobuf" Version="3.16.0-rc1" />
-      <PackageReference Include="Grpc.Net.Client" Version="2.37.0" />
-      <PackageReference Include="Grpc.Tools" Version="2.37.1">
-        <PrivateAssets>all</PrivateAssets>
-        <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-      </PackageReference>
+      <PackageReference Include="FinancialPortfolio.CQRS.Commands" Version="1.6.0" />
+      <PackageReference Include="FinancialPortfolio.CQRS.Events" Version="1.6.0" />
+      <PackageReference Include="FinancialPortfolio.Messaging" Version="1.6.0" />
+      <PackageReference Include="FinancialPortfolio.Search.Grpc" Version="1.6.0" />
+      <PackageReference Include="Grpc.AspNetCore" Version="2.40.0-pre1" />
     </ItemGroup>
 
     <ItemGroup>
@@ -24,7 +20,7 @@
         <ProtoCompile>True</ProtoCompile>
         <ProtoRoot></ProtoRoot>
         <CompileOutputs>True</CompileOutputs>
-        <OutputDir>obj\Debug\netstandard2.1\</OutputDir>
+        <OutputDir>obj\Debug\net5.0\</OutputDir>
         <Generator>MSBuild:Compile</Generator>
       </Protobuf>
       <None Remove="Accounts\protos\accounts.proto" />
@@ -34,7 +30,7 @@
         <ProtoCompile>True</ProtoCompile>
         <ProtoRoot></ProtoRoot>
         <CompileOutputs>True</CompileOutputs>
-        <OutputDir>obj\Debug\netstandard2.1\</OutputDir>
+        <OutputDir>obj\Debug\net5.0\</OutputDir>
         <Generator>MSBuild:Compile</Generator>
       </Protobuf>
       <None Remove="Assets\Protos\asset.proto" />
@@ -47,6 +43,20 @@
         <OutputDir>obj\Debug\net5.0\</OutputDir>
         <Generator>MSBuild:Compile</Generator>
       </Protobuf>
+
+      <None Remove="Shared\Protos\search.proto" />
+      <Protobuf Include="Shared\Protos\search.proto" />
     </ItemGroup>
+
+    <ItemGroup>
+      <Folder Include="Shared\Protos" />
+    </ItemGroup>
+
+    <Target Name="CopyFiles" BeforeTargets="PrepareForBuild">
+      <ItemGroup>
+          <File Include="$(PkgFinancialPortfolio_Search_Grpc)\content\Protos\*.*"></File>
+      </ItemGroup>
+      <Copy SourceFiles="@(File)" DestinationFolder="$(ProjectDir)\Shared\Protos"></Copy>
+    </Target>
 
 </Project>

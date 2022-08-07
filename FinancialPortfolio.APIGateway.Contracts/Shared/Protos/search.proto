@@ -1,0 +1,43 @@
+syntax = "proto3";
+
+package SearchLibrary;
+
+message SearchOptions {
+  FilteringOptions FilteringOptions = 1;
+  SortingOptions SortingOptions = 2;
+  PaginationOptions PaginationOptions = 3;
+}
+
+message FilteringOptions {
+  repeated FilterCriteria Criteria = 1;
+}
+
+message FilterCriteria {
+  string field = 1;
+  string value = 2;
+  FilterOperator operator = 3;
+}
+
+enum FilterOperator {
+  Equals = 0;
+  LessThan = 1;
+  LessThanOrEqual = 2;
+  GreaterThan = 3;
+  GreaterThanOrEqual = 4;
+  NotEquals = 5;
+}
+
+message SortingOptions {
+  string field = 1;
+  SortOrder order = 2;
+}
+
+enum SortOrder {
+  Asc = 0;
+  Desc = 1;
+}
+
+message PaginationOptions {
+  int32 pageNumber = 1;
+  int32 pageSize = 2;
+}

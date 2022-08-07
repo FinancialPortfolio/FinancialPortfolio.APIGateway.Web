@@ -1,3 +1,4 @@
+using FinancialPortfolio.APIGateway.Web.AutoMapperProfiles;
 using FinancialPortfolio.APIGateway.Web.Extensions;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -29,6 +30,7 @@ namespace FinancialPortfolio.APIGateway.Web
         {
             services
                 .AddCustomControllers()
+                .AddCustomAutoMapper(typeof(SearchProfile).Assembly)
                 .AddCustomCors()
                 .AddDefaultServiceImplementations(typeof(UserInfoService).Assembly)
                 .AddCustomSwagger(Configuration)

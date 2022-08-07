@@ -2,11 +2,13 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using AccountApi;
+using AutoMapper;
 using FinancialPortfolio.APIGateway.Contracts.Accounts.Commands;
 using FinancialPortfolio.APIGateway.Contracts.Accounts.Requests;
 using FinancialPortfolio.APIGateway.Web.Services.Abstraction;
 using FinancialPortfolio.CQRS.Commands;
 using Microsoft.AspNetCore.Authorization;
+using FinancialPortfolio.Search;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -24,20 +26,23 @@ namespace FinancialPortfolio.APIGateway.Web.Controllers
     {
         private readonly ICommandPublisher _commandPublisher;
         private readonly Account.AccountClient _accountClient;
+        private readonly IMapper _mapper;
 
         public AccountsController(
             ICommandPublisher commandPublisher, IUserInfoService userInfoService, 
-            Account.AccountClient accountClient) : base(userInfoService)
+            Account.AccountClient accountClient, IMapper mapper) : base(userInfoService)
         {
             _commandPublisher = commandPublisher;
             _accountClient = accountClient;
+            _mapper = mapper;
         }
         
         [HttpGet]
         [ProducesResponseType(StatusCodes.Status200OK)]
-        public async Task<ActionResult<IEnumerable<AccountResponse>>> GetAllAsync()
+        public async Task<ActionResult<IEnumerable<AccountResponse>>> GetAllAsync([FromBody] SearchOptions search)
         {
-            var request = new GetAccountsRequest();
+            var grpcSearch = _mapper.Map<SearchLibrary.SearchOptions>(search);
+            var request = new GetAccountsRequest() { Search = grpcSearch };
             var accountsResponse = await _accountClient.GetAllAsync(request);
             return Ok(accountsResponse.Accounts);
         }
