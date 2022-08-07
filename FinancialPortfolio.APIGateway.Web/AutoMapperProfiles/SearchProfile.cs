@@ -16,6 +16,7 @@ namespace FinancialPortfolio.APIGateway.Web.AutoMapperProfiles
             CreateMap<FilterCriteria, SearchLibrary.FilterCriteria>();
             
             CreateMap<SortingOptions, SearchLibrary.SortingOptions>();
+            
             CreateMap<PaginationOptions, SearchLibrary.PaginationOptions>();
         }
     }
