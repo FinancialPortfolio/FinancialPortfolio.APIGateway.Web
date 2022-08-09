@@ -10,7 +10,6 @@ using FinancialPortfolio.APIGateway.Web.Services;
 using FinancialPortfolio.Infrastructure.Extensions;
 using FinancialPortfolio.Infrastructure.WebApi.Extensions;
 using FinancialPortfolio.Logging.Grpc.Extensions;
-using FinancialPortfolio.Logging.Messaging.Extensions;
 
 namespace FinancialPortfolio.APIGateway.Web
 {
@@ -33,9 +32,9 @@ namespace FinancialPortfolio.APIGateway.Web
                 .AddCustomAutoMapper(typeof(SearchProfile).Assembly)
                 .AddCustomCors()
                 .AddDefaultServiceImplementations(typeof(UserInfoService).Assembly)
+                .AddMongo(Configuration)
                 .AddCustomSwagger(Configuration)
                 .AddKafkaCQRSMessaging(Configuration, WebHostEnvironment.EnvironmentName)
-                .AddMessagingLogging(Configuration)
                 .AddGrpcLogging()
                 .AddDefaultSettings(Configuration, typeof(ServicesSettings).Assembly)
                 .AddCustomAuthentication(Configuration, WebHostEnvironment)
