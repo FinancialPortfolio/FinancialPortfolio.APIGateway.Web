@@ -42,7 +42,7 @@ namespace FinancialPortfolio.APIGateway.Web.Controllers
         public async Task<ActionResult<IEnumerable<AccountResponse>>> GetAllAsync([FromBody] SearchOptions search)
         {
             var grpcSearch = _mapper.Map<SearchLibrary.SearchOptions>(search);
-            var request = new GetAccountsRequest() { Search = grpcSearch };
+            var request = new GetAccountsRequest { Search = grpcSearch };
             var accountsResponse = await _accountClient.GetAllAsync(request);
             return Ok(accountsResponse.Accounts);
         }

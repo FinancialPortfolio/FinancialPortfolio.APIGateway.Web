@@ -10,6 +10,7 @@ using FinancialPortfolio.APIGateway.Web.Services;
 using FinancialPortfolio.Infrastructure.Extensions;
 using FinancialPortfolio.Infrastructure.WebApi.Extensions;
 using FinancialPortfolio.Logging.Grpc.Extensions;
+using FinancialPortfolio.ProblemDetails.WebApi.Extensions;
 
 namespace FinancialPortfolio.APIGateway.Web
 {
@@ -23,12 +24,14 @@ namespace FinancialPortfolio.APIGateway.Web
 
         private IConfiguration Configuration { get; }
         
-        private IWebHostEnvironment WebHostEnvironment { get; } 
+        private IWebHostEnvironment WebHostEnvironment { get; }
         
         public void ConfigureServices(IServiceCollection services)
         {
             services
+                .AddProblemDetails(WebHostEnvironment)
                 .AddCustomControllers()
+                .AddCustomApiBehavior()
                 .AddCustomAutoMapper(typeof(SearchProfile).Assembly)
                 .AddCustomCors()
                 .AddDefaultServiceImplementations(typeof(UserInfoService).Assembly)
@@ -49,6 +52,8 @@ namespace FinancialPortfolio.APIGateway.Web
             {
                 app.UseDeveloperExceptionPage();
             }
+
+            app.UseProblemDetails();
 
             app.UseHttpsRedirection();
 
