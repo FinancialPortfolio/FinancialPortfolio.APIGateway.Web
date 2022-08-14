@@ -47,6 +47,16 @@ namespace FinancialPortfolio.APIGateway.Web.Controllers
             return Ok(accountsResponse.Accounts);
         }
         
+        [HttpGet("{id:guid}")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public async Task<ActionResult<AccountResponse>> GetAsync([FromRoute] Guid id)
+        {
+            var request = new GetAccountRequest { Id = id.ToString() };
+            var accountResponse = await _accountClient.GetAsync(request);
+            return Ok(accountResponse);
+        }
+        
         [HttpPost]
         [ProducesResponseType(StatusCodes.Status202Accepted)]
         public async Task<ActionResult> CreateAsync([FromBody] CreateAccountRequest request)

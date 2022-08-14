@@ -29,7 +29,7 @@ namespace FinancialPortfolio.APIGateway.Web
         public void ConfigureServices(IServiceCollection services)
         {
             services
-                .AddProblemDetails(WebHostEnvironment)
+                .AddCustomProblemDetails(WebHostEnvironment)
                 .AddCustomControllers()
                 .AddCustomApiBehavior()
                 .AddCustomAutoMapper(typeof(SearchProfile).Assembly)

@@ -3,7 +3,6 @@ using FinancialPortfolio.APIGateway.Web.Models.Exceptions;
 using FinancialPortfolio.APIGateway.Web.ProblemDetails;
 using FinancialPortfolio.Infrastructure.WebApi.Exceptions;
 using FinancialPortfolio.Infrastructure.WebApi.Extensions;
-using FinancialPortfolio.ProblemDetails.WebApi.Extensions;
 using FinancialPortfolio.ProblemDetails.WebApi.ProblemDetails;
 using Grpc.Core;
 using Microsoft.AspNetCore.Hosting;
@@ -13,7 +12,7 @@ namespace FinancialPortfolio.APIGateway.Web.Extensions
 {
     public static class ProblemDetailsServiceCollectionExtensions
     {
-        public static IServiceCollection AddProblemDetails(this IServiceCollection services, IWebHostEnvironment env)
+        public static IServiceCollection AddCustomProblemDetails(this IServiceCollection services, IWebHostEnvironment env)
         {
             services.AddWebApiProblemDetails(env, settings =>
             {

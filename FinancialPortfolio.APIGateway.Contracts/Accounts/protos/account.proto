@@ -5,7 +5,12 @@ import "Shared/Protos/search.proto";
 package AccountApi;
 
 service Account {
+	rpc Get (GetAccountRequest) returns (AccountResponse) {}
 	rpc GetAll (GetAccountsRequest) returns (AccountsResponse) {}
+}
+
+message GetAccountRequest {
+	string id = 1;
 }
 
 message GetAccountsRequest {
