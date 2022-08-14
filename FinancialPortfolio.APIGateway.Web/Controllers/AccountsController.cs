@@ -7,6 +7,8 @@ using FinancialPortfolio.APIGateway.Contracts.Accounts.Commands;
 using FinancialPortfolio.APIGateway.Contracts.Accounts.Requests;
 using FinancialPortfolio.APIGateway.Web.Services.Abstraction;
 using FinancialPortfolio.CQRS.Commands;
+using FinancialPortfolio.Infrastructure.WebApi.Models.Response;
+using FinancialPortfolio.ProblemDetails.WebApi.Models;
 using Microsoft.AspNetCore.Authorization;
 using FinancialPortfolio.Search;
 using Microsoft.AspNetCore.Http;
@@ -18,10 +20,10 @@ namespace FinancialPortfolio.APIGateway.Web.Controllers
     [ApiController]
     [Route("api/accounts")]
     [Produces("application/json")]
-    [ProducesResponseType(StatusCodes.Status400BadRequest)]
-    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
-    [ProducesResponseType(StatusCodes.Status403Forbidden)]
-    [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+    [ProducesResponseType(typeof(WebApiProblemDetails), StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(typeof(WebApiProblemDetails), StatusCodes.Status401Unauthorized)]
+    [ProducesResponseType(typeof(WebApiProblemDetails), StatusCodes.Status403Forbidden)]
+    [ProducesResponseType(typeof(WebApiProblemDetails), StatusCodes.Status500InternalServerError)]
     public class AccountsController : ApiControllerBase
     {
         private readonly ICommandPublisher _commandPublisher;
@@ -38,39 +40,41 @@ namespace FinancialPortfolio.APIGateway.Web.Controllers
         }
         
         [HttpGet]
-        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(WebApiResponse), StatusCodes.Status200OK)]
         public async Task<ActionResult<IEnumerable<AccountResponse>>> GetAllAsync([FromBody] SearchOptions search)
         {
             var grpcSearch = _mapper.Map<SearchLibrary.SearchOptions>(search);
             var request = new GetAccountsRequest { Search = grpcSearch };
-            var accountsResponse = await _accountClient.GetAllAsync(request);
-            return Ok(accountsResponse.Accounts);
+            var response = await _accountClient.GetAllAsync(request);
+
+            return WebApiResponse.Success(response.Accounts);
         }
         
         [HttpGet("{id:guid}")]
-        [ProducesResponseType(StatusCodes.Status200OK)]
-        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(typeof(WebApiResponse<AccountResponse>), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(WebApiProblemDetails), StatusCodes.Status404NotFound)]
         public async Task<ActionResult<AccountResponse>> GetAsync([FromRoute] Guid id)
         {
             var request = new GetAccountRequest { Id = id.ToString() };
-            var accountResponse = await _accountClient.GetAsync(request);
-            return Ok(accountResponse);
+            var response = await _accountClient.GetAsync(request);
+            
+            return WebApiResponse.Success(response);
         }
         
         [HttpPost]
-        [ProducesResponseType(StatusCodes.Status202Accepted)]
+        [ProducesResponseType(typeof(WebApiResponse), StatusCodes.Status202Accepted)]
         public async Task<ActionResult> CreateAsync([FromBody] CreateAccountRequest request)
         {
             var userId = await GetUserIdAsync();
             
             var createAccountCommand = new CreateAccountCommand(request.Name, request.Description, userId);
             await _commandPublisher.SendAsync(createAccountCommand);
-            
-            return Accepted();
+
+            return WebApiResponse.Accepted();
         }
         
         [HttpPut("{id:guid}")]
-        [ProducesResponseType(StatusCodes.Status202Accepted)]
+        [ProducesResponseType(typeof(WebApiResponse), StatusCodes.Status202Accepted)]
         public async Task<ActionResult> UpdateAsync([FromRoute] Guid id, [FromBody] UpdateAccountRequest request)
         {
             var userId = await GetUserIdAsync();
@@ -78,11 +82,11 @@ namespace FinancialPortfolio.APIGateway.Web.Controllers
             var updateAccountCommand = new UpdateAccountCommand(id, request.Name, request.Description, userId);
             await _commandPublisher.SendAsync(updateAccountCommand);
             
-            return Accepted();
+            return WebApiResponse.Accepted();
         }
         
         [HttpDelete("{id:guid}")]
-        [ProducesResponseType(StatusCodes.Status202Accepted)]
+        [ProducesResponseType(typeof(WebApiResponse), StatusCodes.Status202Accepted)]
         public async Task<ActionResult> DeleteAsync([FromRoute] Guid id)
         {
             var userId = await GetUserIdAsync();
@@ -90,7 +94,7 @@ namespace FinancialPortfolio.APIGateway.Web.Controllers
             var deleteAccountCommand = new DeleteAccountCommand(id, userId);
             await _commandPublisher.SendAsync(deleteAccountCommand);
             
-            return Accepted();
+            return WebApiResponse.Accepted();
         }
     }
 }
