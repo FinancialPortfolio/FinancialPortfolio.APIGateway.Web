@@ -5,10 +5,10 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <PackageReference Include="FinancialPortfolio.CQRS.Commands" Version="1.6.31" />
-      <PackageReference Include="FinancialPortfolio.CQRS.Events" Version="1.6.31" />
-      <PackageReference Include="FinancialPortfolio.Messaging" Version="1.6.31" />
-      <PackageReference Include="FinancialPortfolio.Search.Grpc" Version="1.6.31" GeneratePathProperty="true" />
+      <PackageReference Include="FinancialPortfolio.CQRS.Commands" Version="1.6.32" />
+      <PackageReference Include="FinancialPortfolio.CQRS.Events" Version="1.6.32" />
+      <PackageReference Include="FinancialPortfolio.Messaging" Version="1.6.32" />
+      <PackageReference Include="FinancialPortfolio.Search.Grpc" Version="1.6.32" GeneratePathProperty="true" />
       <PackageReference Include="Grpc.AspNetCore" Version="2.40.0-pre1" />
     </ItemGroup>
 

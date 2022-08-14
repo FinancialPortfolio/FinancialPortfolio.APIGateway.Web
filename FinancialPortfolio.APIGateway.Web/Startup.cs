@@ -33,7 +33,7 @@ namespace FinancialPortfolio.APIGateway.Web
                 .AddCustomControllers()
                 .AddCustomApiBehavior()
                 .AddCustomAutoMapper(typeof(SearchProfile).Assembly)
-                .AddCustomCors()
+                .AddCustomCors(Configuration)
                 .AddDefaultServiceImplementations(typeof(UserInfoService).Assembly)
                 .AddMongo(Configuration)
                 .AddCustomSwagger(Configuration)
