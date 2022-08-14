@@ -1,3 +1,4 @@
+using FinancialPortfolio.APIGateway.Contracts.Accounts.Validation;
 using FinancialPortfolio.APIGateway.Web.AutoMapperProfiles;
 using FinancialPortfolio.APIGateway.Web.Extensions;
 using Microsoft.AspNetCore.Builder;
@@ -30,6 +31,7 @@ namespace FinancialPortfolio.APIGateway.Web
         {
             services
                 .AddCustomProblemDetails(WebHostEnvironment)
+                .AddFluentValidation(typeof(CreateAccountRequestValidator).Assembly)
                 .AddCustomControllers()
                 .AddCustomApiBehavior()
                 .AddCustomAutoMapper(typeof(SearchProfile).Assembly)
