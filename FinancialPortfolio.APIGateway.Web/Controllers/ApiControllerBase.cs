@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Threading.Tasks;
-using FinancialPortfolio.APIGateway.Web.Constants;
+using FinancialPortfolio.APIGateway.Web.Models.Constants;
 using FinancialPortfolio.APIGateway.Web.Models.Exceptions;
 using FinancialPortfolio.APIGateway.Web.Services.Abstraction;
 using Microsoft.AspNetCore.Mvc;

@@ -1,4 +1,4 @@
-﻿namespace FinancialPortfolio.APIGateway.Web.Constants
+﻿namespace FinancialPortfolio.APIGateway.Web.Models.Constants
 {
     public static class ClaimConstants
     {
