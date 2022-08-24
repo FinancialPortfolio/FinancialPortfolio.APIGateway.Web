@@ -5,7 +5,7 @@ using AccountApi;
 using AutoMapper;
 using FinancialPortfolio.APIGateway.Contracts.Accounts.Commands;
 using FinancialPortfolio.APIGateway.Contracts.Accounts.Requests;
-using FinancialPortfolio.APIGateway.Web.Services.Abstraction;
+using FinancialPortfolio.APIGateway.Web.Interfaces;
 using FinancialPortfolio.CQRS.Commands;
 using FinancialPortfolio.Infrastructure.WebApi.Models.Response;
 using FinancialPortfolio.ProblemDetails.WebApi.Models;

@@ -9,6 +9,7 @@ using Microsoft.Extensions.Hosting;
 using FinancialPortfolio.APIGateway.Web.Models.Settings;
 using FinancialPortfolio.APIGateway.Web.Services;
 using FinancialPortfolio.Infrastructure.Extensions;
+using FinancialPortfolio.Infrastructure.Shared.Extensions;
 using FinancialPortfolio.Infrastructure.WebApi.Extensions;
 using FinancialPortfolio.Logging.Grpc.Extensions;
 using FinancialPortfolio.ProblemDetails.WebApi.Extensions;

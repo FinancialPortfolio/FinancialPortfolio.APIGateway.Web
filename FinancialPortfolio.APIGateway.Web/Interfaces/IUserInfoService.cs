@@ -1,6 +1,6 @@
 ﻿using System.Threading.Tasks;
 
-namespace FinancialPortfolio.APIGateway.Web.Services.Abstraction
+namespace FinancialPortfolio.APIGateway.Web.Interfaces
 {
     public interface IUserInfoService
     {

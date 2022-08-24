@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Threading.Tasks;
+using FinancialPortfolio.APIGateway.Web.Interfaces;
 using FinancialPortfolio.APIGateway.Web.Models.Constants;
 using FinancialPortfolio.APIGateway.Web.Models.Exceptions;
-using FinancialPortfolio.APIGateway.Web.Services.Abstraction;
 using Microsoft.AspNetCore.Mvc;
 
 namespace FinancialPortfolio.APIGateway.Web.Controllers

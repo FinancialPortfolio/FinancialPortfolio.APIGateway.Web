@@ -1,6 +1,6 @@
 ﻿using System.Threading.Tasks;
 using FinancialPortfolio.APIGateway.Web.Extensions;
-using FinancialPortfolio.APIGateway.Web.Services.Abstraction;
+using FinancialPortfolio.APIGateway.Web.Interfaces;
 using Microsoft.AspNetCore.Http;
 
 namespace FinancialPortfolio.APIGateway.Web.Services
