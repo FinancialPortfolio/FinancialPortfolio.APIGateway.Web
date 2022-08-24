@@ -5,15 +5,15 @@ import "Shared/Protos/search.proto";
 package AccountApi;
 
 service Account {
-	rpc Get (GetAccountRequest) returns (AccountResponse) {}
-	rpc GetAll (GetAccountsRequest) returns (AccountsResponse) {}
+	rpc Get (GetAccountQuery) returns (AccountResponse) {}
+	rpc GetAll (GetAccountsQuery) returns (AccountsResponse) {}
 }
 
-message GetAccountRequest {
+message GetAccountQuery {
 	string id = 1;
 }
 
-message GetAccountsRequest {
+message GetAccountsQuery {
 	SearchLibrary.SearchOptions search = 1;
 }
 

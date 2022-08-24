@@ -44,7 +44,7 @@ namespace FinancialPortfolio.APIGateway.Web.Controllers
         public async Task<ActionResult<WebApiResponse<IEnumerable<AccountResponse>>>> GetAllAsync([FromBody] SearchOptions search)
         {
             var grpcSearch = _mapper.Map<SearchLibrary.SearchOptions>(search);
-            var request = new GetAccountsRequest { Search = grpcSearch };
+            var request = new GetAccountsQuery { Search = grpcSearch };
             var response = await _accountClient.GetAllAsync(request);
 
             return WebApiResponse.Success(response.Accounts);
@@ -55,7 +55,7 @@ namespace FinancialPortfolio.APIGateway.Web.Controllers
         [ProducesResponseType(typeof(WebApiProblemDetails), StatusCodes.Status404NotFound)]
         public async Task<ActionResult<WebApiResponse<AccountResponse>>> GetAsync([FromRoute] Guid id)
         {
-            var request = new GetAccountRequest { Id = id.ToString() };
+            var request = new GetAccountQuery { Id = id.ToString() };
             var response = await _accountClient.GetAsync(request);
             
             return WebApiResponse.Success(response);
