@@ -33,7 +33,7 @@ namespace FinancialPortfolio.APIGateway.Web.Controllers
         
         [HttpGet]
         [ProducesResponseType(typeof(WebApiResponse), StatusCodes.Status200OK)]
-        public async Task<ActionResult<IEnumerable<AssetResponse>>> GetAllAsync()
+        public async Task<ActionResult<WebApiResponse<IEnumerable<AssetResponse>>>> GetAllAsync()
         {
             var request = new GetAssetsRequest();
             var assetsResponse = await _assetClient.GetAllAsync(request);
@@ -42,7 +42,7 @@ namespace FinancialPortfolio.APIGateway.Web.Controllers
         
         [HttpPost]
         [ProducesResponseType(typeof(WebApiResponse), StatusCodes.Status202Accepted)]
-        public async Task<ActionResult> CreateAsync([FromBody] CreateAssetRequest request)
+        public async Task<ActionResult<WebApiResponse>> CreateAsync([FromBody] CreateAssetRequest request)
         {
             var createAssetCommand = new CreateAssetCommand(request.Symbol, request.Name, request.Type);
             await _commandPublisher.SendAsync(createAssetCommand);

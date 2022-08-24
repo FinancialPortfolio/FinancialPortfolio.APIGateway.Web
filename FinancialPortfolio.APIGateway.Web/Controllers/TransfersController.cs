@@ -33,7 +33,7 @@ namespace FinancialPortfolio.APIGateway.Web.Controllers
         
         [HttpGet]
         [ProducesResponseType(typeof(WebApiResponse), StatusCodes.Status200OK)]
-        public async Task<ActionResult<IEnumerable<TransferResponse>>> GetAllAsync()
+        public async Task<ActionResult<WebApiResponse<IEnumerable<TransferResponse>>>> GetAllAsync()
         {
             var request = new GetTransfersRequest();
             var transfersResponse = await _transferClient.GetAllAsync(request);
@@ -42,7 +42,7 @@ namespace FinancialPortfolio.APIGateway.Web.Controllers
         
         [HttpPost]
         [ProducesResponseType(typeof(WebApiResponse), StatusCodes.Status202Accepted)]
-        public async Task<ActionResult> CreateAsync([FromBody] CreateTransferRequest request)
+        public async Task<ActionResult<WebApiResponse>> CreateAsync([FromBody] CreateTransferRequest request)
         {
             var createTransferCommand = new CreateTransferCommand(request.Amount, request.Type, request.DateTime, request.AccountId);
             await _commandPublisher.SendAsync(createTransferCommand);
