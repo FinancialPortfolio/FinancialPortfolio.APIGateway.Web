@@ -1,12 +1,20 @@
 syntax = "proto3";
 
+import "Shared/Protos/search.proto";
+
 package TransferApi;
 
 service Transfer {
-  rpc GetAll (GetTransfersRequest) returns (TransfersResponse) {}
+  rpc Get (GetTransferQuery) returns (TransferResponse) {}
+  rpc GetAll (GetTransfersQuery) returns (TransfersResponse) {}
 }
 
-message GetTransfersRequest {
+message GetTransferQuery {
+  string id = 1;
+}
+
+message GetTransfersQuery {
+  SearchLibrary.SearchOptions search = 1;
 }
 
 message TransfersResponse {

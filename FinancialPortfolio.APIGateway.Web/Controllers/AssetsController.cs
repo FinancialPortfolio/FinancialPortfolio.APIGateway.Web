@@ -1,11 +1,14 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using AssetApi;
+using AutoMapper;
 using FinancialPortfolio.APIGateway.Contracts.Assets.Commands;
 using FinancialPortfolio.APIGateway.Contracts.Assets.Requests;
 using FinancialPortfolio.CQRS.Commands;
 using FinancialPortfolio.Infrastructure.WebApi.Models.Response;
 using FinancialPortfolio.ProblemDetails.WebApi.Models;
+using FinancialPortfolio.Search;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -24,20 +27,36 @@ namespace FinancialPortfolio.APIGateway.Web.Controllers
     {
         private readonly ICommandPublisher _commandPublisher;
         private readonly Asset.AssetClient _assetClient;
+        private readonly IMapper _mapper;
 
-        public AssetsController(ICommandPublisher commandPublisher, Asset.AssetClient assetClient)
+        public AssetsController(ICommandPublisher commandPublisher, 
+            Asset.AssetClient assetClient, IMapper mapper)
         {
             _commandPublisher = commandPublisher;
             _assetClient = assetClient;
+            _mapper = mapper;
         }
         
         [HttpGet]
         [ProducesResponseType(typeof(WebApiResponse), StatusCodes.Status200OK)]
-        public async Task<ActionResult<WebApiResponse<IEnumerable<AssetResponse>>>> GetAllAsync()
+        public async Task<ActionResult<WebApiResponse<IEnumerable<AssetResponse>>>> GetAllAsync([FromBody] SearchOptions search)
         {
-            var request = new GetAssetsRequest();
-            var assetsResponse = await _assetClient.GetAllAsync(request);
-            return WebApiResponse.Success(assetsResponse.Assets);
+            var grpcSearch = _mapper.Map<SearchLibrary.SearchOptions>(search);
+            var request = new GetAssetsQuery { Search = grpcSearch };
+            var response = await _assetClient.GetAllAsync(request);
+            
+            return WebApiResponse.Success(response.Assets);
+        }
+        
+        [HttpGet("{id:guid}")]
+        [ProducesResponseType(typeof(WebApiResponse<AssetResponse>), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(WebApiProblemDetails), StatusCodes.Status404NotFound)]
+        public async Task<ActionResult<WebApiResponse<AssetResponse>>> GetAsync([FromRoute] Guid id)
+        {
+            var request = new GetAssetQuery { Id = id.ToString() };
+            var response = await _assetClient.GetAsync(request);
+            
+            return WebApiResponse.Success(response);
         }
         
         [HttpPost]

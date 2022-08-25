@@ -1,12 +1,20 @@
 ﻿syntax = "proto3";
 
+import "Shared/Protos/search.proto";
+
 package AssetApi;
 
 service Asset {
-    rpc GetAll (GetAssetsRequest) returns (AssetsResponse) {}
+    rpc Get (GetAssetQuery) returns (AssetResponse) {}
+    rpc GetAll (GetAssetsQuery) returns (AssetsResponse) {}
 }
 
-message GetAssetsRequest {
+message GetAssetQuery {
+    string id = 1;
+}
+
+message GetAssetsQuery {
+    SearchLibrary.SearchOptions search = 1;
 }
 
 message AssetsResponse {

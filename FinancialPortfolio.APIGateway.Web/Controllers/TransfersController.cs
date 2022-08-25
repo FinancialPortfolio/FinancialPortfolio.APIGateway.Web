@@ -1,10 +1,13 @@
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using AutoMapper;
 using FinancialPortfolio.APIGateway.Contracts.Equity.Commands;
 using FinancialPortfolio.APIGateway.Contracts.Equity.Requests;
 using FinancialPortfolio.CQRS.Commands;
 using FinancialPortfolio.Infrastructure.WebApi.Models.Response;
 using FinancialPortfolio.ProblemDetails.WebApi.Models;
+using FinancialPortfolio.Search;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -24,20 +27,36 @@ namespace FinancialPortfolio.APIGateway.Web.Controllers
     {
         private readonly ICommandPublisher _commandPublisher;
         private readonly Transfer.TransferClient _transferClient;
-
-        public TransfersController(ICommandPublisher commandPublisher, Transfer.TransferClient transferClient)
+        private readonly IMapper _mapper;
+        
+        public TransfersController(ICommandPublisher commandPublisher, 
+            Transfer.TransferClient transferClient, IMapper mapper)
         {
             _commandPublisher = commandPublisher;
             _transferClient = transferClient;
+            _mapper = mapper;
         }
         
         [HttpGet]
         [ProducesResponseType(typeof(WebApiResponse), StatusCodes.Status200OK)]
-        public async Task<ActionResult<WebApiResponse<IEnumerable<TransferResponse>>>> GetAllAsync()
+        public async Task<ActionResult<WebApiResponse<IEnumerable<TransferResponse>>>> GetAllAsync([FromBody] SearchOptions search)
         {
-            var request = new GetTransfersRequest();
-            var transfersResponse = await _transferClient.GetAllAsync(request);
-            return WebApiResponse.Success(transfersResponse.Transfers);
+            var grpcSearch = _mapper.Map<SearchLibrary.SearchOptions>(search);
+            var request = new GetTransfersQuery { Search = grpcSearch };
+            var response = await _transferClient.GetAllAsync(request);
+            
+            return WebApiResponse.Success(response.Transfers);
+        }
+        
+        [HttpGet("{id:guid}")]
+        [ProducesResponseType(typeof(WebApiResponse<TransferResponse>), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(WebApiProblemDetails), StatusCodes.Status404NotFound)]
+        public async Task<ActionResult<WebApiResponse<TransferResponse>>> GetAsync([FromRoute] Guid id)
+        {
+            var request = new GetTransferQuery { Id = id.ToString() };
+            var response = await _transferClient.GetAsync(request);
+            
+            return WebApiResponse.Success(response);
         }
         
         [HttpPost]
