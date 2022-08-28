@@ -39,10 +39,9 @@ namespace FinancialPortfolio.APIGateway.Web.Controllers
         
         [HttpGet]
         [ProducesResponseType(typeof(WebApiResponse), StatusCodes.Status200OK)]
-        public async Task<ActionResult<WebApiResponse<IEnumerable<TransferResponse>>>> GetAllAsync([FromBody] SearchOptions search)
+        public async Task<ActionResult<WebApiResponse<IEnumerable<TransferResponse>>>> GetAllAsync()
         {
-            var grpcSearch = _mapper.Map<SearchLibrary.SearchOptions>(search);
-            var request = new GetTransfersQuery { Search = grpcSearch };
+            var request = new GetTransfersQuery();
             var response = await _transferClient.GetAllAsync(request);
             
             return WebApiResponse.Success(response.Transfers);
