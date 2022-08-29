@@ -38,14 +38,14 @@ namespace FinancialPortfolio.APIGateway.Web.Controllers
         }
         
         [HttpGet]
-        [ProducesResponseType(typeof(WebApiResponse), StatusCodes.Status200OK)]
-        public async Task<ActionResult<WebApiResponse<IEnumerable<AssetResponse>>>> GetAllAsync([FromBody] SearchOptions search)
+        [ProducesResponseType(typeof(PaginationWebApiResponse<IEnumerable<AssetResponse>>), StatusCodes.Status200OK)]
+        public async Task<ActionResult<PaginationWebApiResponse<IEnumerable<AssetResponse>>>> GetAllAsync([FromBody] SearchOptions search)
         {
             var grpcSearch = _mapper.Map<SearchLibrary.SearchOptions>(search);
             var request = new GetAssetsQuery { Search = grpcSearch };
             var response = await _assetClient.GetAllAsync(request);
             
-            return WebApiResponse.Success(response.Assets);
+            return WebApiResponse.Success(response.Assets, response.TotalCount);
         }
         
         [HttpGet("{id:guid}")]

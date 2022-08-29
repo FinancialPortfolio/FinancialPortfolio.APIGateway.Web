@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using AccountApi;
-using AutoMapper;
 using FinancialPortfolio.APIGateway.Contracts.Accounts.Commands;
 using FinancialPortfolio.APIGateway.Contracts.Accounts.Requests;
 using FinancialPortfolio.APIGateway.Web.Interfaces;
@@ -10,7 +9,6 @@ using FinancialPortfolio.CQRS.Commands;
 using FinancialPortfolio.Infrastructure.WebApi.Models.Response;
 using FinancialPortfolio.ProblemDetails.WebApi.Models;
 using Microsoft.AspNetCore.Authorization;
-using FinancialPortfolio.Search;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -28,25 +26,23 @@ namespace FinancialPortfolio.APIGateway.Web.Controllers
     {
         private readonly ICommandPublisher _commandPublisher;
         private readonly Account.AccountClient _accountClient;
-        private readonly IMapper _mapper;
 
         public AccountsController(
             ICommandPublisher commandPublisher, IUserInfoService userInfoService, 
-            Account.AccountClient accountClient, IMapper mapper) : base(userInfoService)
+            Account.AccountClient accountClient) : base(userInfoService)
         {
             _commandPublisher = commandPublisher;
             _accountClient = accountClient;
-            _mapper = mapper;
         }
         
         [HttpGet]
-        [ProducesResponseType(typeof(WebApiResponse), StatusCodes.Status200OK)]
-        public async Task<ActionResult<WebApiResponse<IEnumerable<AccountResponse>>>> GetAllAsync()
+        [ProducesResponseType(typeof(PaginationWebApiResponse<IEnumerable<AccountResponse>>), StatusCodes.Status200OK)]
+        public async Task<ActionResult<PaginationWebApiResponse<IEnumerable<AccountResponse>>>> GetAllAsync()
         {
             var request = new GetAccountsQuery();
             var response = await _accountClient.GetAllAsync(request);
 
-            return WebApiResponse.Success(response.Accounts);
+            return WebApiResponse.Success(response.Accounts, response.TotalCount);
         }
         
         [HttpGet("{id:guid}")]

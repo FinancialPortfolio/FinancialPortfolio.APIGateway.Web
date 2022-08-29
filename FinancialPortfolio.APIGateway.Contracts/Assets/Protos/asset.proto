@@ -19,6 +19,7 @@ message GetAssetsQuery {
 
 message AssetsResponse {
     repeated AssetResponse assets = 1;
+    int64 TotalCount = 2;
 }
 
 message AssetResponse {
