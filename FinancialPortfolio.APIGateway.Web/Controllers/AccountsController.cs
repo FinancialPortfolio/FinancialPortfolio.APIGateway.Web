@@ -39,8 +39,8 @@ namespace FinancialPortfolio.APIGateway.Web.Controllers
         [ProducesResponseType(typeof(PaginationWebApiResponse<IEnumerable<AccountResponse>>), StatusCodes.Status200OK)]
         public async Task<ActionResult<PaginationWebApiResponse<IEnumerable<AccountResponse>>>> GetAllAsync()
         {
-            var request = new GetAccountsQuery();
-            var response = await _accountClient.GetAllAsync(request);
+            var query = new GetAccountsQuery();
+            var response = await _accountClient.GetAllAsync(query);
 
             return WebApiResponse.Success(response.Accounts, response.TotalCount);
         }
@@ -50,8 +50,8 @@ namespace FinancialPortfolio.APIGateway.Web.Controllers
         [ProducesResponseType(typeof(WebApiProblemDetails), StatusCodes.Status404NotFound)]
         public async Task<ActionResult<WebApiResponse<AccountResponse>>> GetAsync([FromRoute] Guid id)
         {
-            var request = new GetAccountQuery { Id = id.ToString() };
-            var response = await _accountClient.GetAsync(request);
+            var query = new GetAccountQuery { Id = id.ToString() };
+            var response = await _accountClient.GetAsync(query);
             
             return WebApiResponse.Success(response);
         }

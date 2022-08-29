@@ -42,8 +42,8 @@ namespace FinancialPortfolio.APIGateway.Web.Controllers
         public async Task<ActionResult<PaginationWebApiResponse<IEnumerable<AssetResponse>>>> GetAllAsync([FromBody] SearchOptions search)
         {
             var grpcSearch = _mapper.Map<SearchLibrary.SearchOptions>(search);
-            var request = new GetAssetsQuery { Search = grpcSearch };
-            var response = await _assetClient.GetAllAsync(request);
+            var query = new GetAssetsQuery { Search = grpcSearch };
+            var response = await _assetClient.GetAllAsync(query);
             
             return WebApiResponse.Success(response.Assets, response.TotalCount);
         }
@@ -53,8 +53,8 @@ namespace FinancialPortfolio.APIGateway.Web.Controllers
         [ProducesResponseType(typeof(WebApiProblemDetails), StatusCodes.Status404NotFound)]
         public async Task<ActionResult<WebApiResponse<AssetResponse>>> GetAsync([FromRoute] Guid id)
         {
-            var request = new GetAssetQuery { Id = id.ToString() };
-            var response = await _assetClient.GetAsync(request);
+            var query = new GetAssetQuery { Id = id.ToString() };
+            var response = await _assetClient.GetAsync(query);
             
             return WebApiResponse.Success(response);
         }
