@@ -10,7 +10,5 @@ namespace FinancialPortfolio.APIGateway.Contracts.Equity.Requests
         public TransferType Type { get; set; }
         
         public DateTime? DateTime { get; set; }
-        
-        public Guid AccountId { get; set; }
     }
 }

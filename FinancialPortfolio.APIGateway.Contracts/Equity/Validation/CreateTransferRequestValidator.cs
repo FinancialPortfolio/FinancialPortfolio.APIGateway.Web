@@ -9,7 +9,6 @@ namespace FinancialPortfolio.APIGateway.Contracts.Equity.Validation
         {
             RuleFor(x => x.Amount).GreaterThan(0);
             RuleFor(x => x.Type).IsInEnum().NotNull();
-            RuleFor(x => x.AccountId).NotEmpty();
         }
     }
 }
