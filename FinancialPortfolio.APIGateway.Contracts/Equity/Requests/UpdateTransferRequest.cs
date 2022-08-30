@@ -3,7 +3,7 @@ using FinancialPortfolio.APIGateway.Contracts.Equity.Enums;
 
 namespace FinancialPortfolio.APIGateway.Contracts.Equity.Requests
 {
-    public record CreateTransferRequest
+    public record UpdateTransferRequest
     {
         public decimal Amount { get; set; }
         

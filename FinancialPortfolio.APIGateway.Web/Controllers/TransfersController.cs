@@ -11,7 +11,6 @@ using FinancialPortfolio.ProblemDetails.WebApi.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using SearchLibrary;
 using TransferApi;
 
 namespace FinancialPortfolio.APIGateway.Web.Controllers
@@ -69,6 +68,26 @@ namespace FinancialPortfolio.APIGateway.Web.Controllers
             var createTransferCommand = new CreateTransferCommand(request.Amount, request.Type, request.DateTime, accountId);
             await _commandPublisher.SendAsync(createTransferCommand);
 
+            return WebApiResponse.Accepted();
+        }
+        
+        [HttpPut("{id:guid}")]
+        [ProducesResponseType(typeof(WebApiResponse), StatusCodes.Status202Accepted)]
+        public async Task<ActionResult<WebApiResponse>> UpdateAsync([FromRoute] Guid accountId, [FromRoute] Guid id, [FromBody] UpdateTransferRequest request)
+        {
+            var updateTransferCommand = new UpdateTransferCommand(id, request.Amount, request.Type, request.DateTime, accountId);
+            await _commandPublisher.SendAsync(updateTransferCommand);
+            
+            return WebApiResponse.Accepted();
+        }
+        
+        [HttpDelete("{id:guid}")]
+        [ProducesResponseType(typeof(WebApiResponse), StatusCodes.Status202Accepted)]
+        public async Task<ActionResult<WebApiResponse>> DeleteAsync([FromRoute] Guid accountId, [FromRoute] Guid id)
+        {
+            var deleteTransferCommand = new DeleteTransferCommand(id, accountId);
+            await _commandPublisher.SendAsync(deleteTransferCommand);
+            
             return WebApiResponse.Accepted();
         }
     }

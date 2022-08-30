@@ -3,9 +3,9 @@ using FluentValidation;
 
 namespace FinancialPortfolio.APIGateway.Contracts.Equity.Validation
 {
-    public class CreateTransferRequestValidator : AbstractValidator<CreateTransferRequest>
+    public class UpdateTransferRequestValidator : AbstractValidator<UpdateTransferRequest>
     {
-        public CreateTransferRequestValidator()
+        public UpdateTransferRequestValidator()
         {
             RuleFor(x => x.Amount).GreaterThan(0);
             RuleFor(x => x.Type).IsInEnum().NotNull();
