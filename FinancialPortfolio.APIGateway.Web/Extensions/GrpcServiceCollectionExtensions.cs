@@ -1,11 +1,11 @@
 using System;
 using AccountApi;
-using AssetApi;
 using FinancialPortfolio.APIGateway.Web.Models.Settings;
 using FinancialPortfolio.Logging.Grpc;
 using Grpc.Net.ClientFactory;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using StockApi;
 using TransferApi;
 
 namespace FinancialPortfolio.APIGateway.Web.Extensions
@@ -18,7 +18,7 @@ namespace FinancialPortfolio.APIGateway.Web.Extensions
 
             services
                 .AddGrpcClient<Account.AccountClient>(servicesSettings.AccountsService.GrpcUrl)
-                .AddGrpcClient<Asset.AssetClient>(servicesSettings.AssetsService.GrpcUrl)
+                .AddGrpcClient<Stock.StockClient>(servicesSettings.AssetsService.GrpcUrl)
                 .AddGrpcClient<Transfer.TransferClient>(servicesSettings.EquityService.GrpcUrl);
 
             return services;

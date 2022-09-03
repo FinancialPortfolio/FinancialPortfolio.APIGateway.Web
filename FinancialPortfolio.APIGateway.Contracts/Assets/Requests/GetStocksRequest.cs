@@ -1,10 +1,9 @@
-using System;
 using FinancialPortfolio.Search.Pagination;
 using FinancialPortfolio.Search.Sorting;
 
 namespace FinancialPortfolio.APIGateway.Contracts.Assets.Requests
 {
-    public record GetTransfersRequest
+    public record GetStocksRequest
     {
         public PaginationOptions Pagination { get; set; }
         

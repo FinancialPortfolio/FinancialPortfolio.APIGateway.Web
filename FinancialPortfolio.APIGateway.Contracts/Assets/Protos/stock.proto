@@ -1,0 +1,29 @@
+﻿syntax = "proto3";
+
+import "Shared/Protos/search.proto";
+
+package StockApi;
+
+service Stock {
+    rpc Get (GetStockQuery) returns (StockResponse) {}
+    rpc GetAll (GetStocksQuery) returns (StocksResponse) {}
+}
+
+message GetStockQuery {
+    string id = 1;
+}
+
+message GetStocksQuery {
+    SearchLibrary.SearchOptions search = 1;
+}
+
+message StocksResponse {
+    repeated StockResponse stocks = 1;
+    int64 TotalCount = 2;
+}
+
+message StockResponse {
+    string id = 1;
+    string symbol = 2;
+    string name = 3;
+}

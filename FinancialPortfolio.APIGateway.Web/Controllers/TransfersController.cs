@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using AutoMapper;
-using FinancialPortfolio.APIGateway.Contracts.Assets.Requests;
 using FinancialPortfolio.APIGateway.Contracts.Equity.Commands;
 using FinancialPortfolio.APIGateway.Contracts.Equity.Requests;
 using FinancialPortfolio.CQRS.Commands;
@@ -51,8 +50,7 @@ namespace FinancialPortfolio.APIGateway.Web.Controllers
         [HttpGet("{id:guid}")]
         [ProducesResponseType(typeof(WebApiResponse<TransferResponse>), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(WebApiProblemDetails), StatusCodes.Status404NotFound)]
-        public async Task<ActionResult<WebApiResponse<TransferResponse>>> GetAsync([FromRoute] Guid accountId,
-            [FromRoute] Guid id)
+        public async Task<ActionResult<WebApiResponse<TransferResponse>>> GetAsync([FromRoute] Guid accountId, [FromRoute] Guid id)
         {
             var query = new GetTransferQuery { Id = id.ToString() };
             var response = await _transferClient.GetAsync(query);
@@ -62,8 +60,7 @@ namespace FinancialPortfolio.APIGateway.Web.Controllers
 
         [HttpPost]
         [ProducesResponseType(typeof(WebApiResponse), StatusCodes.Status202Accepted)]
-        public async Task<ActionResult<WebApiResponse>> CreateAsync([FromRoute] Guid accountId,
-            [FromBody] CreateTransferRequest request)
+        public async Task<ActionResult<WebApiResponse>> CreateAsync([FromRoute] Guid accountId, [FromBody] CreateTransferRequest request)
         {
             var createTransferCommand = new CreateTransferCommand(request.Amount, request.Type, request.DateTime, accountId);
             await _commandPublisher.SendAsync(createTransferCommand);

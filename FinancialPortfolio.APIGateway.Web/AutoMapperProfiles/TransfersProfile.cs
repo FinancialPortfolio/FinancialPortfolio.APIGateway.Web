@@ -1,6 +1,6 @@
 using System;
 using AutoMapper;
-using FinancialPortfolio.APIGateway.Contracts.Assets.Requests;
+using FinancialPortfolio.APIGateway.Contracts.Equity.Requests;
 using SearchLibrary;
 using TransferApi;
 
