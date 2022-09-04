@@ -8,5 +8,9 @@ namespace FinancialPortfolio.APIGateway.Contracts.Assets.Requests
         public PaginationOptions Pagination { get; set; }
         
         public SortingOptions Sorting { get; set; }
+        
+        public string Name { get; set; }
+        
+        public string Symbol { get; set; }
     }
 }

@@ -19,11 +19,12 @@ message GetStocksQuery {
 
 message StocksResponse {
     repeated StockResponse stocks = 1;
-    int64 TotalCount = 2;
+    int64 totalCount = 2;
 }
 
 message StockResponse {
     string id = 1;
     string symbol = 2;
     string name = 3;
+    string exchange = 4;
 }

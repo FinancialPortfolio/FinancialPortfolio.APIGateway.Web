@@ -19,7 +19,7 @@ message GetAccountsQuery {
 
 message AccountsResponse {
 	repeated AccountResponse Accounts = 1;
-	int64 TotalCount = 2;
+	int64 totalCount = 2;
 }
 
 message AccountResponse {

@@ -19,7 +19,7 @@ message GetTransfersQuery {
 
 message TransfersResponse {
   repeated TransferResponse transfers = 1;
-  int64 TotalCount = 2;
+  int64 totalCount = 2;
 }
 
 message TransferResponse {
