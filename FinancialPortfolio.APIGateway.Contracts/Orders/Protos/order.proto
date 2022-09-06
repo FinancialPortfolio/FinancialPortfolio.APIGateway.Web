@@ -1,0 +1,39 @@
+syntax = "proto3";
+
+import "Shared/Protos/search.proto";
+
+package OrderApi;
+
+service Order {
+    rpc Get (GetOrderQuery) returns (OrderResponse) {}
+    rpc GetAll (GetOrdersQuery) returns (OrdersResponse) {}
+}
+
+message GetOrderQuery {
+    string id = 1;
+}
+
+message GetOrdersQuery {
+    SearchLibrary.SearchOptions search = 1;
+}
+
+message OrdersResponse {
+    repeated OrderResponse orders = 1;
+    int64 TotalCount = 2;
+}
+
+message OrderResponse {
+    string id = 1;
+    OrderType type = 2;
+    double amount = 3;
+    double price = 4;
+    string dateTime = 5;
+    double commission = 6;
+    string assetId = 7;
+    string accountId = 8;
+}
+
+enum OrderType {
+    Buy = 0;
+    Sell = 1;
+}

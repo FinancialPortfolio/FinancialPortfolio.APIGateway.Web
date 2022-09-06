@@ -7,5 +7,7 @@ namespace FinancialPortfolio.APIGateway.Web.Models.Settings
         public ServiceSettings AccountsService { get; set; }
         
         public ServiceSettings AssetsService { get; set; }
+        
+        public ServiceSettings OrdersService { get; set; }
     }
 }

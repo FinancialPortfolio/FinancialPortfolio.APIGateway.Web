@@ -5,17 +5,17 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <PackageReference Include="FinancialPortfolio.CQRS.Commands" Version="2.0.12" />
-        <PackageReference Include="FinancialPortfolio.CQRS.Events" Version="2.0.12" />
-        <PackageReference Include="FinancialPortfolio.Messaging" Version="2.0.12" />
-        <PackageReference Include="FinancialPortfolio.Search.Grpc" Version="2.0.12" GeneratePathProperty="true" />
+        <PackageReference Include="FinancialPortfolio.CQRS.Commands" Version="2.0.15" />
+        <PackageReference Include="FinancialPortfolio.CQRS.Events" Version="2.0.15" />
+        <PackageReference Include="FinancialPortfolio.Messaging" Version="2.0.15" />
+        <PackageReference Include="FinancialPortfolio.Search.Grpc" Version="2.0.15" GeneratePathProperty="true" />
         <PackageReference Include="FluentValidation.AspNetCore" Version="11.2.1" />
         <PackageReference Include="Grpc.AspNetCore" Version="2.47.0" />
     </ItemGroup>
 
     <ItemGroup>
         <None Remove="Equity\protos\transfer.proto" />
-        <Protobuf Include="Equity\protos\transfer.proto">
+        <Protobuf Include="Equity\Protos\transfer.proto">
             <GrpcServices>Both</GrpcServices>
             <Access>Public</Access>
             <ProtoCompile>True</ProtoCompile>
@@ -24,8 +24,9 @@
             <OutputDir>obj\Debug\net5.0\</OutputDir>
             <Generator>MSBuild:Compile</Generator>
         </Protobuf>
+        
         <None Remove="Accounts\protos\accounts.proto" />
-        <Protobuf Include="Accounts\protos\account.proto">
+        <Protobuf Include="Accounts\Protos\account.proto">
             <GrpcServices>Both</GrpcServices>
             <Access>Public</Access>
             <ProtoCompile>True</ProtoCompile>
@@ -34,8 +35,9 @@
             <OutputDir>obj\Debug\net5.0\</OutputDir>
             <Generator>MSBuild:Compile</Generator>
         </Protobuf>
+        
         <None Remove="Assets\protos\stock.proto" />
-        <Protobuf Include="Assets\protos\stock.proto">
+        <Protobuf Include="Assets\Protos\stock.proto">
             <GrpcServices>Both</GrpcServices>
             <Access>Public</Access>
             <ProtoCompile>True</ProtoCompile>
@@ -45,6 +47,17 @@
             <Generator>MSBuild:Compile</Generator>
         </Protobuf>
 
+        <None Remove="Orders\Protos\order.proto" />
+        <Protobuf Include="Orders\Protos\order.proto">
+            <GrpcServices>Both</GrpcServices>
+            <Access>Public</Access>
+            <ProtoCompile>True</ProtoCompile>
+            <ProtoRoot></ProtoRoot>
+            <CompileOutputs>True</CompileOutputs>
+            <OutputDir>obj\Debug\net5.0\</OutputDir>
+            <Generator>MSBuild:Compile</Generator>
+        </Protobuf>
+        
         <None Remove="Shared\Protos\search.proto" />
         <Protobuf Include="Shared\Protos\search.proto" />
     </ItemGroup>
