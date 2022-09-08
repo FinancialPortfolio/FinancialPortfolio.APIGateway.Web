@@ -26,6 +26,7 @@ enum FilterOperator {
     GreaterThanOrEqual = 4;
     NotEquals = 5;
     Contains = 6;
+    In = 7;
 }
 
 message SortingOptions {
