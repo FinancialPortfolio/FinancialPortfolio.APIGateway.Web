@@ -4,7 +4,6 @@ using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
 using FinancialPortfolio.APIGateway.Contracts.Assets.Responses;
-using FinancialPortfolio.APIGateway.Contracts.Orders.Requests;
 using FinancialPortfolio.Infrastructure.WebApi.Models.Response;
 using FinancialPortfolio.ProblemDetails.WebApi.Models;
 using Microsoft.AspNetCore.Authorization;
@@ -37,8 +36,8 @@ namespace FinancialPortfolio.APIGateway.Web.Controllers
         }
 
         [HttpGet]
-        [ProducesResponseType(typeof(PaginationWebApiResponse<IEnumerable<AccountStockResponse>>), StatusCodes.Status200OK)]
-        public async Task<ActionResult<PaginationWebApiResponse<IEnumerable<AccountStockResponse>>>> GetAllAsync([FromRoute] Guid accountId)
+        [ProducesResponseType(typeof(WebApiResponse<IEnumerable<AccountStockResponse>>), StatusCodes.Status200OK)]
+        public async Task<ActionResult<WebApiResponse<IEnumerable<AccountStockResponse>>>> GetAllAsync([FromRoute] Guid accountId)
         {
             var ordersQuery = _mapper.Map<GetOrdersQuery>(accountId);
             var ordersResponse = await _orderClient.GetAllAsync(ordersQuery);
@@ -49,7 +48,7 @@ namespace FinancialPortfolio.APIGateway.Web.Controllers
             
             var accountStocks = _mapper.Map<IEnumerable<AccountStockResponse>>((stocksResponse.Stocks, ordersResponse.Orders));
 
-            return WebApiResponse.Success(accountStocks, ordersResponse.TotalCount);
+            return WebApiResponse.Success(accountStocks);
         }
 
         [HttpGet("{id:guid}")]

@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
 using FinancialPortfolio.APIGateway.Contracts.Orders.Commands;
@@ -11,6 +12,8 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using OrderApi;
+using StockApi;
+using OrderResponse = FinancialPortfolio.APIGateway.Contracts.Orders.Responses.OrderResponse;
 
 namespace FinancialPortfolio.APIGateway.Web.Controllers
 {
@@ -26,13 +29,15 @@ namespace FinancialPortfolio.APIGateway.Web.Controllers
     {
         private readonly ICommandPublisher _commandPublisher;
         private readonly Order.OrderClient _orderClient;
+        private readonly Stock.StockClient _stockClient;
         private readonly IMapper _mapper;
 
         public OrdersController(ICommandPublisher commandPublisher,
-            Order.OrderClient orderClient, IMapper mapper)
+            Order.OrderClient orderClient, Stock.StockClient stockClient, IMapper mapper)
         {
             _commandPublisher = commandPublisher;
             _orderClient = orderClient;
+            _stockClient = stockClient;
             _mapper = mapper;
         }
 
@@ -41,10 +46,16 @@ namespace FinancialPortfolio.APIGateway.Web.Controllers
         public async Task<ActionResult<PaginationWebApiResponse<IEnumerable<OrderResponse>>>> GetAllAsync(
             [FromRoute] Guid accountId, [FromQuery] GetOrdersRequest request)
         {
-            var query = _mapper.Map<GetOrdersQuery>((request, accountId));
-            var response = await _orderClient.GetAllAsync(query);
+            var ordersQuery = _mapper.Map<GetOrdersQuery>((request, accountId));
+            var ordersResponse = await _orderClient.GetAllAsync(ordersQuery);
 
-            return WebApiResponse.Success(response.Orders, response.TotalCount);
+            var stockIds = ordersResponse.Orders.Select(order => order.AssetId);
+            var stocksQuery = _mapper.Map<GetStocksQuery>(stockIds);
+            var stocksResponse = await _stockClient.GetAllAsync(stocksQuery);
+            
+            var orders = _mapper.Map<IEnumerable<OrderResponse>>((ordersResponse.Orders, stocksResponse.Stocks));
+            
+            return WebApiResponse.Success(orders, ordersResponse.TotalCount);
         }
 
         [HttpGet("{id:guid}")]
@@ -52,8 +63,13 @@ namespace FinancialPortfolio.APIGateway.Web.Controllers
         [ProducesResponseType(typeof(WebApiProblemDetails), StatusCodes.Status404NotFound)]
         public async Task<ActionResult<WebApiResponse<OrderResponse>>> GetAsync([FromRoute] Guid accountId, [FromRoute] Guid id)
         {
-            var query = new GetOrderQuery { Id = id.ToString() };
-            var response = await _orderClient.GetAsync(query);
+            var ordersQuery = new GetOrderQuery { Id = id.ToString() };
+            var order = await _orderClient.GetAsync(ordersQuery);
+            
+            var stockQuery = new GetStockQuery { Id = order.AssetId };
+            var stock = await _stockClient.GetAsync(stockQuery);
+
+            var response = _mapper.Map<OrderResponse>((order, stock));
 
             return WebApiResponse.Success(response);
         }
