@@ -63,7 +63,7 @@ namespace FinancialPortfolio.APIGateway.Web.AutoMapperProfiles
             
             CreateMap<OrderResponse, Contracts.Assets.Responses.OrderResponse>();
             
-            CreateMap<(StockResponse stock, RepeatedField<OrderResponse> orders), AccountStockResponse>()
+            CreateMap<(StockResponse stock, IEnumerable<OrderResponse> orders), AccountStockResponse>()
                 .ForMember(s => s.Id, o => o.MapFrom(d => d.stock.Id))
                 .ForMember(s => s.Name, o => o.MapFrom(d => d.stock.Name))
                 .ForMember(s => s.Symbol, o => o.MapFrom(d => d.stock.Symbol))

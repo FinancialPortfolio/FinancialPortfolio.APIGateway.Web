@@ -3,9 +3,9 @@ using FluentValidation;
 
 namespace FinancialPortfolio.APIGateway.Contracts.Orders.Validation
 {
-    public class CreateOrderRequestValidator : AbstractValidator<CreateOrderRequest>
+    public class UpdateOrderRequestValidator : AbstractValidator<UpdateOrderRequest>
     {
-        public CreateOrderRequestValidator()
+        public UpdateOrderRequestValidator()
         {
             RuleFor(x => x.Type).IsInEnum().NotNull();
             RuleFor(x => x.Amount).GreaterThan(0);
