@@ -7,8 +7,8 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="FinancialPortfolio.Infrastructure" Version="2.0.18" />
-    <PackageReference Include="FinancialPortfolio.Infrastructure.WebApi" Version="2.0.18" />
+    <PackageReference Include="FinancialPortfolio.Infrastructure" Version="2.0.23" />
+    <PackageReference Include="FinancialPortfolio.Infrastructure.WebApi" Version="2.0.23" />
     <PackageReference Include="Grpc.AspNetCore" Version="2.47.0" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="5.0.10" />
   </ItemGroup>

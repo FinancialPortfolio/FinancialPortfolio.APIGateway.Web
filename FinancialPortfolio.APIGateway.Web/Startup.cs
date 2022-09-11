@@ -11,7 +11,8 @@ using FinancialPortfolio.APIGateway.Web.Services;
 using FinancialPortfolio.Infrastructure.Extensions;
 using FinancialPortfolio.Infrastructure.Shared.Extensions;
 using FinancialPortfolio.Infrastructure.WebApi.Extensions;
-using FinancialPortfolio.Logging.Grpc.Extensions;
+using FinancialPortfolio.Operations.Grpc.Extensions;
+using FinancialPortfolio.Operations.WebApi.Extensions;
 using FinancialPortfolio.ProblemDetails.WebApi.Extensions;
 
 namespace FinancialPortfolio.APIGateway.Web
@@ -41,7 +42,7 @@ namespace FinancialPortfolio.APIGateway.Web
                 .AddMongo(Configuration)
                 .AddCustomSwagger(Configuration)
                 .AddKafkaCQRSMessaging(Configuration, WebHostEnvironment.EnvironmentName)
-                .AddGrpcLogging()
+                .AddGrpcOperationContext()
                 .AddDefaultSettings(Configuration, typeof(ServicesSettings).Assembly)
                 .AddCustomAuthentication(Configuration, WebHostEnvironment)
                 .AddCustomAuthorization()
@@ -65,6 +66,8 @@ namespace FinancialPortfolio.APIGateway.Web
             app.UseCustomSwagger();
 
             app.UseRouting();
+
+            app.UseOperationContextMiddleware();
 
             app.UseLogging();
 

@@ -1,7 +1,7 @@
 using System;
 using AccountApi;
 using FinancialPortfolio.APIGateway.Web.Models.Settings;
-using FinancialPortfolio.Logging.Grpc;
+using FinancialPortfolio.Operations.Grpc;
 using Grpc.Net.ClientFactory;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -33,7 +33,7 @@ namespace FinancialPortfolio.APIGateway.Web.Extensions
                 {
                     o.Address = new Uri(uri);
                 })
-                .AddInterceptor<TraceIdClientInterceptor>(InterceptorScope.Client);
+                .AddInterceptor<OperationContextClientInterceptor>(InterceptorScope.Client);
 
             return services;
         }
