@@ -74,6 +74,8 @@ namespace FinancialPortfolio.APIGateway.Web
             app.UseAuthentication();
 
             app.UseAuthorization();
+            
+            app.UseNotificationChannelMiddleware();
 
             app.UseEndpoints(endpoints =>
             {
