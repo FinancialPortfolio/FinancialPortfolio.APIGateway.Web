@@ -17,9 +17,9 @@ namespace FinancialPortfolio.APIGateway.Web.Middlewares
 
         public async Task InvokeAsync(HttpContext httpContext, IUserInfoService userInfoService, OperationContext operationContext)
         {
-            var claim = await userInfoService.GetClaimAsync<string>(ClaimConstants.UserId);
-            if (!string.IsNullOrEmpty(claim))
-                operationContext.AddNotificationChannel(claim);
+            var userId = await userInfoService.GetClaimAsync<string>(ClaimConstants.UserId);
+            if (!string.IsNullOrEmpty(userId))
+                operationContext.AddNotificationChannel(userId);
 
             await _next(httpContext);
         }
