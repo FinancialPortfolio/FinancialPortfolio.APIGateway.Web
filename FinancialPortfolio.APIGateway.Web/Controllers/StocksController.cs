@@ -1,7 +1,9 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using AutoMapper;
+using FinancialPortfolio.APIGateway.Contracts.Assets.Commands;
 using FinancialPortfolio.APIGateway.Contracts.Assets.Requests;
+using FinancialPortfolio.CQRS.Commands;
 using StockApi;
 using FinancialPortfolio.Infrastructure.WebApi.Models.Response;
 using FinancialPortfolio.ProblemDetails.WebApi.Models;
@@ -21,13 +23,15 @@ namespace FinancialPortfolio.APIGateway.Web.Controllers
     [ProducesResponseType(typeof(WebApiProblemDetails), StatusCodes.Status500InternalServerError)]
     public class StocksController : ControllerBase
     {
+        private readonly ICommandPublisher _commandPublisher;
         private readonly Stock.StockClient _stockClient;
         private readonly IMapper _mapper;
 
-        public StocksController(Stock.StockClient stockClient, IMapper mapper)
+        public StocksController(Stock.StockClient stockClient, IMapper mapper, ICommandPublisher commandPublisher)
         {
             _stockClient = stockClient;
             _mapper = mapper;
+            _commandPublisher = commandPublisher;
         }
         
         [HttpGet]
@@ -38,6 +42,16 @@ namespace FinancialPortfolio.APIGateway.Web.Controllers
             var response = await _stockClient.GetAllAsync(query);
             
             return WebApiResponse.Success(response.Stocks, response.TotalCount);
+        }
+        
+        [HttpPatch("stock-statistics")]
+        [ProducesResponseType(typeof(WebApiResponse), StatusCodes.Status202Accepted)]
+        public async Task<ActionResult<WebApiResponse>> FetchStockStatisticsAsync([FromBody] FetchStockStatisticsRequest request)
+        {
+            var fetchStockStatisticsCommand = new FetchStockStatisticsCommand(request.Symbols);
+            await _commandPublisher.SendAsync(fetchStockStatisticsCommand);
+            
+            return WebApiResponse.Accepted();
         }
     }
 }
