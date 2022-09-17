@@ -7,6 +7,12 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FinancialPortfolio.APIGatew
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FinancialPortfolio.APIGateway.Contracts", "FinancialPortfolio.APIGateway.Contracts\FinancialPortfolio.APIGateway.Contracts.csproj", "{E159FFD1-D640-484B-BDD6-EB8A65091E67}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Integrations", "Integrations", "{FACFADBF-B2AA-4585-9557-6B1F36664697}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FinancialPortfolio.APIGateway.Integrations.InteractiveBrokers", "Integrations\FinancialPortfolio.APIGateway.Integrations.InteractiveBrokers\FinancialPortfolio.APIGateway.Integrations.InteractiveBrokers.csproj", "{722902EE-F68B-41B5-BF46-2E0021B3C7BA}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FinancialPortfolio.APIGateway.Integrations.AdmiralMarkets", "Integrations\FinancialPortfolio.APIGateway.Integrations.AdmiralMarkets\FinancialPortfolio.APIGateway.Integrations.AdmiralMarkets.csproj", "{E0711473-44A2-4CBC-A3C7-5D65C55437F8}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,11 +27,23 @@ Global
 		{E159FFD1-D640-484B-BDD6-EB8A65091E67}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E159FFD1-D640-484B-BDD6-EB8A65091E67}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E159FFD1-D640-484B-BDD6-EB8A65091E67}.Release|Any CPU.Build.0 = Release|Any CPU
+		{722902EE-F68B-41B5-BF46-2E0021B3C7BA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{722902EE-F68B-41B5-BF46-2E0021B3C7BA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{722902EE-F68B-41B5-BF46-2E0021B3C7BA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{722902EE-F68B-41B5-BF46-2E0021B3C7BA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E0711473-44A2-4CBC-A3C7-5D65C55437F8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E0711473-44A2-4CBC-A3C7-5D65C55437F8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E0711473-44A2-4CBC-A3C7-5D65C55437F8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E0711473-44A2-4CBC-A3C7-5D65C55437F8}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {FCFA3051-4DBD-480E-A345-5473A4BAD3BA}
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{722902EE-F68B-41B5-BF46-2E0021B3C7BA} = {FACFADBF-B2AA-4585-9557-6B1F36664697}
+		{E0711473-44A2-4CBC-A3C7-5D65C55437F8} = {FACFADBF-B2AA-4585-9557-6B1F36664697}
 	EndGlobalSection
 EndGlobal

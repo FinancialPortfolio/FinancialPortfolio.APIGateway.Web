@@ -1,6 +1,7 @@
 using FinancialPortfolio.APIGateway.Contracts.Accounts.Validation;
 using FinancialPortfolio.APIGateway.Web.AutoMapperProfiles;
 using FinancialPortfolio.APIGateway.Web.Extensions;
+using FinancialPortfolio.APIGateway.Web.Factories;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -39,6 +40,7 @@ namespace FinancialPortfolio.APIGateway.Web
                 .AddCustomAutoMapper(typeof(SearchProfile).Assembly)
                 .AddCustomCors(Configuration)
                 .AddDefaultServiceImplementations(typeof(UserInfoService).Assembly)
+                .AddDefaultImplementations(typeof(IIntegrationServiceFactory).Assembly, "Factory")
                 .AddMongo(Configuration)
                 .AddCustomSwagger(Configuration)
                 .AddKafkaCQRSMessaging(Configuration, WebHostEnvironment.EnvironmentName)
