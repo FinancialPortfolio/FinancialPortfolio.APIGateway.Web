@@ -8,4 +8,8 @@
       <ProjectReference Include="..\..\FinancialPortfolio.APIGateway.Contracts\FinancialPortfolio.APIGateway.Contracts.csproj" />
     </ItemGroup>
 
+    <ItemGroup>
+      <PackageReference Include="CsvHelper.Excel.Core" Version="27.2.1" />
+    </ItemGroup>
+
 </Project>

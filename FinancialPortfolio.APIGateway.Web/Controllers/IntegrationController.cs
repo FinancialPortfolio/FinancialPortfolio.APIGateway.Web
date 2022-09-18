@@ -1,5 +1,8 @@
+using System;
 using System.Threading.Tasks;
+using FinancialPortfolio.APIGateway.Contracts.Equity.Commands;
 using FinancialPortfolio.APIGateway.Contracts.Integrations.Requests;
+using FinancialPortfolio.APIGateway.Contracts.Orders.Commands;
 using FinancialPortfolio.APIGateway.Web.Factories;
 using FinancialPortfolio.APIGateway.Web.Interfaces;
 using FinancialPortfolio.CQRS.Commands;
@@ -13,7 +16,7 @@ namespace FinancialPortfolio.APIGateway.Web.Controllers
 {
     [Authorize]
     [ApiController]
-    [Route("api/integration")]
+    [Route("api/accounts/{accountId:guid}/integration")]
     [Produces("application/json")]
     [ProducesResponseType(typeof(WebApiProblemDetails), StatusCodes.Status400BadRequest)]
     [ProducesResponseType(typeof(WebApiProblemDetails), StatusCodes.Status401Unauthorized)]
@@ -33,14 +36,17 @@ namespace FinancialPortfolio.APIGateway.Web.Controllers
         
         [HttpPost]
         [ProducesResponseType(typeof(WebApiResponse), StatusCodes.Status202Accepted)]
-        public async Task<ActionResult<WebApiResponse>> IntegrateAsync([FromForm] IntegrateRequest request)
+        public async Task<ActionResult<WebApiResponse>> IntegrateAsync([FromRoute] Guid accountId, [FromForm] IntegrateRequest request)
         {
             var integrationService = _integrationServiceFactory.CreateIntegrationService(request.Source);
-            var integrationCommands = integrationService.Parse(request);
 
-            await _commandPublisher.SendAsync(integrationCommands.IntegrateOrdersCommand);
+            var orders = await integrationService.ParseOrdersAsync(request);
+            var integrateOrdersCommand = new IntegrateOrdersCommand(accountId, orders);
+            //await _commandPublisher.SendAsync(integrateOrdersCommand);
             
-            await _commandPublisher.SendAsync(integrationCommands.IntegrateTransfersCommand);
+            var transfers = await integrationService.ParseTransfersAsync(request);
+            var integrateTransfersCommand = new IntegrateTransfersCommand(accountId, transfers);
+            //await _commandPublisher.SendAsync(integrateTransfersCommand);
 
             return WebApiResponse.Accepted();
         }

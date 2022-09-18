@@ -8,6 +8,7 @@ namespace FinancialPortfolio.APIGateway.Contracts.Integrations.Validation
         public IntegrateRequestValidator()
         {
             RuleFor(x => x.Source).IsInEnum().NotNull();
+            RuleFor(x => x.File).NotNull();
         }
     }
 }
