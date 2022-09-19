@@ -34,19 +34,19 @@ namespace FinancialPortfolio.APIGateway.Web.Controllers
             _integrationServiceFactory = integrationServiceFactory;
         }
         
-        [HttpPost]
+        [HttpPut]
         [ProducesResponseType(typeof(WebApiResponse), StatusCodes.Status202Accepted)]
         public async Task<ActionResult<WebApiResponse>> IntegrateAsync([FromRoute] Guid accountId, [FromForm] IntegrateRequest request)
         {
             var integrationService = _integrationServiceFactory.CreateIntegrationService(request.Source);
-
+    
             var orders = await integrationService.ParseOrdersAsync(request);
             var integrateOrdersCommand = new IntegrateOrdersCommand(accountId, orders);
-            //await _commandPublisher.SendAsync(integrateOrdersCommand);
+            await _commandPublisher.SendAsync(integrateOrdersCommand);
             
             var transfers = await integrationService.ParseTransfersAsync(request);
             var integrateTransfersCommand = new IntegrateTransfersCommand(accountId, transfers);
-            //await _commandPublisher.SendAsync(integrateTransfersCommand);
+            await _commandPublisher.SendAsync(integrateTransfersCommand);
 
             return WebApiResponse.Accepted();
         }

@@ -1,4 +1,4 @@
-namespace FinancialPortfolio.APIGateway.Contracts.Integrations.Models
+namespace FinancialPortfolio.APIGateway.Contracts.Integrations.Enums
 {
     public enum IntegrationSource
     {

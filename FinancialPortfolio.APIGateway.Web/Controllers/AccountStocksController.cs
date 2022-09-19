@@ -47,8 +47,9 @@ namespace FinancialPortfolio.APIGateway.Web.Controllers
             var stocksResponse = await _stockClient.GetAllAsync(stocksQuery);
             
             var accountStocks = _mapper.Map<IEnumerable<AccountStockResponse>>((stocksResponse.Stocks, ordersResponse.Orders));
-
-            return WebApiResponse.Success(accountStocks);
+            var availableAccountStocks = accountStocks.Where(a => a.NumberOfShares > 0);
+            
+            return WebApiResponse.Success(availableAccountStocks);
         }
 
         [HttpGet("{id:guid}")]

@@ -1,4 +1,4 @@
-using FinancialPortfolio.APIGateway.Contracts.Integrations.Models;
+using FinancialPortfolio.APIGateway.Contracts.Integrations.Enums;
 using FinancialPortfolio.APIGateway.Contracts.Integrations.Services;
 
 namespace FinancialPortfolio.APIGateway.Web.Factories

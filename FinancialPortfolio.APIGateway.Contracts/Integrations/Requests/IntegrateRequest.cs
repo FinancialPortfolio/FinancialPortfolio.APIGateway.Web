@@ -1,4 +1,4 @@
-using FinancialPortfolio.APIGateway.Contracts.Integrations.Models;
+using FinancialPortfolio.APIGateway.Contracts.Integrations.Enums;
 using Microsoft.AspNetCore.Http;
 
 namespace FinancialPortfolio.APIGateway.Contracts.Integrations.Requests

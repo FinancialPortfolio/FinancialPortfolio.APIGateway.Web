@@ -1,5 +1,5 @@
 using System;
-using FinancialPortfolio.APIGateway.Contracts.Integrations.Models;
+using FinancialPortfolio.APIGateway.Contracts.Integrations.Enums;
 using FinancialPortfolio.APIGateway.Contracts.Integrations.Services;
 using AdmiralMarketsIntegrationService = FinancialPortfolio.APIGateway.Integrations.AdmiralMarkets.IntegrationService;
 using InteractiveBrokersIntegrationService = FinancialPortfolio.APIGateway.Integrations.InteractiveBrokers.IntegrationService;
