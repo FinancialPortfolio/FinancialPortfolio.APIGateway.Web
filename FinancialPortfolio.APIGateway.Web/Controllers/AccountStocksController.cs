@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
+using FinancialPortfolio.APIGateway.Contracts.Assets.Requests;
 using FinancialPortfolio.APIGateway.Contracts.Assets.Responses;
 using FinancialPortfolio.Infrastructure.WebApi.Models.Response;
 using FinancialPortfolio.ProblemDetails.WebApi.Models;
@@ -37,13 +38,13 @@ namespace FinancialPortfolio.APIGateway.Web.Controllers
 
         [HttpGet]
         [ProducesResponseType(typeof(WebApiResponse<IEnumerable<AccountStockResponse>>), StatusCodes.Status200OK)]
-        public async Task<ActionResult<WebApiResponse<IEnumerable<AccountStockResponse>>>> GetAllAsync([FromRoute] Guid accountId)
+        public async Task<ActionResult<WebApiResponse<IEnumerable<AccountStockResponse>>>> GetAllAsync([FromRoute] Guid accountId, [FromQuery] GetAccountStocksRequest request)
         {
             var ordersQuery = _mapper.Map<GetOrdersQuery>(accountId);
             var ordersResponse = await _orderClient.GetAllAsync(ordersQuery);
 
             var stockIds = ordersResponse.Orders.Select(order => order.AssetId);
-            var stocksQuery = _mapper.Map<GetStocksQuery>(stockIds);
+            var stocksQuery = _mapper.Map<GetStocksQuery>((stockIds, request));
             var stocksResponse = await _stockClient.GetAllAsync(stocksQuery);
             
             var accountStocks = _mapper.Map<IEnumerable<AccountStockResponse>>((stocksResponse.Stocks, ordersResponse.Orders));

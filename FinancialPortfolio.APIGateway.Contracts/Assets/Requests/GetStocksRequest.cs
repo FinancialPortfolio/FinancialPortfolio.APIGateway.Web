@@ -12,5 +12,7 @@ namespace FinancialPortfolio.APIGateway.Contracts.Assets.Requests
         public string Name { get; set; }
         
         public string Symbol { get; set; }
+        
+        public string Type { get; set; }
     }
 }

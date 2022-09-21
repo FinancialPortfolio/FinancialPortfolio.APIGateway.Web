@@ -7,7 +7,7 @@ namespace FinancialPortfolio.APIGateway.Contracts.Assets.Validation
     {
         public FetchStockStatisticsRequestValidation()
         {
-            RuleFor(x => x.Symbols).NotEmpty();
+            RuleFor(x => x.Symbols).NotNull();
         }
     }
 }

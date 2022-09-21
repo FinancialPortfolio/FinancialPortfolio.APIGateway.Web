@@ -27,4 +27,19 @@ message StockResponse {
     string symbol = 2;
     string name = 3;
     string exchange = 4;
+    string type = 5;
+    StockStatisticsResponse stockStatistics = 6;
+}
+
+message StockStatisticsResponse {
+    double currentPrice = 1;
+    string retrievalDateTime = 2;
+    double earningsPerShare = 3;
+    double beta = 4;
+    double marketCapitalization = 5;
+    double dividendYield = 6;
+    double priceToBookValue = 7;
+    double priceToEarningsValue = 8;
+    double priceToSalesValue = 9;
+    string logo = 10;
 }
