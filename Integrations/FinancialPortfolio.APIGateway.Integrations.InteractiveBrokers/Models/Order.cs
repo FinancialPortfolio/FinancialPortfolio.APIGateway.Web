@@ -6,9 +6,23 @@ namespace FinancialPortfolio.APIGateway.Integrations.InteractiveBrokers.Models
 {
     public class Order
     {
-        [Index(5)]
-        public string Symbol { get; set; }
+        [Index(4)]
+        public string Currency { get; set; }
         
+        [Index(5)]
+        public string FullSymbol { get; set; }
+
+        public string Symbol => FullSymbol.Split(".")[0];
+        
+        public string Exchange
+        {
+            get
+            {
+                var split = FullSymbol.Split(".");
+                return split.Length > 1 ? split[1] : null;
+            }
+        }
+
         [Index(6)]
         public DateTime DateTime { get; set; }
         

@@ -16,8 +16,13 @@ namespace FinancialPortfolio.APIGateway.Contracts.Orders.Commands
         public decimal Commission { get; }
         
         public string Symbol { get; }
+        
+        public string Exchange { get; }
+        
+        public string Currency { get; }
 
-        public IntegrateOrderCommand(OrderType type, double amount, decimal price, DateTime dateTime, decimal commission, string symbol)
+        public IntegrateOrderCommand(OrderType type, double amount, decimal price, 
+            DateTime dateTime, decimal commission, string symbol, string exchange = null, string currency = null)
         {
             Type = type;
             Amount = amount;
@@ -25,6 +30,8 @@ namespace FinancialPortfolio.APIGateway.Contracts.Orders.Commands
             DateTime = dateTime;
             Commission = commission;
             Symbol = symbol;
+            Exchange = exchange;
+            Currency = currency;
         }
     }
 }

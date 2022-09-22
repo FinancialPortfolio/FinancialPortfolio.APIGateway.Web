@@ -49,7 +49,7 @@ namespace FinancialPortfolio.APIGateway.Web.Controllers
             var ordersQuery = _mapper.Map<GetOrdersQuery>((request, accountId));
             var ordersResponse = await _orderClient.GetAllAsync(ordersQuery);
 
-            var stockIds = ordersResponse.Orders.Select(order => order.AssetId);
+            var stockIds = ordersResponse.Orders.Select(order => Guid.Parse(order.AssetId));
             var stocksQuery = _mapper.Map<GetStocksQuery>(stockIds);
             var stocksResponse = await _stockClient.GetAllAsync(stocksQuery);
             

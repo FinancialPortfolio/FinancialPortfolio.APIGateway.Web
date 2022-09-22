@@ -10,7 +10,18 @@ namespace FinancialPortfolio.APIGateway.Integrations.AdmiralMarkets.Models
         public string OrderId { get; set; }
         
         [Index(2)]
-        public string Symbol { get; set; }
+        public string FullSymbol { get; set; }
+        
+        public string Symbol => FullSymbol.Split(".")[0];
+        
+        public string Exchange
+        {
+            get
+            {
+                var split = FullSymbol.Split(".");
+                return split.Length > 1 ? split[1] : null;
+            }
+        }
         
         [Index(3)]
         public string Type { get; set; }

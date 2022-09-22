@@ -1,4 +1,6 @@
+using System.IO;
 using System.Net;
+using CsvHelper;
 using FinancialPortfolio.APIGateway.Web.Models.Exceptions;
 using FinancialPortfolio.APIGateway.Web.ProblemDetails;
 using FinancialPortfolio.Infrastructure.WebApi.Exceptions;
@@ -26,6 +28,8 @@ namespace FinancialPortfolio.APIGateway.Web.Extensions
                     };
                 };
 
+                settings.Map<CsvHelperException>(exception => new CorruptedFileProblemDetails(exception));
+                settings.Map<FileFormatException>(exception => new CorruptedFileProblemDetails(exception));
                 settings.Map<RpcException>(exception => new RpcProblemDetails(exception));
                 settings.Map<InvalidModelStateException>(exception => new InvalidModelStateProblemDetails(exception));
                 settings.Map<ForbiddenException>(exception => new ForbiddenProblemDetails(exception));

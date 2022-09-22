@@ -63,7 +63,8 @@ namespace FinancialPortfolio.APIGateway.Integrations.InteractiveBrokers
                     continue;
                 
                 var order = csvReader.GetRecord<Order>();
-                result.Add(new IntegrateOrderCommand(order.Type, order.Quantity, order.Price, order.DateTime, Math.Abs(order.Commission), order.Symbol));
+                result.Add(new IntegrateOrderCommand(order.Type, order.Quantity, order.Price, 
+                    order.DateTime, Math.Abs(order.Commission), order.Symbol, order.Exchange, order.Currency));
             }
 
             return result;

@@ -59,7 +59,7 @@ namespace FinancialPortfolio.APIGateway.Integrations.AdmiralMarkets
             var totalPrice = order.Deals.Sum(d => Math.Abs(d.Price) * Math.Abs(d.Volume));
             var commission = order.Deals.Sum(d => Math.Abs(d.Fee) + Math.Abs(d.Commission));
                 
-            return new IntegrateOrderCommand(type, amount, totalPrice / amount, order.DateTime, commission, order.Symbol);
+            return new IntegrateOrderCommand(type, amount, totalPrice / amount, order.DateTime, commission, order.Symbol, order.Exchange);
         }
         
         private static async Task<IEnumerable<Order>> ReadOrdersAsync(CsvReader csvReader)

@@ -1,7 +1,11 @@
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
+using AutoMapper;
 using FinancialPortfolio.APIGateway.Contracts.Equity.Commands;
 using FinancialPortfolio.APIGateway.Contracts.Integrations.Requests;
+using FinancialPortfolio.APIGateway.Contracts.Integrations.Responses;
 using FinancialPortfolio.APIGateway.Contracts.Orders.Commands;
 using FinancialPortfolio.APIGateway.Web.Factories;
 using FinancialPortfolio.APIGateway.Web.Interfaces;
@@ -11,6 +15,7 @@ using FinancialPortfolio.ProblemDetails.WebApi.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using StockApi;
 
 namespace FinancialPortfolio.APIGateway.Web.Controllers
 {
@@ -26,12 +31,16 @@ namespace FinancialPortfolio.APIGateway.Web.Controllers
     {
         private readonly ICommandPublisher _commandPublisher;
         private readonly IIntegrationServiceFactory _integrationServiceFactory;
+        private readonly Stock.StockClient _stockClient;
+        private readonly IMapper _mapper;
 
         public IntegrationController(IUserInfoService userInfoService, ICommandPublisher commandPublisher, 
-            IIntegrationServiceFactory integrationServiceFactory) : base(userInfoService)
+            IIntegrationServiceFactory integrationServiceFactory, Stock.StockClient stockClient, IMapper mapper) : base(userInfoService)
         {
             _commandPublisher = commandPublisher;
             _integrationServiceFactory = integrationServiceFactory;
+            _stockClient = stockClient;
+            _mapper = mapper;
         }
         
         [HttpPut]
@@ -49,6 +58,60 @@ namespace FinancialPortfolio.APIGateway.Web.Controllers
             await _commandPublisher.SendAsync(integrateTransfersCommand);
 
             return WebApiResponse.Accepted();
+        }
+
+        [HttpPost("validate")]
+        [ProducesResponseType(typeof(WebApiResponse<IntegrationFileValidationResponse>), StatusCodes.Status200OK)]
+        public async Task<ActionResult<WebApiResponse<IntegrationFileValidationResponse>>> ValidateAsync([FromRoute] Guid accountId, [FromForm] IntegrateRequest request)
+        {
+            var integrationService = _integrationServiceFactory.CreateIntegrationService(request.Source);
+    
+            var orders = await integrationService.ParseOrdersAsync(request);
+
+            var validationResponse = await ValidateIntegrationFileAsync(orders);
+
+            return WebApiResponse.Success(validationResponse);
+        }
+
+        private async Task<IntegrationFileValidationResponse> ValidateIntegrationFileAsync(IEnumerable<IntegrateOrderCommand> orders)
+        {
+            var invalidOrders = new List<InvalidOrderResponse>();
+            var stocks = await GetStocksAsync(orders);
+            
+            foreach (var order in orders)
+            {
+                var stock = stocks.FirstOrDefault(stock => Compare(order, stock));
+                if (stock is not null)
+                    continue;
+
+                var invalidOrder = new InvalidOrderResponse(order.Symbol, order.Exchange, order.Currency, order.DateTime, order.Amount);
+                invalidOrders.Add(invalidOrder);
+            }
+            
+            return new IntegrationFileValidationResponse(invalidOrders);
+        }
+
+        private static bool Compare(IntegrateOrderCommand order, StockResponse stock)
+        {
+            if (order.Symbol != stock.Symbol)
+                return false;
+            
+            if (order.Currency is not null && order.Currency != stock.Currency)
+                return false;
+            
+            if (order.Exchange is not null && order.Exchange != stock.Exchange)
+                return false;
+
+            return true;
+        }
+
+        private async Task<IEnumerable<StockResponse>> GetStocksAsync(IEnumerable<IntegrateOrderCommand> orders)
+        {
+            var symbols = orders.Select(order => order.Symbol);
+            var stocksQuery = _mapper.Map<GetStocksQuery>(symbols);
+            var stocksResponse = await _stockClient.GetAllAsync(stocksQuery);
+            
+            return stocksResponse.Stocks;
         }
     }
 }

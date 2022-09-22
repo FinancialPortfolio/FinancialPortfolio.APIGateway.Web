@@ -18,10 +18,10 @@ namespace FinancialPortfolio.APIGateway.Web.AutoMapperProfiles
     {
         public AccountStockProfile()
         {
-            CreateMap<(IEnumerable<string> stockIds, GetAccountStocksRequest request), GetStocksQuery>()
+            CreateMap<(IEnumerable<Guid> stockIds, GetAccountStocksRequest request), GetStocksQuery>()
                 .ForPath(q => q.Search.FilteringOptions, o => o.MapFrom(r => MapFilteringOptions(r.stockIds, r.request)));
             
-            CreateMap<IEnumerable<string>, GetStocksQuery>()
+            CreateMap<IEnumerable<Guid>, GetStocksQuery>()
                 .ForPath(q => q.Search.FilteringOptions, o => o.MapFrom(r => MapFilteringOptions(r, null)));
             
             CreateMap<StockResponse, GetOrdersQuery>()
@@ -70,7 +70,7 @@ namespace FinancialPortfolio.APIGateway.Web.AutoMapperProfiles
                 .ConvertUsing(new AccountStockResponseConverter());
         }
         
-        private static FilteringOptions MapFilteringOptions(IEnumerable<string> stockIds, GetAccountStocksRequest request = null)
+        private static FilteringOptions MapFilteringOptions(IEnumerable<Guid> stockIds, GetAccountStocksRequest request = null)
         {
             var filteringOptions = new FilteringOptions
             {

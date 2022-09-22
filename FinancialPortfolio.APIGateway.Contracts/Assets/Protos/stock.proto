@@ -28,7 +28,8 @@ message StockResponse {
     string name = 3;
     string exchange = 4;
     string type = 5;
-    StockStatisticsResponse stockStatistics = 6;
+    string currency = 6;
+    StockStatisticsResponse stockStatistics = 7;
 }
 
 message StockStatisticsResponse {
