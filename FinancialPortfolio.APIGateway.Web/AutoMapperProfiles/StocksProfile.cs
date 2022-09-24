@@ -28,6 +28,12 @@ namespace FinancialPortfolio.APIGateway.Web.AutoMapperProfiles
                                 Field = "Symbol",
                                 Operator = FilterOperator.Contains,
                                 Value = r.Symbol ?? ""
+                            },
+                            new FilterCriteria
+                            {
+	                            Field = "Exchange",
+	                            Operator = FilterOperator.Equals,
+	                            Value = r.Exchange ?? ""
                             }
                         }
                     }));
