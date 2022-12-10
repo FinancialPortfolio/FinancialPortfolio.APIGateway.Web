@@ -5,10 +5,10 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <PackageReference Include="FinancialPortfolio.CQRS.Commands" Version="2.0.31" />
-        <PackageReference Include="FinancialPortfolio.CQRS.Events" Version="2.0.31" />
-        <PackageReference Include="FinancialPortfolio.Messaging" Version="2.0.31" />
-        <PackageReference Include="FinancialPortfolio.Search.Grpc" Version="2.0.31" GeneratePathProperty="true" />
+        <PackageReference Include="FinancialPortfolio.CQRS.Commands" Version="2.0.32" />
+        <PackageReference Include="FinancialPortfolio.CQRS.Events" Version="2.0.32" />
+        <PackageReference Include="FinancialPortfolio.Messaging" Version="2.0.32" />
+        <PackageReference Include="FinancialPortfolio.Search.Grpc" Version="2.0.32" GeneratePathProperty="true" />
         <PackageReference Include="FluentValidation.AspNetCore" Version="11.2.1" />
         <PackageReference Include="Grpc.AspNetCore" Version="2.47.0" />
     </ItemGroup>
@@ -60,6 +60,8 @@
         
         <None Remove="Shared\Protos\search.proto" />
         <Protobuf Include="Shared\Protos\search.proto" />
+        <None Remove="Categories\Protos\category.proto" />
+        <Protobuf Include="Categories\Protos\category.proto" />
     </ItemGroup>
 
     <ItemGroup>

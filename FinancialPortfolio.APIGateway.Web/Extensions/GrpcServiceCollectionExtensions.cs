@@ -1,5 +1,6 @@
 using System;
 using AccountApi;
+using CategoryApi;
 using FinancialPortfolio.APIGateway.Web.Models.Settings;
 using FinancialPortfolio.Operations.Grpc;
 using Grpc.Net.ClientFactory;
@@ -21,7 +22,8 @@ namespace FinancialPortfolio.APIGateway.Web.Extensions
                 .AddGrpcClient<Account.AccountClient>(servicesSettings.AccountsService.GrpcUrl)
                 .AddGrpcClient<Stock.StockClient>(servicesSettings.AssetsService.GrpcUrl)
                 .AddGrpcClient<Transfer.TransferClient>(servicesSettings.EquityService.GrpcUrl)
-                .AddGrpcClient<Order.OrderClient>(servicesSettings.OrdersService.GrpcUrl);
+                .AddGrpcClient<Order.OrderClient>(servicesSettings.OrdersService.GrpcUrl)
+                .AddGrpcClient<Category.CategoryClient>(servicesSettings.CategoriesService.GrpcUrl);
 
             return services;
         }

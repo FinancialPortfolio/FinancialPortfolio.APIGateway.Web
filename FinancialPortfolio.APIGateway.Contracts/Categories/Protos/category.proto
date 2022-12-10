@@ -1,0 +1,36 @@
+syntax = "proto3";
+
+package CategoryApi;
+
+service Category {
+    rpc Get (GetCategoryQuery) returns (CategoryResponse) {}
+}
+
+message GetCategoryQuery {
+    string userId = 1;
+}
+
+message CategoryResponse {
+    string id = 1;
+    string name = 2;
+    string description = 3;
+    double expectedAllocation = 4;
+    string userId = 5;
+    repeated SubCategoryResponse subCategories = 6;
+    repeated CategoryStockResponse stocks = 7;
+}
+
+message SubCategoryResponse {
+    string id = 1;
+    string name = 2;
+    string description = 3;
+    double expectedAllocation = 4;
+    repeated SubCategoryResponse subCategories = 5;
+    repeated CategoryStockResponse stocks = 6;
+}
+
+message CategoryStockResponse {
+    string id = 1;
+    double expectedAllocation = 2;
+    string assetId = 3;
+}
