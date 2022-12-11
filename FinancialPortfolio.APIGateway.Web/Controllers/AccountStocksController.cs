@@ -40,7 +40,7 @@ namespace FinancialPortfolio.APIGateway.Web.Controllers
         [ProducesResponseType(typeof(WebApiResponse<IEnumerable<AccountStockResponse>>), StatusCodes.Status200OK)]
         public async Task<ActionResult<WebApiResponse<IEnumerable<AccountStockResponse>>>> GetAllAsync([FromRoute] Guid accountId, [FromQuery] GetAccountStocksRequest request)
         {
-            var ordersQuery = _mapper.Map<GetOrdersQuery>(accountId);
+            var ordersQuery = _mapper.Map<GetOrdersQuery>((accountId, "AccountId"));
             var ordersResponse = await _orderClient.GetAllAsync(ordersQuery);
 
             var stockIds = ordersResponse.Orders.Select(order => Guid.Parse(order.AssetId));

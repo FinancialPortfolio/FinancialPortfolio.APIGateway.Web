@@ -38,22 +38,7 @@ namespace FinancialPortfolio.APIGateway.Web.AutoMapperProfiles
                             }
                         }
                     }));
-            
-            CreateMap<Guid, GetOrdersQuery>()
-                .ForPath(q => q.Search.FilteringOptions, o => o.MapFrom(r =>
-                    new FilteringOptions
-                    {
-                        Criteria =
-                        {
-                            new FilterCriteria
-                            {
-                                Field = "AccountId",
-                                Operator = FilterOperator.Equals,
-                                Value = r.ToString()
-                            }
-                        }
-                    }));
-            
+
             CreateMap<OrderResponse, Contracts.Assets.Responses.OrderResponse>();
 
             CreateMap<StockStatisticsResponse, Contracts.Assets.Responses.StockStatisticsResponse>();

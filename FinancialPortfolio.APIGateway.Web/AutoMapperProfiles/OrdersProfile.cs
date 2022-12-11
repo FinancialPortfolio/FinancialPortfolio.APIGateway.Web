@@ -44,6 +44,21 @@ namespace FinancialPortfolio.APIGateway.Web.AutoMapperProfiles
             
             CreateMap<(RepeatedField<OrderResponse> orders, RepeatedField<StockResponse> stocks), IEnumerable<Contracts.Orders.Responses.OrderResponse>>()
                 .ConvertUsing(new OrderResponseConverter());
+            
+            CreateMap<(Guid value, string name), GetOrdersQuery>()
+                .ForPath(q => q.Search.FilteringOptions, o => o.MapFrom(r =>
+                    new FilteringOptions
+                    {
+                        Criteria =
+                        {
+                            new FilterCriteria
+                            {
+                                Field = r.name,
+                                Operator = FilterOperator.Equals,
+                                Value = r.value.ToString()
+                            }
+                        }
+                    }));
         }
         
         private class OrderResponseConverter : ITypeConverter<(RepeatedField<OrderResponse> orders, RepeatedField<StockResponse> stocks), IEnumerable<Contracts.Orders.Responses.OrderResponse>>

@@ -1,4 +1,5 @@
 using System.Threading.Tasks;
+using AutoMapper;
 using CategoryApi;
 using FinancialPortfolio.APIGateway.Contracts.Categories.Commands;
 using FinancialPortfolio.APIGateway.Contracts.Categories.Requests;
@@ -9,6 +10,8 @@ using FinancialPortfolio.ProblemDetails.WebApi.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using OrderApi;
+using CategoryResponse = FinancialPortfolio.APIGateway.Contracts.Categories.Responses.CategoryResponse;
 
 namespace FinancialPortfolio.APIGateway.Web.Controllers
 {
@@ -24,13 +27,17 @@ namespace FinancialPortfolio.APIGateway.Web.Controllers
     {
         private readonly ICommandPublisher _commandPublisher;
         private readonly Category.CategoryClient _categoryClient;
+        private readonly Order.OrderClient _orderClient;
+        private readonly IMapper _mapper;
 
         public CategoriesController(
             ICommandPublisher commandPublisher, IUserInfoService userInfoService, 
-            Category.CategoryClient categoryClient) : base(userInfoService)
+            Category.CategoryClient categoryClient, Order.OrderClient orderClient, IMapper mapper) : base(userInfoService)
         {
             _commandPublisher = commandPublisher;
             _categoryClient = categoryClient;
+            _orderClient = orderClient;
+            _mapper = mapper;
         }
         
         [HttpGet]
@@ -43,7 +50,12 @@ namespace FinancialPortfolio.APIGateway.Web.Controllers
             var query = new GetCategoryQuery { UserId = userId.ToString() };
             var response = await _categoryClient.GetAsync(query);
             
-            return WebApiResponse.Success(response);
+            var ordersQuery = _mapper.Map<GetOrdersQuery>((userId, "UserId"));
+            var ordersResponse = await _orderClient.GetAllAsync(ordersQuery);
+            
+            var categoryResponse = _mapper.Map<CategoryResponse>((response, ordersResponse.Orders));
+            
+            return WebApiResponse.Success(categoryResponse);
         }
         
         [HttpPut]

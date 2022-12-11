@@ -17,20 +17,19 @@ message CategoryResponse {
     double expectedAllocation = 4;
     string userId = 5;
     repeated SubCategoryResponse subCategories = 6;
-    repeated CategoryStockResponse stocks = 7;
 }
 
 message SubCategoryResponse {
-    string id = 1;
-    string name = 2;
-    string description = 3;
-    double expectedAllocation = 4;
-    repeated SubCategoryResponse subCategories = 5;
-    repeated CategoryStockResponse stocks = 6;
+    string name = 1;
+    string description = 2;
+    double expectedAllocation = 3;
+    repeated SubCategoryResponse subCategories = 4;
+    repeated CategoryStockResponse stocks = 5;
 }
 
 message CategoryStockResponse {
-    string id = 1;
-    double expectedAllocation = 2;
+    string name = 1;
+    string symbol = 2;
     string assetId = 3;
+    double expectedAllocation = 4;
 }

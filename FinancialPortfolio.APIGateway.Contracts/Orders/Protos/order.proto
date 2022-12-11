@@ -31,6 +31,7 @@ message OrderResponse {
     double commission = 6;
     string assetId = 7;
     string accountId = 8;
+    string userId = 9;
 }
 
 enum OrderType {
