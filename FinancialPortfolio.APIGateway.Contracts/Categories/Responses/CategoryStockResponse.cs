@@ -11,7 +11,7 @@ namespace FinancialPortfolio.APIGateway.Contracts.Categories.Responses
 
         public Guid AssetId { get; set; }
         
-        public double ExpectedAllocation { get; set; }
+        public double ExpectedAllocationInPercentage { get; set; }
 
         public List<OrderResponse> Orders { get; set; }
     }

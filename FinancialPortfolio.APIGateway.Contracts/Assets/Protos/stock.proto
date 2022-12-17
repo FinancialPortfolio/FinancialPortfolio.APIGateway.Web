@@ -29,10 +29,10 @@ message StockResponse {
     string exchange = 4;
     string type = 5;
     string currency = 6;
-    StockStatisticsResponse stockStatistics = 7;
+    AssetStatisticsResponse assetStatistics = 7;
 }
 
-message StockStatisticsResponse {
+message AssetStatisticsResponse {
     double currentPrice = 1;
     string retrievalDateTime = 2;
     double earningsPerShare = 3;

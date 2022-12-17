@@ -14,7 +14,7 @@ message CategoryResponse {
     string id = 1;
     string name = 2;
     string description = 3;
-    double expectedAllocation = 4;
+    double expectedAllocationInPercentage = 4;
     string userId = 5;
     repeated SubCategoryResponse subCategories = 6;
 }
@@ -22,7 +22,7 @@ message CategoryResponse {
 message SubCategoryResponse {
     string name = 1;
     string description = 2;
-    double expectedAllocation = 3;
+    double expectedAllocationInPercentage = 3;
     repeated SubCategoryResponse subCategories = 4;
     repeated CategoryStockResponse stocks = 5;
 }
@@ -31,5 +31,5 @@ message CategoryStockResponse {
     string name = 1;
     string symbol = 2;
     string assetId = 3;
-    double expectedAllocation = 4;
+    double expectedAllocationInPercentage = 4;
 }

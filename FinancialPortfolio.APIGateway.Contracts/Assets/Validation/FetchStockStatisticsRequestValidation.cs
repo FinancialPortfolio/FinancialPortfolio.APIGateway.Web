@@ -3,9 +3,9 @@ using FluentValidation;
 
 namespace FinancialPortfolio.APIGateway.Contracts.Assets.Validation
 {
-    public class FetchStockStatisticsRequestValidation : AbstractValidator<FetchStockStatisticsRequest>
+    public class FetchAssetStatisticsRequestValidation : AbstractValidator<FetchAssetStatisticsRequest>
     {
-        public FetchStockStatisticsRequestValidation()
+        public FetchAssetStatisticsRequestValidation()
         {
             RuleFor(x => x.Symbols).NotNull();
         }

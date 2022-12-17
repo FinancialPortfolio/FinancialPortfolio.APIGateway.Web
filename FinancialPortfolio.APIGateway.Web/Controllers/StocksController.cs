@@ -44,12 +44,12 @@ namespace FinancialPortfolio.APIGateway.Web.Controllers
             return WebApiResponse.Success(response.Stocks, response.TotalCount);
         }
         
-        [HttpPatch("stock-statistics")]
+        [HttpPatch("asset-statistics")]
         [ProducesResponseType(typeof(WebApiResponse), StatusCodes.Status202Accepted)]
-        public async Task<ActionResult<WebApiResponse>> FetchStockStatisticsAsync([FromBody] FetchStockStatisticsRequest request)
+        public async Task<ActionResult<WebApiResponse>> FetchAssetStatisticsAsync([FromBody] FetchAssetStatisticsRequest request)
         {
-            var fetchStockStatisticsCommand = new FetchStockStatisticsCommand(request.Symbols);
-            await _commandPublisher.SendAsync(fetchStockStatisticsCommand);
+            var fetchAssetStatisticsCommand = new FetchAssetStatisticsCommand(request.Symbols);
+            await _commandPublisher.SendAsync(fetchAssetStatisticsCommand);
             
             return WebApiResponse.Accepted();
         }

@@ -29,7 +29,7 @@ namespace FinancialPortfolio.APIGateway.Web.AutoMapperProfiles
                     Id = Guid.Parse(source.category.Id),
                     Name = source.category.Name,
                     Description = source.category.Description,
-                    ExpectedAllocation = source.category.ExpectedAllocation,
+                    ExpectedAllocationInPercentage = source.category.ExpectedAllocationInPercentage,
                     SubCategories = source.category.SubCategories.Select(c => MapSubCategory(c, source.orders, context))
                 };
 
@@ -43,7 +43,7 @@ namespace FinancialPortfolio.APIGateway.Web.AutoMapperProfiles
             {
                 Name = category.Name,
                 Description = category.Description,
-                ExpectedAllocation = category.ExpectedAllocation,
+                ExpectedAllocationInPercentage = category.ExpectedAllocationInPercentage,
                 SubCategories = category.SubCategories.Select(c => MapSubCategory(c, orders, context)),
                 Stocks = category.Stocks.Select(s => MapCategoryStock(s, orders, context))
             };
@@ -59,7 +59,7 @@ namespace FinancialPortfolio.APIGateway.Web.AutoMapperProfiles
                 Name = stock.Name,
                 Symbol = stock.Symbol,
                 AssetId = Guid.Parse(stock.AssetId),
-                ExpectedAllocation = stock.ExpectedAllocation,
+                ExpectedAllocationInPercentage = stock.ExpectedAllocationInPercentage,
                 Orders = context.Mapper.Map<List<OrderResponse>>(stockOrders)
             };
 

@@ -10,7 +10,7 @@ namespace FinancialPortfolio.APIGateway.Contracts.Categories.Requests
         
         public string Description { get; set; }
         
-        public double ExpectedAllocation { get; set; }
+        public double ExpectedAllocationInPercentage { get; set; }
 
         public Guid UserId { get; set; }
         

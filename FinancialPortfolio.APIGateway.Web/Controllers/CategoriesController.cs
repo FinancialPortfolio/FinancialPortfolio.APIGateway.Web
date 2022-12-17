@@ -65,7 +65,7 @@ namespace FinancialPortfolio.APIGateway.Web.Controllers
             var userId = await GetUserIdAsync();
             
             var updateCategoryCommand = new UpdateCategoryCommand(request.Name, request.Description, 
-                request.ExpectedAllocation, userId, request.SubCategories, request.Stocks);
+                request.ExpectedAllocationInPercentage, userId, request.SubCategories, request.Stocks);
             await _commandPublisher.SendAsync(updateCategoryCommand);
             
             return WebApiResponse.Accepted();

@@ -15,7 +15,7 @@ namespace FinancialPortfolio.APIGateway.Contracts.Assets.Responses
         
         public string Exchange { get; set; }
         
-        public StockStatisticsResponse StockStatistics { get; set; }
+        public AssetStatisticsResponse AssetStatistics { get; set; }
 
         public double NumberOfShares => Orders.Aggregate(0.0, (totalShares, order) =>
         {

@@ -5,11 +5,11 @@ using FinancialPortfolio.Messaging.Attributes;
 namespace FinancialPortfolio.APIGateway.Contracts.Assets.Commands
 {
     [Message("Assets", "Asset")]
-    public record FetchStockStatisticsCommand : ICommand
+    public record FetchAssetStatisticsCommand : ICommand
     {
         public IEnumerable<string> Symbols { get; }
 
-        public FetchStockStatisticsCommand(IEnumerable<string> symbols)
+        public FetchAssetStatisticsCommand(IEnumerable<string> symbols)
         {
             Symbols = symbols;
         }

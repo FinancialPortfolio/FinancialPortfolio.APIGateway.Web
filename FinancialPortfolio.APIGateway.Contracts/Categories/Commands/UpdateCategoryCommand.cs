@@ -13,7 +13,7 @@ namespace FinancialPortfolio.APIGateway.Contracts.Categories.Commands
         
         public string Description { get; }
         
-        public double ExpectedAllocation { get; }
+        public double ExpectedAllocationInPercentage { get; }
 
         public Guid UserId { get; }
         
@@ -21,12 +21,12 @@ namespace FinancialPortfolio.APIGateway.Contracts.Categories.Commands
         
         public IEnumerable<CategoryStock> Stocks { get; }
 
-        public UpdateCategoryCommand(string name, string description, double expectedAllocation, 
+        public UpdateCategoryCommand(string name, string description, double expectedAllocationInPercentage, 
             Guid userId, IEnumerable<SubCategory> subCategories, IEnumerable<CategoryStock> stocks)
         {
             Name = name;
             Description = description;
-            ExpectedAllocation = expectedAllocation;
+            ExpectedAllocationInPercentage = expectedAllocationInPercentage;
             UserId = userId;
             SubCategories = subCategories;
             Stocks = stocks;

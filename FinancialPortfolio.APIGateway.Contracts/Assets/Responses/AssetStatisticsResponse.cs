@@ -2,7 +2,7 @@ using System;
 
 namespace FinancialPortfolio.APIGateway.Contracts.Assets.Responses
 {
-    public record StockStatisticsResponse
+    public record AssetStatisticsResponse
     {
         public decimal CurrentPrice { get; set; }
         

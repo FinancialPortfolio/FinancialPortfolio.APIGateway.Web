@@ -10,7 +10,7 @@ using OrderApi;
 using SearchLibrary;
 using StockApi;
 using OrderResponse = OrderApi.OrderResponse;
-using StockStatisticsResponse = StockApi.StockStatisticsResponse;
+using AssetStatisticsResponse = StockApi.AssetStatisticsResponse;
 
 namespace FinancialPortfolio.APIGateway.Web.AutoMapperProfiles
 {
@@ -41,14 +41,14 @@ namespace FinancialPortfolio.APIGateway.Web.AutoMapperProfiles
 
             CreateMap<OrderResponse, Contracts.Assets.Responses.OrderResponse>();
 
-            CreateMap<StockStatisticsResponse, Contracts.Assets.Responses.StockStatisticsResponse>();
+            CreateMap<AssetStatisticsResponse, Contracts.Assets.Responses.AssetStatisticsResponse>();
             
             CreateMap<(StockResponse stock, IEnumerable<OrderResponse> orders), AccountStockResponse>()
                 .ForMember(s => s.Id, o => o.MapFrom(d => d.stock.Id))
                 .ForMember(s => s.Name, o => o.MapFrom(d => d.stock.Name))
                 .ForMember(s => s.Symbol, o => o.MapFrom(d => d.stock.Symbol))
                 .ForMember(s => s.Exchange, o => o.MapFrom(d => d.stock.Exchange))
-                .ForMember(s => s.StockStatistics, o => o.MapFrom(d => d.stock.StockStatistics))
+                .ForMember(s => s.AssetStatistics, o => o.MapFrom(d => d.stock.AssetStatistics))
                 .ForMember(s => s.Orders, o => o.MapFrom(d => d.orders));
 
             CreateMap<(RepeatedField<StockResponse> stocks, RepeatedField<OrderResponse> orders), IEnumerable<AccountStockResponse>>()

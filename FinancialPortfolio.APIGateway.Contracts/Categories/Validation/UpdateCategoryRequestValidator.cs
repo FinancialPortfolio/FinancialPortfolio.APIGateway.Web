@@ -9,7 +9,7 @@ namespace FinancialPortfolio.APIGateway.Contracts.Categories.Validation
         {
             RuleFor(x => x.Name).NotEmpty().MaximumLength(50);
             RuleFor(x => x.Description).NotEmpty().MaximumLength(50);
-            RuleFor(x => x.ExpectedAllocation).NotNull();
+            RuleFor(x => x.ExpectedAllocationInPercentage).NotNull();
             RuleFor(x => x.UserId).NotNull();
             
             RuleForEach(x => x.Stocks).SetValidator(new CategoryStockValidator());
