@@ -3,9 +3,9 @@ using FluentValidation;
 
 namespace FinancialPortfolio.APIGateway.Contracts.Categories.Validation
 {
-    public class CategoryStockValidator : AbstractValidator<CategoryStock> 
+    public class CategoryAssetValidator : AbstractValidator<CategoryAsset> 
     {
-        public CategoryStockValidator()
+        public CategoryAssetValidator()
         {
             RuleFor(x => x.Name).NotEmpty().MaximumLength(50);
             RuleFor(x => x.Symbol).NotEmpty().MaximumLength(50);

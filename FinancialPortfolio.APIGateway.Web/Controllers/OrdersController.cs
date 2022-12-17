@@ -12,7 +12,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using OrderApi;
-using StockApi;
+using AssetApi;
 using OrderResponse = FinancialPortfolio.APIGateway.Contracts.Orders.Responses.OrderResponse;
 
 namespace FinancialPortfolio.APIGateway.Web.Controllers
@@ -29,15 +29,15 @@ namespace FinancialPortfolio.APIGateway.Web.Controllers
     {
         private readonly ICommandPublisher _commandPublisher;
         private readonly Order.OrderClient _orderClient;
-        private readonly Stock.StockClient _stockClient;
+        private readonly Asset.AssetClient _assetClient;
         private readonly IMapper _mapper;
 
         public OrdersController(ICommandPublisher commandPublisher,
-            Order.OrderClient orderClient, Stock.StockClient stockClient, IMapper mapper)
+            Order.OrderClient orderClient, Asset.AssetClient assetClient, IMapper mapper)
         {
             _commandPublisher = commandPublisher;
             _orderClient = orderClient;
-            _stockClient = stockClient;
+            _assetClient = assetClient;
             _mapper = mapper;
         }
 
@@ -49,11 +49,11 @@ namespace FinancialPortfolio.APIGateway.Web.Controllers
             var ordersQuery = _mapper.Map<GetOrdersQuery>((request, accountId));
             var ordersResponse = await _orderClient.GetAllAsync(ordersQuery);
 
-            var stockIds = ordersResponse.Orders.Select(order => Guid.Parse(order.AssetId));
-            var stocksQuery = _mapper.Map<GetStocksQuery>(stockIds);
-            var stocksResponse = await _stockClient.GetAllAsync(stocksQuery);
+            var assetIds = ordersResponse.Orders.Select(order => Guid.Parse(order.AssetId));
+            var assetsQuery = _mapper.Map<GetAssetsQuery>(assetIds);
+            var assetsResponse = await _assetClient.GetAllAsync(assetsQuery);
             
-            var orders = _mapper.Map<IEnumerable<OrderResponse>>((ordersResponse.Orders, stocksResponse.Stocks));
+            var orders = _mapper.Map<IEnumerable<OrderResponse>>((ordersResponse.Orders, assetsResponse.Assets));
             
             return WebApiResponse.Success(orders, ordersResponse.TotalCount);
         }
@@ -66,10 +66,10 @@ namespace FinancialPortfolio.APIGateway.Web.Controllers
             var ordersQuery = new GetOrderQuery { Id = id.ToString() };
             var order = await _orderClient.GetAsync(ordersQuery);
             
-            var stockQuery = new GetStockQuery { Id = order.AssetId };
-            var stock = await _stockClient.GetAsync(stockQuery);
+            var assetQuery = new GetAssetQuery { Id = order.AssetId };
+            var asset = await _assetClient.GetAsync(assetQuery);
 
-            var response = _mapper.Map<OrderResponse>((order, stock));
+            var response = _mapper.Map<OrderResponse>((order, asset));
 
             return WebApiResponse.Success(response);
         }

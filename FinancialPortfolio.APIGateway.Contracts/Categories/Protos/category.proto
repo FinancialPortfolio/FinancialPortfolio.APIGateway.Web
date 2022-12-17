@@ -24,10 +24,10 @@ message SubCategoryResponse {
     string description = 2;
     double expectedAllocationInPercentage = 3;
     repeated SubCategoryResponse subCategories = 4;
-    repeated CategoryStockResponse stocks = 5;
+    repeated CategoryAssetResponse assets = 5;
 }
 
-message CategoryStockResponse {
+message CategoryAssetResponse {
     string name = 1;
     string symbol = 2;
     string assetId = 3;

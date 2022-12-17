@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace FinancialPortfolio.APIGateway.Contracts.Categories.Responses
 {
-    public class CategoryStockResponse
+    public class CategoryAssetResponse
     {
         public string Name { get; set; }
         

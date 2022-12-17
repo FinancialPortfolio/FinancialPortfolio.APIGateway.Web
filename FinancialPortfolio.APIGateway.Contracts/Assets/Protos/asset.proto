@@ -2,27 +2,27 @@
 
 import "Shared/Protos/search.proto";
 
-package StockApi;
+package AssetApi;
 
-service Stock {
-    rpc Get (GetStockQuery) returns (StockResponse) {}
-    rpc GetAll (GetStocksQuery) returns (StocksResponse) {}
+service Asset {
+    rpc Get (GetAssetQuery) returns (AssetResponse) {}
+    rpc GetAll (GetAssetsQuery) returns (AssetsResponse) {}
 }
 
-message GetStockQuery {
+message GetAssetQuery {
     string id = 1;
 }
 
-message GetStocksQuery {
+message GetAssetsQuery {
     SearchLibrary.SearchOptions search = 1;
 }
 
-message StocksResponse {
-    repeated StockResponse stocks = 1;
+message AssetsResponse {
+    repeated AssetResponse assets = 1;
     int64 totalCount = 2;
 }
 
-message StockResponse {
+message AssetResponse {
     string id = 1;
     string symbol = 2;
     string name = 3;

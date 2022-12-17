@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using FinancialPortfolio.CQRS.Commands;
 using FinancialPortfolio.Messaging.Attributes;
@@ -7,11 +8,11 @@ namespace FinancialPortfolio.APIGateway.Contracts.Assets.Commands
     [Message("Assets", "Asset")]
     public record FetchAssetStatisticsCommand : ICommand
     {
-        public IEnumerable<string> Symbols { get; }
+        public List<Guid> Ids { get; }
 
-        public FetchAssetStatisticsCommand(IEnumerable<string> symbols)
+        public FetchAssetStatisticsCommand(List<Guid> ids)
         {
-            Symbols = symbols;
+            Ids = ids;
         }
     }
 }

@@ -12,15 +12,15 @@ namespace FinancialPortfolio.APIGateway.Contracts.Categories.Models
         
         public IEnumerable<SubCategory> SubCategories { get; private set; }
         
-        public IEnumerable<CategoryStock> Stocks { get; private set; }
+        public IEnumerable<CategoryAsset> Assets { get; private set; }
 
-        public SubCategory(string name, string description, double expectedAllocationInPercentage, IEnumerable<SubCategory> subCategories = null, IEnumerable<CategoryStock> stocks = null)
+        public SubCategory(string name, string description, double expectedAllocationInPercentage, IEnumerable<SubCategory> subCategories = null, IEnumerable<CategoryAsset> assets = null)
         {
             Name = name;
             Description = description;
             ExpectedAllocationInPercentage = expectedAllocationInPercentage;
             SubCategories = subCategories;
-            Stocks = stocks;
+            Assets = assets;
         }
     }
 }

@@ -19,17 +19,17 @@ namespace FinancialPortfolio.APIGateway.Contracts.Categories.Commands
         
         public IEnumerable<SubCategory> SubCategories { get; }
         
-        public IEnumerable<CategoryStock> Stocks { get; }
+        public IEnumerable<CategoryAsset> Assets { get; }
 
         public UpdateCategoryCommand(string name, string description, double expectedAllocationInPercentage, 
-            Guid userId, IEnumerable<SubCategory> subCategories, IEnumerable<CategoryStock> stocks)
+            Guid userId, IEnumerable<SubCategory> subCategories, IEnumerable<CategoryAsset> assets)
         {
             Name = name;
             Description = description;
             ExpectedAllocationInPercentage = expectedAllocationInPercentage;
             UserId = userId;
             SubCategories = subCategories;
-            Stocks = stocks;
+            Assets = assets;
         }
     }
 }

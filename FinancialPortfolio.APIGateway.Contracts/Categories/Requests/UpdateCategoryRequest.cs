@@ -16,6 +16,6 @@ namespace FinancialPortfolio.APIGateway.Contracts.Categories.Requests
         
         public IEnumerable<SubCategory> SubCategories { get; set; }
         
-        public IEnumerable<CategoryStock> Stocks { get; set; }
+        public IEnumerable<CategoryAsset> Assets { get; set; }
     }
 }

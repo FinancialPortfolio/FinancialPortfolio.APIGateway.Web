@@ -36,17 +36,6 @@
             <Generator>MSBuild:Compile</Generator>
         </Protobuf>
         
-        <None Remove="Assets\protos\stock.proto" />
-        <Protobuf Include="Assets\Protos\stock.proto">
-            <GrpcServices>Both</GrpcServices>
-            <Access>Public</Access>
-            <ProtoCompile>True</ProtoCompile>
-            <ProtoRoot></ProtoRoot>
-            <CompileOutputs>True</CompileOutputs>
-            <OutputDir>obj\Debug\net5.0\</OutputDir>
-            <Generator>MSBuild:Compile</Generator>
-        </Protobuf>
-
         <None Remove="Orders\Protos\order.proto" />
         <Protobuf Include="Orders\Protos\order.proto">
             <GrpcServices>Both</GrpcServices>
@@ -62,6 +51,8 @@
         <Protobuf Include="Shared\Protos\search.proto" />
         <None Remove="Categories\Protos\category.proto" />
         <Protobuf Include="Categories\Protos\category.proto" />
+        <None Remove="Assets\Protos\asset.proto" />
+        <Protobuf Include="Assets\Protos\asset.proto" />
     </ItemGroup>
 
     <ItemGroup>

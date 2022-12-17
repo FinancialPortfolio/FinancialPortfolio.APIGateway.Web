@@ -6,7 +6,7 @@ using FinancialPortfolio.APIGateway.Contracts.Orders.Requests;
 using Google.Protobuf.Collections;
 using SearchLibrary;
 using OrderApi;
-using StockApi;
+using AssetApi;
 
 namespace FinancialPortfolio.APIGateway.Web.AutoMapperProfiles
 {
@@ -31,18 +31,18 @@ namespace FinancialPortfolio.APIGateway.Web.AutoMapperProfiles
                         }
                     }));
             
-            CreateMap<StockResponse, Contracts.Orders.Responses.StockResponse>();
+            CreateMap<AssetResponse, Contracts.Orders.Responses.AssetResponse>();
             
-            CreateMap<(OrderResponse order, StockResponse stock), Contracts.Orders.Responses.OrderResponse>()
+            CreateMap<(OrderResponse order, AssetResponse asset), Contracts.Orders.Responses.OrderResponse>()
                 .ForMember(s => s.Id, o => o.MapFrom(d => d.order.Id))
                 .ForMember(s => s.Type, o => o.MapFrom(d => d.order.Type))
                 .ForMember(s => s.Amount, o => o.MapFrom(d => d.order.Amount))
                 .ForMember(s => s.Price, o => o.MapFrom(d => d.order.Price))
                 .ForMember(s => s.DateTime, o => o.MapFrom(d => d.order.DateTime))
                 .ForMember(s => s.Commission, o => o.MapFrom(d => d.order.Commission))
-                .ForMember(s => s.Stock, o => o.MapFrom(d => d.stock));
+                .ForMember(s => s.Asset, o => o.MapFrom(d => d.asset));
             
-            CreateMap<(RepeatedField<OrderResponse> orders, RepeatedField<StockResponse> stocks), IEnumerable<Contracts.Orders.Responses.OrderResponse>>()
+            CreateMap<(RepeatedField<OrderResponse> orders, RepeatedField<AssetResponse> assets), IEnumerable<Contracts.Orders.Responses.OrderResponse>>()
                 .ConvertUsing(new OrderResponseConverter());
             
             CreateMap<(Guid value, string name), GetOrdersQuery>()
@@ -61,19 +61,19 @@ namespace FinancialPortfolio.APIGateway.Web.AutoMapperProfiles
                     }));
         }
         
-        private class OrderResponseConverter : ITypeConverter<(RepeatedField<OrderResponse> orders, RepeatedField<StockResponse> stocks), IEnumerable<Contracts.Orders.Responses.OrderResponse>>
+        private class OrderResponseConverter : ITypeConverter<(RepeatedField<OrderResponse> orders, RepeatedField<AssetResponse> assets), IEnumerable<Contracts.Orders.Responses.OrderResponse>>
         {
             public IEnumerable<Contracts.Orders.Responses.OrderResponse> Convert(
-                (RepeatedField<OrderResponse> orders, RepeatedField<StockResponse> stocks) source, IEnumerable<Contracts.Orders.Responses.OrderResponse> destination,
+                (RepeatedField<OrderResponse> orders, RepeatedField<AssetResponse> assets) source, IEnumerable<Contracts.Orders.Responses.OrderResponse> destination,
                 ResolutionContext context)
             {
                 var result = new List<Contracts.Orders.Responses.OrderResponse>();
 
                 foreach (var order in source.orders)
                 {
-                    var stock = source.stocks.First(s => s.Id == order.AssetId);
+                    var asset = source.assets.First(s => s.Id == order.AssetId);
                     
-                    var mappedOrder = context.Mapper.Map<Contracts.Orders.Responses.OrderResponse>((order, stock));
+                    var mappedOrder = context.Mapper.Map<Contracts.Orders.Responses.OrderResponse>((order, asset));
                     result.Add(mappedOrder);   
                 }
 

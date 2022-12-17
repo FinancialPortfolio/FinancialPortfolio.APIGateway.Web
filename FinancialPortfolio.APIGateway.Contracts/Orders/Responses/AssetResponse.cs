@@ -2,7 +2,7 @@ using System;
 
 namespace FinancialPortfolio.APIGateway.Contracts.Orders.Responses
 {
-    public record StockResponse
+    public record AssetResponse
     {
         public Guid Id { get; set; }
         

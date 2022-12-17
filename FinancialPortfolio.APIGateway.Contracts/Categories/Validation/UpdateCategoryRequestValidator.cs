@@ -12,7 +12,7 @@ namespace FinancialPortfolio.APIGateway.Contracts.Categories.Validation
             RuleFor(x => x.ExpectedAllocationInPercentage).NotNull();
             RuleFor(x => x.UserId).NotNull();
             
-            RuleForEach(x => x.Stocks).SetValidator(new CategoryStockValidator());
+            RuleForEach(x => x.Assets).SetValidator(new CategoryAssetValidator());
             RuleForEach(x => x.SubCategories).SetValidator(new SubCategoryValidator());
 
         }

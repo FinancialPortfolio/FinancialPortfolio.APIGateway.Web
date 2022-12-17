@@ -17,6 +17,6 @@ namespace FinancialPortfolio.APIGateway.Contracts.Orders.Responses
         
         public decimal Commission { get; set; }
         
-        public StockResponse Stock { get; set; }
+        public AssetResponse Asset { get; set; }
     }
 }

@@ -11,7 +11,7 @@ namespace FinancialPortfolio.APIGateway.Contracts.Categories.Validation
             RuleFor(x => x.Description).NotEmpty().MaximumLength(50);
             RuleFor(x => x.ExpectedAllocationInPercentage).NotNull();
             
-            RuleForEach(x => x.Stocks).SetValidator(new CategoryStockValidator());
+            RuleForEach(x => x.Assets).SetValidator(new CategoryAssetValidator());
             RuleForEach(x => x.SubCategories).SetValidator(new SubCategoryValidator());
         }
     }

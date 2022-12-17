@@ -2,7 +2,7 @@ using System;
 
 namespace FinancialPortfolio.APIGateway.Contracts.Categories.Models
 {
-    public record CategoryStock
+    public record CategoryAsset
     {
         public string Name { get; private set; }
         
@@ -10,7 +10,7 @@ namespace FinancialPortfolio.APIGateway.Contracts.Categories.Models
 
         public Guid AssetId { get; private set; }
 
-        public CategoryStock(string name, string symbol, Guid assetId)
+        public CategoryAsset(string name, string symbol, Guid assetId)
         {
             Name = name;
             Symbol = symbol;

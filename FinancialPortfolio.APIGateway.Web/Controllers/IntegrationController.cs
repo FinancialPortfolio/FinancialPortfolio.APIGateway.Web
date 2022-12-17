@@ -15,7 +15,7 @@ using FinancialPortfolio.ProblemDetails.WebApi.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using StockApi;
+using AssetApi;
 
 namespace FinancialPortfolio.APIGateway.Web.Controllers
 {
@@ -31,15 +31,15 @@ namespace FinancialPortfolio.APIGateway.Web.Controllers
     {
         private readonly ICommandPublisher _commandPublisher;
         private readonly IIntegrationServiceFactory _integrationServiceFactory;
-        private readonly Stock.StockClient _stockClient;
+        private readonly Asset.AssetClient _assetClient;
         private readonly IMapper _mapper;
 
         public IntegrationController(IUserInfoService userInfoService, ICommandPublisher commandPublisher, 
-            IIntegrationServiceFactory integrationServiceFactory, Stock.StockClient stockClient, IMapper mapper) : base(userInfoService)
+            IIntegrationServiceFactory integrationServiceFactory, Asset.AssetClient assetClient, IMapper mapper) : base(userInfoService)
         {
             _commandPublisher = commandPublisher;
             _integrationServiceFactory = integrationServiceFactory;
-            _stockClient = stockClient;
+            _assetClient = assetClient;
             _mapper = mapper;
         }
         
@@ -76,12 +76,12 @@ namespace FinancialPortfolio.APIGateway.Web.Controllers
         private async Task<IntegrationFileValidationResponse> ValidateIntegrationFileAsync(IEnumerable<IntegrateOrderCommand> orders)
         {
             var invalidOrders = new List<InvalidOrderResponse>();
-            var stocks = await GetStocksAsync(orders);
+            var assets = await GetAssetsAsync(orders);
             
             foreach (var order in orders)
             {
-                var stock = stocks.FirstOrDefault(stock => Compare(order, stock));
-                if (stock is not null)
+                var asset = assets.FirstOrDefault(asset => Compare(order, asset));
+                if (asset is not null)
                     continue;
 
                 var invalidOrder = new InvalidOrderResponse(order.Symbol, order.Exchange, order.Currency, order.DateTime, order.Amount);
@@ -91,27 +91,27 @@ namespace FinancialPortfolio.APIGateway.Web.Controllers
             return new IntegrationFileValidationResponse(invalidOrders);
         }
 
-        private static bool Compare(IntegrateOrderCommand order, StockResponse stock)
+        private static bool Compare(IntegrateOrderCommand order, AssetResponse asset)
         {
-            if (order.Symbol != stock.Symbol)
+            if (order.Symbol != asset.Symbol)
                 return false;
             
-            if (order.Currency is not null && order.Currency != stock.Currency)
+            if (order.Currency is not null && order.Currency != asset.Currency)
                 return false;
             
-            if (order.Exchange is not null && order.Exchange != stock.Exchange)
+            if (order.Exchange is not null && order.Exchange != asset.Exchange)
                 return false;
 
             return true;
         }
 
-        private async Task<IEnumerable<StockResponse>> GetStocksAsync(IEnumerable<IntegrateOrderCommand> orders)
+        private async Task<IEnumerable<AssetResponse>> GetAssetsAsync(IEnumerable<IntegrateOrderCommand> orders)
         {
             var symbols = orders.Select(order => order.Symbol);
-            var stocksQuery = _mapper.Map<GetStocksQuery>(symbols);
-            var stocksResponse = await _stockClient.GetAllAsync(stocksQuery);
+            var assetsQuery = _mapper.Map<GetAssetsQuery>(symbols);
+            var assetsResponse = await _assetClient.GetAllAsync(assetsQuery);
             
-            return stocksResponse.Stocks;
+            return assetsResponse.Assets;
         }
     }
 }

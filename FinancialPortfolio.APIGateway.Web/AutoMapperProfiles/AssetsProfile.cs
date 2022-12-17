@@ -1,21 +1,21 @@
 using AutoMapper;
 using FinancialPortfolio.APIGateway.Contracts.Assets.Requests;
 using SearchLibrary;
-using StockApi;
+using AssetApi;
 
 namespace FinancialPortfolio.APIGateway.Web.AutoMapperProfiles
 {
-    public class StocksProfile : Profile
+    public class AssetsProfile : Profile
     {
-        public StocksProfile()
+        public AssetsProfile()
         {
-            CreateMap<GetStocksRequest, GetStocksQuery>()
+            CreateMap<GetAssetsRequest, GetAssetsQuery>()
                 .ForPath(q => q.Search.PaginationOptions, o => o.MapFrom(r => r.Pagination))
                 .ForPath(q => q.Search.SortingOptions, o => o.MapFrom(r => r.Sorting))
                 .ForPath(q => q.Search.FilteringOptions, o => o.MapFrom(r => MapFilteringOptions(r)));
         }
 
-        private static FilteringOptions MapFilteringOptions(GetStocksRequest request)
+        private static FilteringOptions MapFilteringOptions(GetAssetsRequest request)
         {
             var filteringOptions = new FilteringOptions { Criteria = {} };
             

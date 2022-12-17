@@ -3,7 +3,7 @@ using FinancialPortfolio.Search.Sorting;
 
 namespace FinancialPortfolio.APIGateway.Contracts.Assets.Requests
 {
-    public record GetStocksRequest
+    public record GetAssetsRequest
     {
         public PaginationOptions Pagination { get; set; }
         

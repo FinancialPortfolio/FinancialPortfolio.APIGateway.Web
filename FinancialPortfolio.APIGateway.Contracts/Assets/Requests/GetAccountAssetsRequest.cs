@@ -1,6 +1,6 @@
 namespace FinancialPortfolio.APIGateway.Contracts.Assets.Requests
 {
-    public class GetAccountStocksRequest
+    public class GetAccountAssetsRequest
     {
         public string Type { get; set; }
     }

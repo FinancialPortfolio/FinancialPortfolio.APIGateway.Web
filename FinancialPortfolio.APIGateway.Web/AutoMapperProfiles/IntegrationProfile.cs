@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using AutoMapper;
 using Newtonsoft.Json;
 using SearchLibrary;
-using StockApi;
+using AssetApi;
 
 namespace FinancialPortfolio.APIGateway.Web.AutoMapperProfiles
 {
@@ -10,7 +10,7 @@ namespace FinancialPortfolio.APIGateway.Web.AutoMapperProfiles
     {
         public IntegrationProfile()
         {
-            CreateMap<IEnumerable<string>, GetStocksQuery>()
+            CreateMap<IEnumerable<string>, GetAssetsQuery>()
                 .ForPath(q => q.Search.FilteringOptions, o => o.MapFrom(symbols =>
                     new FilteringOptions
                     {

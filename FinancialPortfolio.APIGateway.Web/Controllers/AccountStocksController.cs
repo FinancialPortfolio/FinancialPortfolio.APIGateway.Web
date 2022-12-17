@@ -11,60 +11,60 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using OrderApi;
-using StockApi;
+using AssetApi;
 
 namespace FinancialPortfolio.APIGateway.Web.Controllers
 {
     [Authorize]
     [ApiController]
-    [Route("api/accounts/{accountId:guid}/stocks")]
+    [Route("api/accounts/{accountId:guid}/assets")]
     [Produces("application/json")]
     [ProducesResponseType(typeof(WebApiProblemDetails), StatusCodes.Status400BadRequest)]
     [ProducesResponseType(typeof(WebApiProblemDetails), StatusCodes.Status401Unauthorized)]
     [ProducesResponseType(typeof(WebApiProblemDetails), StatusCodes.Status403Forbidden)]
     [ProducesResponseType(typeof(WebApiProblemDetails), StatusCodes.Status500InternalServerError)]
-    public class AccountStocksController : ControllerBase
+    public class AccountAssetsController : ControllerBase
     {
         private readonly Order.OrderClient _orderClient;
-        private readonly Stock.StockClient _stockClient;
+        private readonly Asset.AssetClient _assetClient;
         private readonly IMapper _mapper;
 
-        public AccountStocksController(Order.OrderClient orderClient, Stock.StockClient stockClient, IMapper mapper)
+        public AccountAssetsController(Order.OrderClient orderClient, Asset.AssetClient assetClient, IMapper mapper)
         {
             _orderClient = orderClient;
-            _stockClient = stockClient;
+            _assetClient = assetClient;
             _mapper = mapper;
         }
 
         [HttpGet]
-        [ProducesResponseType(typeof(WebApiResponse<IEnumerable<AccountStockResponse>>), StatusCodes.Status200OK)]
-        public async Task<ActionResult<WebApiResponse<IEnumerable<AccountStockResponse>>>> GetAllAsync([FromRoute] Guid accountId, [FromQuery] GetAccountStocksRequest request)
+        [ProducesResponseType(typeof(WebApiResponse<IEnumerable<AccountAssetResponse>>), StatusCodes.Status200OK)]
+        public async Task<ActionResult<WebApiResponse<IEnumerable<AccountAssetResponse>>>> GetAllAsync([FromRoute] Guid accountId, [FromQuery] GetAccountAssetsRequest request)
         {
             var ordersQuery = _mapper.Map<GetOrdersQuery>((accountId, "AccountId"));
             var ordersResponse = await _orderClient.GetAllAsync(ordersQuery);
 
-            var stockIds = ordersResponse.Orders.Select(order => Guid.Parse(order.AssetId));
-            var stocksQuery = _mapper.Map<GetStocksQuery>((stockIds, request));
-            var stocksResponse = await _stockClient.GetAllAsync(stocksQuery);
+            var assetIds = ordersResponse.Orders.Select(order => Guid.Parse(order.AssetId));
+            var assetsQuery = _mapper.Map<GetAssetsQuery>((assetIds, request));
+            var assetsResponse = await _assetClient.GetAllAsync(assetsQuery);
             
-            var accountStocks = _mapper.Map<IEnumerable<AccountStockResponse>>((stocksResponse.Stocks, ordersResponse.Orders));
-            var availableAccountStocks = accountStocks.Where(a => a.NumberOfShares > 0);
+            var accountAssets = _mapper.Map<IEnumerable<AccountAssetResponse>>((assetsResponse.Assets, ordersResponse.Orders));
+            var availableAccountAssets = accountAssets.Where(a => a.NumberOfShares > 0);
             
-            return WebApiResponse.Success(availableAccountStocks);
+            return WebApiResponse.Success(availableAccountAssets);
         }
 
         [HttpGet("{id:guid}")]
-        [ProducesResponseType(typeof(WebApiResponse<AccountStockResponse>), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(WebApiResponse<AccountAssetResponse>), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(WebApiProblemDetails), StatusCodes.Status404NotFound)]
-        public async Task<ActionResult<WebApiResponse<AccountStockResponse>>> GetAsync([FromRoute] Guid accountId, [FromRoute] Guid id)
+        public async Task<ActionResult<WebApiResponse<AccountAssetResponse>>> GetAsync([FromRoute] Guid accountId, [FromRoute] Guid id)
         {
-            var stockQuery = new GetStockQuery { Id = id.ToString() };
-            var stock = await _stockClient.GetAsync(stockQuery);
+            var assetQuery = new GetAssetQuery { Id = id.ToString() };
+            var asset = await _assetClient.GetAsync(assetQuery);
             
-            var ordersQuery = _mapper.Map<GetOrdersQuery>(stock);
+            var ordersQuery = _mapper.Map<GetOrdersQuery>(asset);
             var orders = await _orderClient.GetAllAsync(ordersQuery);
 
-            var response = _mapper.Map<AccountStockResponse>((stock, orders));
+            var response = _mapper.Map<AccountAssetResponse>((asset, orders));
             
             return WebApiResponse.Success(response);
         }

@@ -5,7 +5,7 @@ using FinancialPortfolio.APIGateway.Contracts.Orders.Enums;
 
 namespace FinancialPortfolio.APIGateway.Contracts.Assets.Responses
 {
-    public record AccountStockResponse
+    public record AccountAssetResponse
     {
         public Guid Id { get; set; }
         
