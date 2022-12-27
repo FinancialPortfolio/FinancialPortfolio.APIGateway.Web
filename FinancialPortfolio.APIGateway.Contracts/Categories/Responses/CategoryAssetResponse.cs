@@ -8,6 +8,8 @@ namespace FinancialPortfolio.APIGateway.Contracts.Categories.Responses
         public string Name { get; set; }
         
         public string Symbol { get; set; }
+        
+        public string Type { get; set; }
 
         public Guid AssetId { get; set; }
         

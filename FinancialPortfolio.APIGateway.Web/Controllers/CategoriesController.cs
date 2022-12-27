@@ -1,4 +1,8 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
+using AssetApi;
 using AutoMapper;
 using CategoryApi;
 using FinancialPortfolio.APIGateway.Contracts.Categories.Commands;
@@ -12,6 +16,9 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using OrderApi;
 using CategoryResponse = FinancialPortfolio.APIGateway.Contracts.Categories.Responses.CategoryResponse;
+using SubCategoryResponse = FinancialPortfolio.APIGateway.Contracts.Categories.Responses.SubCategoryResponse;
+using CategoryAssetResponse = FinancialPortfolio.APIGateway.Contracts.Categories.Responses.CategoryAssetResponse;
+using OrderResponse = FinancialPortfolio.APIGateway.Contracts.Categories.Responses.OrderResponse;
 
 namespace FinancialPortfolio.APIGateway.Web.Controllers
 {
@@ -28,16 +35,18 @@ namespace FinancialPortfolio.APIGateway.Web.Controllers
         private readonly ICommandPublisher _commandPublisher;
         private readonly Category.CategoryClient _categoryClient;
         private readonly Order.OrderClient _orderClient;
+        private readonly Asset.AssetClient _assetClient;
         private readonly IMapper _mapper;
 
         public CategoriesController(
-            ICommandPublisher commandPublisher, IUserInfoService userInfoService, 
-            Category.CategoryClient categoryClient, Order.OrderClient orderClient, IMapper mapper) : base(userInfoService)
+            ICommandPublisher commandPublisher, IUserInfoService userInfoService, Category.CategoryClient categoryClient, 
+            Order.OrderClient orderClient, IMapper mapper, Asset.AssetClient assetClient) : base(userInfoService)
         {
             _commandPublisher = commandPublisher;
             _categoryClient = categoryClient;
             _orderClient = orderClient;
             _mapper = mapper;
+            _assetClient = assetClient;
         }
         
         [HttpGet]
@@ -47,15 +56,17 @@ namespace FinancialPortfolio.APIGateway.Web.Controllers
         {
             var userId = await GetUserIdAsync();
             
-            var query = new GetCategoryQuery { UserId = userId.ToString() };
-            var response = await _categoryClient.GetAsync(query);
+            var categoryQuery = new GetCategoryQuery { UserId = userId.ToString() };
+            var categoryResponse = await _categoryClient.GetAsync(categoryQuery);
             
             var ordersQuery = _mapper.Map<GetOrdersQuery>((userId, "UserId"));
             var ordersResponse = await _orderClient.GetAllAsync(ordersQuery);
             
-            var categoryResponse = _mapper.Map<CategoryResponse>((response, ordersResponse.Orders));
+            var result = _mapper.Map<CategoryResponse>((categoryResponse, ordersResponse.Orders));
+
+            await AddUncategorizedAssetsAsync(result, ordersResponse);
             
-            return WebApiResponse.Success(categoryResponse);
+            return WebApiResponse.Success(result);
         }
         
         [HttpPut]
@@ -69,6 +80,45 @@ namespace FinancialPortfolio.APIGateway.Web.Controllers
             await _commandPublisher.SendAsync(updateCategoryCommand);
             
             return WebApiResponse.Accepted();
+        }
+
+        private async Task AddUncategorizedAssetsAsync(CategoryResponse categoryResponse, OrdersResponse ordersResponse)
+        {
+            var categorizedAssets = categoryResponse.GetAssets().Select(asset => asset.AssetId);
+            var uncategorizedOrders = ordersResponse.Orders.Where(order => !categorizedAssets.Contains(Guid.Parse(order.AssetId)));
+            
+            var uncategorizedAssetIds = uncategorizedOrders.Select(order => Guid.Parse(order.AssetId)).Distinct();
+            var assetsQuery = _mapper.Map<GetAssetsQuery>(uncategorizedAssetIds);
+            var assetsResponse = await _assetClient.GetAllAsync(assetsQuery);
+
+            var assets = assetsResponse.Assets.Select(asset => MapCategoryAsset(asset, uncategorizedOrders));
+            if (!assets.Any())
+                return;
+            
+            categoryResponse.SubCategories = categoryResponse.SubCategories.Append(new SubCategoryResponse
+            {
+                Name = "Uncategorized",
+                Description = "All uncategorized assets",
+                ExpectedAllocationInPercentage = 0,
+                SubCategories = null,
+                Assets = assets
+            });
+        }
+
+        private CategoryAssetResponse MapCategoryAsset(AssetResponse asset, IEnumerable<OrderApi.OrderResponse> orders)
+        {
+            var assetOrders = orders.Where(order => order.AssetId == asset.Id);
+            var result = new CategoryAssetResponse
+            {
+                Name = asset.Name,
+                Symbol = asset.Symbol,
+                Type = asset.Type,
+                AssetId = Guid.Parse(asset.Id),
+                ExpectedAllocationInPercentage = 0,
+                Orders = _mapper.Map<List<OrderResponse>>(assetOrders)
+            };
+
+            return result;
         }
     }
 }

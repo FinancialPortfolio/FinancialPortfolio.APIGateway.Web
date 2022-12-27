@@ -45,19 +45,20 @@ namespace FinancialPortfolio.APIGateway.Web.AutoMapperProfiles
                 Description = category.Description,
                 ExpectedAllocationInPercentage = category.ExpectedAllocationInPercentage,
                 SubCategories = category.SubCategories.Select(c => MapSubCategory(c, orders, context)),
-                Assets = category.Assets.Select(s => MapCategoryStock(s, orders, context))
+                Assets = category.Assets.Select(s => MapCategoryAsset(s, orders, context))
             };
             
             return result;
         }
         
-        private static CategoryAssetResponse MapCategoryStock(CategoryApi.CategoryAssetResponse asset, RepeatedField<OrderApi.OrderResponse> orders, ResolutionContext context)
+        private static CategoryAssetResponse MapCategoryAsset(CategoryApi.CategoryAssetResponse asset, RepeatedField<OrderApi.OrderResponse> orders, ResolutionContext context)
         {
             var assetOrders = orders.Where(order => order.AssetId == asset.AssetId);
             var result = new CategoryAssetResponse
             {
                 Name = asset.Name,
                 Symbol = asset.Symbol,
+                Type = asset.Type,
                 AssetId = Guid.Parse(asset.AssetId),
                 ExpectedAllocationInPercentage = asset.ExpectedAllocationInPercentage,
                 Orders = context.Mapper.Map<List<OrderResponse>>(assetOrders)

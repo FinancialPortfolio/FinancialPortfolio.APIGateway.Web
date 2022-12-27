@@ -10,6 +10,7 @@ namespace FinancialPortfolio.APIGateway.Contracts.Categories.Validation
             RuleFor(x => x.Name).NotEmpty().MaximumLength(50);
             RuleFor(x => x.Symbol).NotEmpty().MaximumLength(50);
             RuleFor(x => x.AssetId).NotNull();
+            RuleFor(x => x.ExpectedAllocationInPercentage).NotNull();
         }
     }
 }

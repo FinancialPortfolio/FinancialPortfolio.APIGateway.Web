@@ -30,6 +30,7 @@ message SubCategoryResponse {
 message CategoryAssetResponse {
     string name = 1;
     string symbol = 2;
-    string assetId = 3;
-    double expectedAllocationInPercentage = 4;
+    string type = 3;
+    string assetId = 4;
+    double expectedAllocationInPercentage = 5;
 }

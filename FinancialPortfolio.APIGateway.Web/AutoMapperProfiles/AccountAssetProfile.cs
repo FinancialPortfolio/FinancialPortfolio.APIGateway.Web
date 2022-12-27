@@ -19,10 +19,11 @@ namespace FinancialPortfolio.APIGateway.Web.AutoMapperProfiles
         public AccountAssetProfile()
         {
             CreateMap<(IEnumerable<Guid> assetIds, GetAccountAssetsRequest request), GetAssetsQuery>()
-                .ForPath(q => q.Search.FilteringOptions, o => o.MapFrom(r => MapFilteringOptions(r.assetIds, r.request)));
+                .ForPath(q => q.Search.FilteringOptions, o => o.MapFrom(r => MapFilteringOptions(r.assetIds)))
+                .ForPath(q => q.Type, o => o.MapFrom(r => r.request.Type ?? ""));;
             
             CreateMap<IEnumerable<Guid>, GetAssetsQuery>()
-                .ForPath(q => q.Search.FilteringOptions, o => o.MapFrom(r => MapFilteringOptions(r, null)));
+                .ForPath(q => q.Search.FilteringOptions, o => o.MapFrom(r => MapFilteringOptions(r)));
             
             CreateMap<AssetResponse, GetOrdersQuery>()
                 .ForPath(q => q.Search.FilteringOptions, o => o.MapFrom(r =>
@@ -55,7 +56,7 @@ namespace FinancialPortfolio.APIGateway.Web.AutoMapperProfiles
                 .ConvertUsing(new AccountAssetResponseConverter());
         }
         
-        private static FilteringOptions MapFilteringOptions(IEnumerable<Guid> assetIds, GetAccountAssetsRequest request = null)
+        private static FilteringOptions MapFilteringOptions(IEnumerable<Guid> assetIds)
         {
             var filteringOptions = new FilteringOptions
             {
@@ -69,16 +70,6 @@ namespace FinancialPortfolio.APIGateway.Web.AutoMapperProfiles
                     }
                 }
             };
-
-            if (!string.IsNullOrEmpty(request?.Type))
-            {
-                filteringOptions.Criteria.Add(new FilterCriteria
-                {
-                    Field = "Type",
-                    Operator = FilterOperator.Equals,
-                    Value = request.Type
-                });
-            }
 
             return filteringOptions;
         }

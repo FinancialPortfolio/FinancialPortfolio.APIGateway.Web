@@ -22,7 +22,7 @@ namespace FinancialPortfolio.APIGateway.Integrations.InteractiveBrokers
         
         private const string DataRow = "Data";
         private const string OrderRow = "Order";
-        private const string StocksRow = "Stocks";
+        private const string AssetsRow = "Stocks";
         
         private const string ElectronicFundTransferRow = "Electronic Fund Transfer";
         
@@ -59,7 +59,7 @@ namespace FinancialPortfolio.APIGateway.Integrations.InteractiveBrokers
                     continue;
                 
                 var assetCategoryRow = csvReader.GetField<string>(3);
-                if (assetCategoryRow != StocksRow)
+                if (assetCategoryRow != AssetsRow)
                     continue;
                 
                 var order = csvReader.GetRecord<Order>();

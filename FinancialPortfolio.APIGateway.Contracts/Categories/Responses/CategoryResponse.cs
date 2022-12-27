@@ -14,5 +14,15 @@ namespace FinancialPortfolio.APIGateway.Contracts.Categories.Responses
         public double ExpectedAllocationInPercentage { get; set; }
         
         public IEnumerable<SubCategoryResponse> SubCategories { get; set; }
+
+        public IEnumerable<CategoryAssetResponse> GetAssets()
+        {
+            var result = new List<CategoryAssetResponse>();
+            
+            foreach (var subCategory in SubCategories) 
+                result.AddRange(subCategory.GetAssets());
+
+            return result;
+        }
     }
 }
