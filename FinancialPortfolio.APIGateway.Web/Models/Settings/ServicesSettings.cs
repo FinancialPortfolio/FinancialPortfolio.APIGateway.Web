@@ -11,5 +11,7 @@ namespace FinancialPortfolio.APIGateway.Web.Models.Settings
         public ServiceSettings OrdersService { get; set; }
         
         public ServiceSettings CategoriesService { get; set; }
+        
+        public ServiceSettings DividendsService { get; set; }
     }
 }

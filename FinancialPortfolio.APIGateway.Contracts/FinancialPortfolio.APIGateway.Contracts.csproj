@@ -53,6 +53,8 @@
         <Protobuf Include="Categories\Protos\category.proto" />
         <None Remove="Assets\Protos\asset.proto" />
         <Protobuf Include="Assets\Protos\asset.proto" />
+        <None Remove="Dividends\Protos\order.proto" />
+        <Protobuf Include="Dividends\Protos\dividend.proto" />
     </ItemGroup>
 
     <ItemGroup>

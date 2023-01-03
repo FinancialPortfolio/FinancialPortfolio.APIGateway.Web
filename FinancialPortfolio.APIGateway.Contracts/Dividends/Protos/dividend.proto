@@ -1,0 +1,67 @@
+syntax = "proto3";
+
+import "Shared/Protos/search.proto";
+
+package DividendApi;
+
+service Dividend {
+    rpc Get (GetDividendQuery) returns (DividendResponse) {}
+    rpc GetAll (GetDividendsQuery) returns (DividendsResponse) {}
+
+    rpc GetAccountDividends (GetAccountDividendsQuery) returns (AccountDividendsResponse) {}
+}
+
+message GetDividendQuery {
+    string id = 1;
+}
+
+message GetDividendsQuery {
+    SearchLibrary.SearchOptions search = 1;
+}
+
+message DividendsResponse {
+    repeated DividendResponse dividends = 1;
+    int64 TotalCount = 2;
+}
+
+message DividendResponse {
+    string id = 1;
+    repeated DividendRecordResponse records = 2;
+}
+
+message DividendRecordResponse {
+    double percent = 1;
+    double pricePerShare = 2;
+    string exDate = 3;
+    string paymentDate = 4;
+    DividendFrequency frequency = 5;
+}
+
+message GetAccountDividendsQuery {
+    repeated string accountIds = 1;
+    string startDateTime = 2;
+    string endDateTime = 3;
+}
+
+message AccountDividendsResponse {
+    repeated AccountDividendResponse records = 1;
+}
+
+message AccountDividendResponse {
+    string paymentDate = 1;
+    string exDate = 2;
+    string symbol = 3;
+    double quantity = 4;
+    double dividendPerShare = 5;
+    double amount = 6;
+    DividendFrequency frequency = 7;
+
+}
+
+enum DividendFrequency {
+    Monthly = 0;
+    Quarterly = 1;
+    SemiAnnual = 2;
+    Annual = 3;
+    TrailingTwelveMonths = 4;
+}

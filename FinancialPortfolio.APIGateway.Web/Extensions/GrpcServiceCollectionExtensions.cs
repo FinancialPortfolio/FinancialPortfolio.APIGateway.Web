@@ -9,6 +9,7 @@ using Microsoft.Extensions.DependencyInjection;
 using OrderApi;
 using AssetApi;
 using TransferApi;
+using DividendApi;
 
 namespace FinancialPortfolio.APIGateway.Web.Extensions
 {
@@ -23,6 +24,7 @@ namespace FinancialPortfolio.APIGateway.Web.Extensions
                 .AddGrpcClient<Asset.AssetClient>(servicesSettings.AssetsService.GrpcUrl)
                 .AddGrpcClient<Transfer.TransferClient>(servicesSettings.EquityService.GrpcUrl)
                 .AddGrpcClient<Order.OrderClient>(servicesSettings.OrdersService.GrpcUrl)
+                .AddGrpcClient<Dividend.DividendClient>(servicesSettings.DividendsService.GrpcUrl)
                 .AddGrpcClient<Category.CategoryClient>(servicesSettings.CategoriesService.GrpcUrl);
 
             return services;
