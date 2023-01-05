@@ -7,7 +7,6 @@ namespace FinancialPortfolio.APIGateway.Contracts.Dividends.Validation
     {
         public GetAccountDividendsRequestValidation()
         {
-            RuleFor(x => x.AccountIds).NotEmpty();
             RuleFor(x => x.StartDateTime).NotEmpty();
             RuleFor(x => x.EndDateTime).NotEmpty();
         }

@@ -30,17 +30,17 @@ message DividendResponse {
 }
 
 message DividendRecordResponse {
-    double percent = 1;
-    double pricePerShare = 2;
-    string exDate = 3;
-    string paymentDate = 4;
-    DividendFrequency frequency = 5;
+    double pricePerShare = 1;
+    string exDate = 2;
+    string paymentDate = 3;
+    DividendFrequency frequency = 4;
 }
 
 message GetAccountDividendsQuery {
     repeated string accountIds = 1;
     string startDateTime = 2;
     string endDateTime = 3;
+    string assetId = 4;
 }
 
 message AccountDividendsResponse {
@@ -51,11 +51,11 @@ message AccountDividendResponse {
     string paymentDate = 1;
     string exDate = 2;
     string symbol = 3;
-    double quantity = 4;
-    double dividendPerShare = 5;
-    double amount = 6;
-    DividendFrequency frequency = 7;
-
+    string assetId = 4;
+    double quantity = 5;
+    double dividendPerShare = 6;
+    double amount = 7;
+    DividendFrequency frequency = 8;
 }
 
 enum DividendFrequency {
@@ -63,5 +63,5 @@ enum DividendFrequency {
     Quarterly = 1;
     SemiAnnual = 2;
     Annual = 3;
-    TrailingTwelveMonths = 4;
+    OneTime = 4;
 }

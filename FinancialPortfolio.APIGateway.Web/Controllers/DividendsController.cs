@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
@@ -15,7 +16,7 @@ namespace FinancialPortfolio.APIGateway.Web.Controllers
 {
     [Authorize]
     [ApiController]
-    [Route("api/dividends")]
+    [Route("api/accounts/{accountId:guid}/dividends")]
     [Produces("application/json")]
     [ProducesResponseType(typeof(WebApiProblemDetails), StatusCodes.Status400BadRequest)]
     [ProducesResponseType(typeof(WebApiProblemDetails), StatusCodes.Status401Unauthorized)]
@@ -32,17 +33,19 @@ namespace FinancialPortfolio.APIGateway.Web.Controllers
         
         [HttpGet]
         [ProducesResponseType(typeof(WebApiResponse<IEnumerable<AccountDividendResponse>>), StatusCodes.Status200OK)]
-        public async Task<ActionResult<WebApiResponse<IEnumerable<AccountDividendResponse>>>> GetAllAsync([FromQuery] GetAccountDividendsRequest request)
+        public async Task<ActionResult<WebApiResponse<IEnumerable<AccountDividendResponse>>>> GetAccountDividendsAsync(
+            [FromRoute] Guid accountId, [FromQuery] GetAccountDividendsRequest request)
         {
             var query = new GetAccountDividendsQuery
             {
-                AccountIds = { request.AccountIds.Select(id => id.ToString()) },
+                AccountIds = { new [] { accountId.ToString() } },
                 StartDateTime = request.StartDateTime.ToString(CultureInfo.InvariantCulture),
                 EndDateTime = request.EndDateTime.ToString(CultureInfo.InvariantCulture),
+                AssetId = request.AssetId.ToString()
             };
             var response = await _dividendClient.GetAccountDividendsAsync(query);
 
-            return WebApiResponse.Success(response);
+            return WebApiResponse.Success(response.Records);
         }
     }
 }
