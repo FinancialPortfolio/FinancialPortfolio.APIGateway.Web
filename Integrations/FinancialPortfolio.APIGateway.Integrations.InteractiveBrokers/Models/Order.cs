@@ -1,4 +1,5 @@
 using System;
+using System.Globalization;
 using CsvHelper.Configuration.Attributes;
 using FinancialPortfolio.APIGateway.Contracts.Orders.Enums;
 
@@ -32,12 +33,12 @@ namespace FinancialPortfolio.APIGateway.Integrations.InteractiveBrokers.Models
         [Index(9)]
         public string PriceString { get; set; }
         
-        public decimal Price => decimal.Parse(PriceString.Replace('.', ','));
+        public decimal Price => decimal.Parse(PriceString, CultureInfo.InvariantCulture);
 
         [Index(11)]
         public string ProceedsString { get; set; }
         
-        public decimal Proceeds => decimal.Parse(ProceedsString.Replace('.', ','));
+        public decimal Proceeds => decimal.Parse(ProceedsString, CultureInfo.InvariantCulture);
         
         public OrderType Type => Proceeds >= 0 ? OrderType.Sell : OrderType.Buy;
         
