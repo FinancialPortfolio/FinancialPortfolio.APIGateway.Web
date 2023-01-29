@@ -47,6 +47,8 @@ namespace FinancialPortfolio.APIGateway.Web.Controllers
         [ProducesResponseType(typeof(WebApiResponse), StatusCodes.Status202Accepted)]
         public async Task<ActionResult<WebApiResponse>> IntegrateAsync([FromRoute] Guid accountId, [FromForm] IntegrateRequest request)
         {
+            await ValidateUserAccountAsync(accountId);
+            
             var integrationService = _integrationServiceFactory.CreateIntegrationService(request.Source);
     
             var orders = await integrationService.ParseOrdersAsync(request);
@@ -64,6 +66,8 @@ namespace FinancialPortfolio.APIGateway.Web.Controllers
         [ProducesResponseType(typeof(WebApiResponse<IntegrationFileValidationResponse>), StatusCodes.Status200OK)]
         public async Task<ActionResult<WebApiResponse<IntegrationFileValidationResponse>>> ValidateAsync([FromRoute] Guid accountId, [FromForm] IntegrateRequest request)
         {
+            await ValidateUserAccountAsync(accountId);
+            
             var integrationService = _integrationServiceFactory.CreateIntegrationService(request.Source);
     
             var orders = await integrationService.ParseOrdersAsync(request);

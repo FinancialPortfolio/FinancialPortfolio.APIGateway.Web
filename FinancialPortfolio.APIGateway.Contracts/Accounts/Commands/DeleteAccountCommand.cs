@@ -8,13 +8,10 @@ namespace FinancialPortfolio.APIGateway.Contracts.Accounts.Commands
     public record DeleteAccountCommand : ICommand
     {
         public Guid Id { get; }
-
-        public Guid UserId { get; }
         
-        public DeleteAccountCommand(Guid id, Guid userId)
+        public DeleteAccountCommand(Guid id)
         {
             Id = id;
-            UserId = userId;
         }
     }
 }

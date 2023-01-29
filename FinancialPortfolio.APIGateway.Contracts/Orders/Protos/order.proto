@@ -11,6 +11,7 @@ service Order {
 
 message GetOrderQuery {
     string id = 1;
+    string accountId = 2;
 }
 
 message GetOrdersQuery {

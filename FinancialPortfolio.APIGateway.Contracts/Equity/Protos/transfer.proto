@@ -11,6 +11,7 @@ service Transfer {
 
 message GetTransferQuery {
     string id = 1;
+    string accountId = 2;
 }
 
 message GetTransfersQuery {

@@ -20,16 +20,23 @@ namespace FinancialPortfolio.APIGateway.Web.Controllers
         {
             var claim = await _userInfoService.GetClaimAsync<string>(ClaimConstants.UserId);
             if (claim == null)
-            {
                 throw new ForbiddenException($"You do not have {ClaimConstants.UserId} claim.");
-            }
 
             if (Guid.TryParse(claim, out var result))
-            {
                 return result;
-            }
-            
+
             throw new ForbiddenException($"{ClaimConstants.UserId} claim '{claim}' is incorrect Guid value.");
+        }
+
+        protected async Task ValidateUserAccountAsync(Guid accountId)
+        {
+            var userId = await GetUserIdAsync();
+            await _userInfoService.ValidateUserAccountAsync(userId, accountId);
+        }
+        
+        protected async Task ValidateUserAccountAsync(Guid userId, Guid accountId)
+        {
+            await _userInfoService.ValidateUserAccountAsync(userId, accountId);
         }
     }
 }

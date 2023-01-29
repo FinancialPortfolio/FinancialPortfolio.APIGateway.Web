@@ -36,6 +36,8 @@ namespace FinancialPortfolio.APIGateway.Web.Controllers
         public async Task<ActionResult<WebApiResponse<IEnumerable<AccountDividendResponse>>>> GetAccountDividendsAsync(
             [FromRoute] Guid accountId, [FromQuery] GetAccountDividendsRequest request)
         {
+            await ValidateUserAccountAsync(accountId);
+            
             var query = new GetAccountDividendsQuery
             {
                 AccountIds = { new [] { accountId.ToString() } },

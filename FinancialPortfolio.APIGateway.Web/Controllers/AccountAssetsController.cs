@@ -12,6 +12,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using OrderApi;
 using AssetApi;
+using FinancialPortfolio.APIGateway.Web.Interfaces;
 
 namespace FinancialPortfolio.APIGateway.Web.Controllers
 {
@@ -23,13 +24,14 @@ namespace FinancialPortfolio.APIGateway.Web.Controllers
     [ProducesResponseType(typeof(WebApiProblemDetails), StatusCodes.Status401Unauthorized)]
     [ProducesResponseType(typeof(WebApiProblemDetails), StatusCodes.Status403Forbidden)]
     [ProducesResponseType(typeof(WebApiProblemDetails), StatusCodes.Status500InternalServerError)]
-    public class AccountAssetsController : ControllerBase
+    public class AccountAssetsController : ApiControllerBase
     {
         private readonly Order.OrderClient _orderClient;
         private readonly Asset.AssetClient _assetClient;
         private readonly IMapper _mapper;
 
-        public AccountAssetsController(Order.OrderClient orderClient, Asset.AssetClient assetClient, IMapper mapper)
+        public AccountAssetsController(Order.OrderClient orderClient, Asset.AssetClient assetClient, 
+            IMapper mapper, IUserInfoService userInfoService) : base(userInfoService)
         {
             _orderClient = orderClient;
             _assetClient = assetClient;
@@ -40,6 +42,8 @@ namespace FinancialPortfolio.APIGateway.Web.Controllers
         [ProducesResponseType(typeof(WebApiResponse<IEnumerable<AccountAssetResponse>>), StatusCodes.Status200OK)]
         public async Task<ActionResult<WebApiResponse<IEnumerable<AccountAssetResponse>>>> GetAllAsync([FromRoute] Guid accountId, [FromQuery] GetAccountAssetsRequest request)
         {
+            await ValidateUserAccountAsync(accountId);
+            
             var ordersQuery = _mapper.Map<GetOrdersQuery>((accountId, "AccountId"));
             var ordersResponse = await _orderClient.GetAllAsync(ordersQuery);
 
@@ -51,22 +55,6 @@ namespace FinancialPortfolio.APIGateway.Web.Controllers
             var availableAccountAssets = accountAssets.Where(a => a.NumberOfShares > 0);
             
             return WebApiResponse.Success(availableAccountAssets);
-        }
-
-        [HttpGet("{id:guid}")]
-        [ProducesResponseType(typeof(WebApiResponse<AccountAssetResponse>), StatusCodes.Status200OK)]
-        [ProducesResponseType(typeof(WebApiProblemDetails), StatusCodes.Status404NotFound)]
-        public async Task<ActionResult<WebApiResponse<AccountAssetResponse>>> GetAsync([FromRoute] Guid accountId, [FromRoute] Guid id)
-        {
-            var assetQuery = new GetAssetQuery { Id = id.ToString() };
-            var asset = await _assetClient.GetAsync(assetQuery);
-            
-            var ordersQuery = _mapper.Map<GetOrdersQuery>(asset);
-            var orders = await _orderClient.GetAllAsync(ordersQuery);
-
-            var response = _mapper.Map<AccountAssetResponse>((asset, orders));
-            
-            return WebApiResponse.Success(response);
         }
     }
 }

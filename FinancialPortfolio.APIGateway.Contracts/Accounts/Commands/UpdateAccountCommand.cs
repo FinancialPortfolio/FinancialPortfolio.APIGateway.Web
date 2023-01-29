@@ -13,14 +13,11 @@ namespace FinancialPortfolio.APIGateway.Contracts.Accounts.Commands
         
         public string Description { get; }
         
-        public Guid UserId { get; }
-        
-        public UpdateAccountCommand(Guid id, string name, string description, Guid userId)
+        public UpdateAccountCommand(Guid id, string name, string description)
         {
             Id = id;
             Name = name;
             Description = description;
-            UserId = userId;
         }
     }
 }

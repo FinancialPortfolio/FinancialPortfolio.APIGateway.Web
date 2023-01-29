@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using AccountApi;
+using AutoMapper;
 using FinancialPortfolio.APIGateway.Contracts.Accounts.Commands;
 using FinancialPortfolio.APIGateway.Contracts.Accounts.Requests;
 using FinancialPortfolio.APIGateway.Web.Interfaces;
@@ -26,20 +27,23 @@ namespace FinancialPortfolio.APIGateway.Web.Controllers
     {
         private readonly ICommandPublisher _commandPublisher;
         private readonly Account.AccountClient _accountClient;
+        private readonly IMapper _mapper;
 
         public AccountsController(
             ICommandPublisher commandPublisher, IUserInfoService userInfoService, 
-            Account.AccountClient accountClient) : base(userInfoService)
+            Account.AccountClient accountClient, IMapper mapper) : base(userInfoService)
         {
             _commandPublisher = commandPublisher;
             _accountClient = accountClient;
+            _mapper = mapper;
         }
         
         [HttpGet]
         [ProducesResponseType(typeof(PaginationWebApiResponse<IEnumerable<AccountResponse>>), StatusCodes.Status200OK)]
         public async Task<ActionResult<PaginationWebApiResponse<IEnumerable<AccountResponse>>>> GetAllAsync()
         {
-            var query = new GetAccountsQuery();
+            var userId = await GetUserIdAsync();
+            var query = _mapper.Map<GetAccountsQuery>(userId);
             var response = await _accountClient.GetAllAsync(query);
 
             return WebApiResponse.Success(response.Accounts, response.TotalCount);
@@ -50,6 +54,8 @@ namespace FinancialPortfolio.APIGateway.Web.Controllers
         [ProducesResponseType(typeof(WebApiProblemDetails), StatusCodes.Status404NotFound)]
         public async Task<ActionResult<WebApiResponse<AccountResponse>>> GetAsync([FromRoute] Guid id)
         {
+            await ValidateUserAccountAsync(id);
+            
             var query = new GetAccountQuery { Id = id.ToString() };
             var response = await _accountClient.GetAsync(query);
             
@@ -72,9 +78,9 @@ namespace FinancialPortfolio.APIGateway.Web.Controllers
         [ProducesResponseType(typeof(WebApiResponse), StatusCodes.Status202Accepted)]
         public async Task<ActionResult<WebApiResponse>> UpdateAsync([FromRoute] Guid id, [FromBody] UpdateAccountRequest request)
         {
-            var userId = await GetUserIdAsync();
+            await ValidateUserAccountAsync(id);
             
-            var updateAccountCommand = new UpdateAccountCommand(id, request.Name, request.Description, userId);
+            var updateAccountCommand = new UpdateAccountCommand(id, request.Name, request.Description);
             await _commandPublisher.SendAsync(updateAccountCommand);
             
             return WebApiResponse.Accepted();
@@ -84,9 +90,9 @@ namespace FinancialPortfolio.APIGateway.Web.Controllers
         [ProducesResponseType(typeof(WebApiResponse), StatusCodes.Status202Accepted)]
         public async Task<ActionResult<WebApiResponse>> DeleteAsync([FromRoute] Guid id)
         {
-            var userId = await GetUserIdAsync();
+            await ValidateUserAccountAsync(id);
             
-            var deleteAccountCommand = new DeleteAccountCommand(id, userId);
+            var deleteAccountCommand = new DeleteAccountCommand(id);
             await _commandPublisher.SendAsync(deleteAccountCommand);
             
             return WebApiResponse.Accepted();
