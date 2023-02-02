@@ -11,6 +11,7 @@ using FinancialPortfolio.APIGateway.Contracts.Equity.Commands;
 using FinancialPortfolio.APIGateway.Contracts.Integrations.Requests;
 using FinancialPortfolio.APIGateway.Contracts.Integrations.Services;
 using FinancialPortfolio.APIGateway.Contracts.Orders.Commands;
+using FinancialPortfolio.APIGateway.Contracts.Orders.Enums;
 using FinancialPortfolio.APIGateway.Integrations.InteractiveBrokers.Models;
 
 namespace FinancialPortfolio.APIGateway.Integrations.InteractiveBrokers
@@ -63,7 +64,7 @@ namespace FinancialPortfolio.APIGateway.Integrations.InteractiveBrokers
                     continue;
                 
                 var order = csvReader.GetRecord<Order>();
-                result.Add(new IntegrateOrderCommand(order.Type, order.Quantity, order.Price, 
+                result.Add(new IntegrateOrderCommand(order.Type, Math.Abs(order.Quantity), order.Price, 
                     order.DateTime, Math.Abs(order.Commission), order.Symbol, order.Exchange, order.Currency));
             }
 
