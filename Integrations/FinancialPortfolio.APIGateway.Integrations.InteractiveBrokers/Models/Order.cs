@@ -1,7 +1,7 @@
 using System;
-using System.Globalization;
 using CsvHelper.Configuration.Attributes;
 using FinancialPortfolio.APIGateway.Contracts.Orders.Enums;
+using FinancialPortfolio.APIGateway.Integrations.InteractiveBrokers.Helpers;
 
 namespace FinancialPortfolio.APIGateway.Integrations.InteractiveBrokers.Models
 {
@@ -33,18 +33,18 @@ namespace FinancialPortfolio.APIGateway.Integrations.InteractiveBrokers.Models
         [Index(9)]
         public string PriceString { get; set; }
         
-        public decimal Price => decimal.Parse(PriceString, CultureInfo.InvariantCulture);
+        public decimal Price => ParseHelper.Parse(PriceString);
 
         [Index(11)]
         public string ProceedsString { get; set; }
         
-        public decimal Proceeds => decimal.Parse(ProceedsString, CultureInfo.InvariantCulture);
+        public decimal Proceeds => ParseHelper.Parse(ProceedsString);
         
         public OrderType Type => Proceeds >= 0 ? OrderType.Sell : OrderType.Buy;
         
         [Index(12)]
         public string CommissionString { get; set; }
         
-        public decimal Commission => decimal.Parse(CommissionString.Replace('.', ','));
+        public decimal Commission => ParseHelper.Parse(CommissionString);
     }
 }

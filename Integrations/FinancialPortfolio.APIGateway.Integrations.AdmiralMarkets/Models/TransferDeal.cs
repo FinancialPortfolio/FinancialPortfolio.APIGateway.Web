@@ -1,5 +1,6 @@
 using System;
 using CsvHelper.Configuration.Attributes;
+using FinancialPortfolio.APIGateway.Integrations.AdmiralMarkets.Helpers;
 
 namespace FinancialPortfolio.APIGateway.Integrations.AdmiralMarkets.Models
 {
@@ -14,6 +15,6 @@ namespace FinancialPortfolio.APIGateway.Integrations.AdmiralMarkets.Models
         [Index(11)]
         public string ProfitString { get; set; }
         
-        public decimal Profit => decimal.Parse(ProfitString.Replace('.', ','));
+        public decimal Profit => ParseHelper.Parse(ProfitString);
     }
 }

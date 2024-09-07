@@ -1,5 +1,6 @@
 using System;
 using CsvHelper.Configuration.Attributes;
+using FinancialPortfolio.APIGateway.Integrations.AdmiralMarkets.Helpers;
 
 namespace FinancialPortfolio.APIGateway.Integrations.AdmiralMarkets.Models
 {
@@ -25,7 +26,7 @@ namespace FinancialPortfolio.APIGateway.Integrations.AdmiralMarkets.Models
         [Index(6)]
         public string PriceString { get; set; }
 
-        public decimal Price => decimal.Parse(PriceString);
+        public decimal Price => ParseHelper.Parse(PriceString);
         
         [Index(7)]
         public string OrderId { get; set; }
@@ -33,11 +34,11 @@ namespace FinancialPortfolio.APIGateway.Integrations.AdmiralMarkets.Models
         [Index(8)]
         public string CommissionString { get; set; }
         
-        public decimal Commission => decimal.Parse(CommissionString.Replace('.', ','));
+        public decimal Commission => ParseHelper.Parse(CommissionString);
         
         [Index(9)]
         public string FeeString { get; set; }
         
-        public decimal Fee => decimal.Parse(FeeString.Replace('.', ','));
+        public decimal Fee => ParseHelper.Parse(FeeString);
     }
 }

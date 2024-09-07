@@ -31,12 +31,13 @@ namespace FinancialPortfolio.APIGateway.Integrations.InteractiveBrokers
         {
             Delimiter = ";",
             TrimOptions = TrimOptions.Trim,
-            Encoding = Encoding.UTF8
+            Encoding = Encoding.UTF8,
+            HasHeaderRecord = false
         };
             
         private readonly TypeConverterOptions _csvOptions = new ()
         {   
-            Formats = new [] { "yyyy-MM-dd; HH:mm:ss", "dd.MM.yyyy" }
+            Formats = new [] { "yyyy-MM-dd; HH:mm:ss", "dd.MM.yyyy", "yyyy-MM-dd" }
         };
         
         public async Task<IEnumerable<IntegrateOrderCommand>> ParseOrdersAsync(IntegrateRequest request)
